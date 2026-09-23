@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dev knowledge flashcards</title>
+<meta name="description" content="Study the Dev knowledge glossary with flashcards.">
+<style>
+  :root {
+    --bg: #f4f5f7;
+    --panel: #ffffff;
+    --text: #1a1d23;
+    --muted: #5b6270;
+    --border: #d9dce2;
+    --accent: #3457d5;
+    --accent-contrast: #ffffff;
+    --knew: #1a7f4e;
+    --knew-bg: #e4f7ec;
+    --missed: #b3261e;
+    --missed-bg: #fbe7e6;
+    --chip-bg: #eceef2;
+    --chip-active-bg: #3457d5;
+    --chip-active-text: #ffffff;
+    --focus: #3457d5;
+    color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14161a;
+      --panel: #1f2229;
+      --text: #eef0f3;
+      --muted: #a2a8b4;
+      --border: #33373f;
+      --accent: #7c96ff;
+      --accent-contrast: #10131a;
+      --knew: #5fd899;
+      --knew-bg: #123322;
+      --missed: #ff8a83;
+      --missed-bg: #3a1614;
+      --chip-bg: #2a2e37;
+      --chip-active-bg: #7c96ff;
+      --chip-active-text: #10131a;
+      --focus: #9db1ff;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.45;
+    min-height: 100vh;
+  }
+  a { color: var(--accent); }
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 16px 16px 48px;
+  }
+
+  header.top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px 16px;
+    margin-bottom: 16px;
+  }
+  header.top h1 { font-size: 1.35rem; margin: 0; }
+  header.top nav { display: flex; gap: 12px; font-size: 0.9rem; }
+  header.top nav a { white-space: nowrap; }
+
+  :focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  button {
+    font: inherit;
+    cursor: pointer;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--panel);
+    color: var(--text);
+    padding: 10px 14px;
+    min-height: 44px;
+  }
+  button:hover { border-color: var(--accent); }
+
+  #status { padding: 32px 4px; color: var(--muted); }
+  #status a { color: var(--accent); }
+  #status.error { color: var(--missed); }
+
+  .controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .chip {
+    border: 1px solid var(--border);
+    background: var(--chip-bg);
+    color: var(--text);
+    border-radius: 999px;
+    padding: 7px 12px;
+    font-size: 0.85rem;
+    min-height: 36px;
+    cursor: pointer;
+  }
+  .chip[aria-pressed="true"] {
+    background: var(--chip-active-bg);
+    color: var(--chip-active-text);
+    border-color: var(--chip-active-bg);
+  }
+
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+  .toolbar .spacer { flex: 1; }
+  .toolbar button[aria-pressed="true"] {
+    background: var(--accent);
+    color: var(--accent-contrast);
+    border-color: var(--accent);
+  }
+
+  .meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .progress-track {
+    height: 8px;
+    border-radius: 999px;
+    background: var(--chip-bg);
+    overflow: hidden;
+    margin-bottom: 18px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.2s ease;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .progress-fill { transition: none; }
+  }
+
+  .stage { perspective: 1400px; }
+  .card {
+    position: relative;
+    min-height: 260px;
+    border-radius: 18px;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: transform 0.5s cubic-bezier(.2,.8,.2,1);
+  }
+  .card.flipped { transform: rotateY(180deg); }
+  @media (prefers-reduced-motion: reduce) {
+    .card { transition: none; }
+  }
+  .card-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: var(--panel);
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 14px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .card-face.back { visibility: hidden; }
+    .card.flipped .card-face.back { visibility: visible; }
+    .card.flipped .card-face.front { visibility: hidden; }
+  }
+  .card-face.back { transform: rotateY(180deg); }
+  .card-kicker {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+  }
+  .card-term { font-size: 1.5rem; font-weight: 700; }
+  .card-def { font-size: 1.15rem; }
+  .card-def code {
+    background: var(--chip-bg);
+    padding: 0.1em 0.35em;
+    border-radius: 5px;
+    font-size: 0.92em;
+  }
+  .card-link { font-size: 0.9rem; }
+  .card-hint { font-size: 0.8rem; color: var(--muted); }
+
+  .judge-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .judge-row button { flex: 1; font-weight: 600; font-size: 1rem; }
+  .btn-knew { background: var(--knew-bg); color: var(--knew); border-color: var(--knew); }
+  .btn-missed { background: var(--missed-bg); color: var(--missed); border-color: var(--missed); }
+
+  .summary {
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: var(--panel);
+    padding: 28px 24px;
+    text-align: center;
+  }
+  .summary h2 { margin-top: 0; }
+  .summary .tally { font-size: 1.1rem; margin: 12px 0 20px; }
+  .summary .tally .knew { color: var(--knew); font-weight: 700; }
+  .summary .tally .missed { color: var(--missed); font-weight: 700; }
+  .summary .actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+
+  .empty-deck {
+    border: 1px dashed var(--border);
+    border-radius: 18px;
+    padding: 32px 20px;
+    text-align: center;
+    color: var(--muted);
+  }
+
+  .hidden { display: none !important; }
+
+  @media (max-width: 480px) {
+    .card { min-height: 300px; }
+    .card-term { font-size: 1.25rem; }
+    .card-def { font-size: 1.05rem; }
+  }
+  .filter-box summary { cursor: pointer; font-weight: 600; padding: 10px 0; min-height: 44px; box-sizing: border-box; }
+  .filter-box[open] summary { margin-bottom: 8px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>Dev knowledge flashcards</h1>
+    <nav>
+      <a href="./">Glossary site</a>
+      <a href="https://github.com/alwintwk/dev-knowledge" target="_blank" rel="noopener">GitHub repo</a>
+    </nav>
+  </header>
+
+  <div id="status">Loading cards from README.md…</div>
+
+  <main id="app" class="hidden">
+    <div class="controls">
+      <details class="filter-box" id="filter-box">
+        <summary>Filter by section</summary>
+        <div class="chips" id="section-chips" role="group" aria-label="Filter by section"></div>
+      </details>
+      <div class="toolbar">
+        <button id="btn-shuffle" type="button">Shuffle</button>
+        <button id="btn-reverse" type="button" aria-pressed="false">Reverse mode</button>
+        <button id="btn-review-missed" type="button" aria-pressed="false">Review missed</button>
+        <span class="spacer"></span>
+        <button id="btn-reset" type="button">Reset progress</button>
+      </div>
+    </div>
+
+    <div class="meta-row">
+      <span id="counter">0 / 0</span>
+      <span id="mode-label"></span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+
+    <div id="deck-area">
+      <div class="stage">
+        <div class="card" id="card" tabindex="0" role="button" aria-label="Flashcard, press Space or Enter to flip">
+          <div class="card-face front">
+            <div class="card-kicker" id="front-kicker">Term</div>
+            <div class="card-term" id="front-main"></div>
+            <div class="card-hint">Click or press Space / Enter to flip</div>
+          </div>
+          <div class="card-face back">
+            <div class="card-kicker" id="back-kicker">Plain English</div>
+            <div class="card-def" id="back-main"></div>
+            <div class="card-link" id="back-link"></div>
+          </div>
+        </div>
+      </div>
+      <div class="judge-row hidden" id="judge-row">
+        <button class="btn-missed" id="btn-missed" type="button">Missed it <span aria-hidden="true">(M / ←)</span></button>
+        <button class="btn-knew" id="btn-knew" type="button">Knew it <span aria-hidden="true">(K / →)</span></button>
+      </div>
+    </div>
+
+    <div class="summary hidden" id="summary">
+      <h2>Deck complete</h2>
+      <p class="tally">Knew <span class="knew" id="sum-knew">0</span> &middot; Missed <span class="missed" id="sum-missed">0</span></p>
+      <div class="actions">
+        <button id="btn-restart" type="button">Restart deck</button>
+        <button id="btn-summary-review-missed" type="button">Review missed</button>
+      </div>
+    </div>
+
+    <div class="empty-deck hidden" id="empty-deck">
+      No cards match this filter. Pick another section, or turn off Review missed.
+    </div>
+  </main>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var STATS_KEY = "flashcards-stats-v1";
+  var GITHUB_README = "https://github.com/alwintwk/dev-knowledge/blob/main/README.md";
+
+  // ---- tiny localStorage wrapper: storage may be blocked, never let it break the page ----
+  function loadStats() {
+    try {
+      var raw = localStorage.getItem(STATS_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      return {};
+    }
+  }
+  function saveStats(stats) {
+    try {
+      localStorage.setItem(STATS_KEY, JSON.stringify(stats));
+    } catch (e) {
+      // storage blocked/full: stats just won't persist this session
+    }
+  }
+  function clearStats() {
+    try {
+      localStorage.removeItem(STATS_KEY);
+    } catch (e) {}
+  }
+
+  // ---- tiny inline markdown renderer: `code`, *em*, **strong** ----
+  function escapeHtml(s) {
+    return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+  function renderInline(md) {
+    var html = escapeHtml(md);
+    html = html.replace(/`([^`]+)`/g, "<code>$1</code>");
+    html = html.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    html = html.replace(/\*([^*]+)\*/g, "<em>$1</em>");
+    return html;
+  }
+
+  // ---- markdown table parsing ----
+  function splitRow(line) {
+    var s = line.trim();
+    if (s.charAt(0) === "|") s = s.slice(1);
+    if (s.charAt(s.length - 1) === "|") s = s.slice(0, -1);
+    // split on unescaped pipes
+    var cells = s.split(/(?<!\\)\|/);
+    return cells.map(function (c) {
+      return c.trim().replace(/\\\|/g, "|");
+    });
+  }
+  function isSeparatorRow(cells) {
+    return cells.every(function (c) { return /^:?-+:?$/.test(c); });
+  }
+  function parseLink(cell) {
+    var m = cell.match(/\[([^\]]*)\]\((.*)\)\s*$/);
+    if (!m) return null;
+    return { text: m[1], url: m[2] };
+  }
+
+  function parseReadme(text) {
+    var lines = text.split("\n");
+    var cards = [];
+    var section = null;
+    var counter = 0;
+
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i];
+      var h = line.match(/^##\s+(.+?)\s*$/);
+      if (h) {
+        section = h[1].trim();
+        continue;
+      }
+      if (!section) continue;
+      var trimmed = line.trim();
+      if (trimmed.charAt(0) !== "|") continue;
+
+      var cells = splitRow(trimmed);
+      if (isSeparatorRow(cells)) continue;
+      if (/^Term$/i.test(cells[0]) || /^These two/i.test(cells[0])) continue; // header row
+
+      counter++;
+      if (cells.length >= 3) {
+        var link = parseLink(cells[2]);
+        cards.push({
+          id: section + "::" + cells[0] + "::" + counter,
+          section: section,
+          front: cells[0],
+          back: cells[1],
+          linkText: link ? link.text : null,
+          linkUrl: link ? link.url : null
+        });
+      } else if (cells.length === 2) {
+        cards.push({
+          id: section + "::" + cells[0] + "::" + counter,
+          section: section,
+          front: cells[0],
+          back: cells[1],
+          linkText: null,
+          linkUrl: null
+        });
+      }
+    }
+    return cards;
+  }
+
+  // ---- app state ----
+  var allCards = [];
+  var stats = loadStats();
+  var selectedSections = new Set(); // empty = all
+  var reverseMode = false;
+  var reviewMissed = false;
+  var deck = [];
+  var index = 0;
+  var showingBack = false;
+  var sessionKnew = 0;
+  var sessionMissed = 0;
+
+  var el = {
+    status: document.getElementById("status"),
+    app: document.getElementById("app"),
+    chips: document.getElementById("section-chips"),
+    counter: document.getElementById("counter"),
+    modeLabel: document.getElementById("mode-label"),
+    progressFill: document.getElementById("progress-fill"),
+    deckArea: document.getElementById("deck-area"),
+    card: document.getElementById("card"),
+    frontKicker: document.getElementById("front-kicker"),
+    frontMain: document.getElementById("front-main"),
+    backKicker: document.getElementById("back-kicker"),
+    backMain: document.getElementById("back-main"),
+    backLink: document.getElementById("back-link"),
+    judgeRow: document.getElementById("judge-row"),
+    btnKnew: document.getElementById("btn-knew"),
+    btnMissed: document.getElementById("btn-missed"),
+    summary: document.getElementById("summary"),
+    sumKnew: document.getElementById("sum-knew"),
+    sumMissed: document.getElementById("sum-missed"),
+    emptyDeck: document.getElementById("empty-deck"),
+    btnShuffle: document.getElementById("btn-shuffle"),
+    btnReverse: document.getElementById("btn-reverse"),
+    btnReviewMissed: document.getElementById("btn-review-missed"),
+    btnReset: document.getElementById("btn-reset"),
+    btnRestart: document.getElementById("btn-restart"),
+    btnSummaryReviewMissed: document.getElementById("btn-summary-review-missed")
+  };
+
+  function buildChips() {
+    var sections = [];
+    allCards.forEach(function (c) {
+      if (sections.indexOf(c.section) === -1) sections.push(c.section);
+    });
+    el.chips.innerHTML = "";
+
+    var allChip = document.createElement("button");
+    allChip.type = "button";
+    allChip.className = "chip";
+    allChip.textContent = "All";
+    allChip.setAttribute("aria-pressed", selectedSections.size === 0 ? "true" : "false");
+    allChip.addEventListener("click", function () {
+      selectedSections.clear();
+      refreshChips();
+      rebuildDeck();
+    });
+    el.chips.appendChild(allChip);
+
+    sections.forEach(function (s) {
+      var chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = "chip";
+      chip.textContent = s;
+      chip.setAttribute("aria-pressed", selectedSections.has(s) ? "true" : "false");
+      chip.addEventListener("click", function () {
+        if (selectedSections.has(s)) {
+          selectedSections.delete(s);
+        } else {
+          selectedSections.add(s);
+        }
+        refreshChips();
+        rebuildDeck();
+      });
+      el.chips.appendChild(chip);
+    });
+  }
+  function refreshChips() {
+    var chips = el.chips.querySelectorAll(".chip");
+    chips.forEach(function (chip, i) {
+      if (i === 0) {
+        chip.setAttribute("aria-pressed", selectedSections.size === 0 ? "true" : "false");
+      } else {
+        var s = chip.textContent;
+        chip.setAttribute("aria-pressed", selectedSections.has(s) ? "true" : "false");
+      }
+    });
+  }
+
+  function shuffle(arr) {
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+    }
+    return arr;
+  }
+
+  function rebuildDeck(keepOrder) {
+    var filtered = allCards.filter(function (c) {
+      return selectedSections.size === 0 || selectedSections.has(c.section);
+    });
+    if (reviewMissed) {
+      filtered = filtered.filter(function (c) {
+        var st = stats[c.id];
+        return st && st.last === "missed";
+      });
+    }
+    if (!keepOrder) shuffle(filtered);
+    deck = filtered;
+    index = 0;
+    showingBack = false;
+    sessionKnew = 0;
+    sessionMissed = 0;
+    render();
+  }
+
+  function currentCard() { return deck[index]; }
+
+  function render() {
+    el.modeLabel.textContent = (reviewMissed ? "Review missed" : "") +
+      (reviewMissed && reverseMode ? " · " : "") + (reverseMode ? "Reverse mode" : "");
+
+    if (deck.length === 0) {
+      el.deckArea.classList.add("hidden");
+      el.summary.classList.add("hidden");
+      el.emptyDeck.classList.remove("hidden");
+      el.counter.textContent = "0 / 0";
+      el.progressFill.style.transform = "scaleX(0)";
+      return;
+    }
+    el.emptyDeck.classList.add("hidden");
+
+    if (index >= deck.length) {
+      el.deckArea.classList.add("hidden");
+      el.summary.classList.remove("hidden");
+      el.sumKnew.textContent = String(sessionKnew);
+      el.sumMissed.textContent = String(sessionMissed);
+      el.counter.textContent = deck.length + " / " + deck.length;
+      el.progressFill.style.transform = "scaleX(1)";
+      return;
+    }
+
+    el.summary.classList.add("hidden");
+    el.deckArea.classList.remove("hidden");
+
+    var c = currentCard();
+    var frontMainHtml = renderInline(reverseMode ? c.back : c.front);
+    var backKickerText = reverseMode ? "Term" : "Plain English";
+    var backMainHtml = renderInline(reverseMode ? c.front : c.back);
+
+    el.frontKicker.textContent = c.section;
+    el.frontMain.innerHTML = frontMainHtml;
+    el.backKicker.textContent = backKickerText;
+    el.backMain.innerHTML = backMainHtml;
+    if (c.linkUrl) {
+      el.backLink.innerHTML = '<a href="' + escapeHtml(c.linkUrl) + '" target="_blank" rel="noopener">' +
+        renderInline(c.linkText || "Learn more") + " ↗</a>";
+    } else {
+      el.backLink.textContent = "";
+    }
+
+    el.card.classList.toggle("flipped", showingBack);
+    el.judgeRow.classList.toggle("hidden", !showingBack);
+
+    el.counter.textContent = (index + 1) + " / " + deck.length;
+    el.progressFill.style.transform = "scaleX(" + (index / deck.length) + ")";
+  }
+  function flip() {
+    if (deck.length === 0 || index >= deck.length) return;
+    showingBack = !showingBack;
+    render();
+  }
+
+  function judge(result) {
+    if (deck.length === 0 || index >= deck.length || !showingBack) return;
+    var c = currentCard();
+    var st = stats[c.id] || { seen: 0, missed: 0, last: null };
+    st.seen += 1;
+    if (result === "missed") {
+      st.missed += 1;
+      st.last = "missed";
+      sessionMissed += 1;
+    } else {
+      st.last = "knew";
+      sessionKnew += 1;
+    }
+    stats[c.id] = st;
+    saveStats(stats);
+
+    index += 1;
+    showingBack = false;
+    render();
+  }
+
+  // ---- events ----
+  el.card.addEventListener("click", flip);
+  el.card.addEventListener("keydown", function (e) {
+    if (e.key === " " || e.key === "Enter") {
+      e.preventDefault();
+      flip();
+    }
+  });
+  document.addEventListener("keydown", function (e) {
+    var tag = (document.activeElement && document.activeElement.tagName) || "";
+    if (tag === "BUTTON" && e.key !== "k" && e.key !== "K" && e.key !== "m" && e.key !== "M" &&
+        e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+    if (e.key === "k" || e.key === "K" || e.key === "ArrowRight") {
+      e.preventDefault();
+      judge("knew");
+    } else if (e.key === "m" || e.key === "M" || e.key === "ArrowLeft") {
+      e.preventDefault();
+      judge("missed");
+    }
+  });
+  el.btnKnew.addEventListener("click", function () { judge("knew"); });
+  el.btnMissed.addEventListener("click", function () { judge("missed"); });
+
+  el.btnShuffle.addEventListener("click", function () { rebuildDeck(); });
+
+  el.btnReverse.addEventListener("click", function () {
+    reverseMode = !reverseMode;
+    el.btnReverse.setAttribute("aria-pressed", String(reverseMode));
+    showingBack = false;
+    render();
+  });
+
+  el.btnReviewMissed.addEventListener("click", function () {
+    reviewMissed = !reviewMissed;
+    el.btnReviewMissed.setAttribute("aria-pressed", String(reviewMissed));
+    rebuildDeck();
+  });
+  el.btnSummaryReviewMissed.addEventListener("click", function () {
+    reviewMissed = true;
+    el.btnReviewMissed.setAttribute("aria-pressed", "true");
+    rebuildDeck();
+  });
+
+  el.btnReset.addEventListener("click", function () {
+    stats = {};
+    clearStats();
+    rebuildDeck();
+  });
+  el.btnRestart.addEventListener("click", function () { rebuildDeck(); });
+
+  // ---- boot ----
+  fetch("README.md")
+    .then(function (res) {
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      return res.text();
+    })
+    .then(function (text) {
+      allCards = parseReadme(text);
+      if (allCards.length === 0) throw new Error("No cards found in README.md");
+      el.status.classList.add("hidden");
+      el.app.classList.remove("hidden");
+      buildChips();
+      rebuildDeck();
+    })
+    .catch(function (err) {
+      el.status.className = "error";
+      el.status.innerHTML = "Couldn't load the glossary (" + escapeHtml(String(err.message || err)) +
+        "). <a href=\"" + GITHUB_README + "\" target=\"_blank\" rel=\"noopener\">View the README on GitHub instead</a>.";
+    });
+})();
+</script>
+<script>
+  // ponytail: sections list is long; start collapsed on phones so the card is visible
+  if (window.matchMedia("(min-width: 700px)").matches) document.getElementById("filter-box").open = true;
+</script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 <h1 align="center">Dev knowledge</h1>
 <p align="center"><i>Software engineering terms and concepts, explained in plain English, with links to learn more.</i></p>
-<p align="center">Companion to <a href="https://github.com/alwintwk/web-dev-resources">web-dev-resources</a>. Last reviewed: September 2026.</p>
+<p align="center">Companion to <a href="https://github.com/alwintwk/web-dev-resources">web-dev-resources</a>. Last reviewed: September 2026.<br /><a href="https://alwintwk.github.io/dev-knowledge/">Search it online</a> · <a href="https://alwintwk.github.io/dev-knowledge/flashcards.html">Study with flashcards</a></p>
 
 ## Table of contents
 
@@ -15,11 +15,14 @@
 * [Security](#security)
 * [Auth & identity](#auth--identity)
 * [Frontend concepts](#frontend-concepts)
+* [Mobile development](#mobile-development)
 * [Backend & APIs](#backend--apis)
 * [Databases](#databases)
 * [Architecture & design](#architecture--design)
+* [System design interview](#system-design-interview)
 * [Design principles](#design-principles)
 * [DevOps & cloud](#devops--cloud)
+* [Cloud services](#cloud-services)
 * [Observability & reliability](#observability--reliability)
 * [Testing](#testing)
 * [Performance](#performance)
@@ -36,11 +39,11 @@ New to all this? Read the sections in this order. Each step pairs the ideas (thi
 
 1. **How the web works:** [Web fundamentals](#web-fundamentals), [Networking](#networking), and the [visit-a-URL diagram](#what-happens-when-you-visit-a-url).
 2. **Programming basics:** [Programming concepts](#programming-concepts), [Data structures & algorithms](#data-structures--algorithms), [Command line & Linux](#command-line--linux).
-3. **Frontend:** [Frontend concepts](#frontend-concepts) and the [rendering diagram](#csr-vs-ssr-vs-ssg). Tools: [UI frameworks](https://github.com/alwintwk/web-dev-resources#ui-frameworks), [CSS](https://github.com/alwintwk/web-dev-resources#css-frameworks--styling).
+3. **Frontend:** [Frontend concepts](#frontend-concepts) and the [rendering diagram](#csr-vs-ssr-vs-ssg). Tools: [UI frameworks](https://github.com/alwintwk/web-dev-resources#ui-frameworks), [CSS](https://github.com/alwintwk/web-dev-resources#css-frameworks--styling). Building an app instead of a site? See [Mobile development](#mobile-development).
 4. **Backend:** [Backend & APIs](#backend--apis), [Databases](#databases). Tools: [Backend frameworks](https://github.com/alwintwk/web-dev-resources#backend-frameworks), [Databases & ORMs](https://github.com/alwintwk/web-dev-resources#databases-orms--search).
 5. **Security & login:** [Security](#security), [Auth & identity](#auth--identity), and the [OAuth](#oauth-20-login-with-pkce) and [SSO](#single-sign-on-sso) diagrams.
-6. **Shipping it:** [Git & workflow](#git--workflow), [Testing](#testing), [DevOps & cloud](#devops--cloud), [Observability](#observability--reliability), and the [CI/CD diagram](#cicd-pipeline).
-7. **Leveling up:** [Architecture](#architecture--design), [Design principles](#design-principles), [Performance](#performance), [Concurrency](#concurrency), [AI & LLMs](#ai--llms).
+6. **Shipping it:** [Git & workflow](#git--workflow), [Testing](#testing), [DevOps & cloud](#devops--cloud), [Cloud services](#cloud-services), [Observability](#observability--reliability), and the [CI/CD diagram](#cicd-pipeline).
+7. **Leveling up:** [Architecture](#architecture--design), [System design interview](#system-design-interview), [Design principles](#design-principles), [Performance](#performance), [Concurrency](#concurrency), [AI & LLMs](#ai--llms).
 
 Want a structured course alongside? [The Odin Project](https://www.theodinproject.com/) or [Full Stack Open](https://fullstackopen.com/en/) are free.
 
@@ -401,6 +404,27 @@ flowchart TB
 
 <p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
 
+## Mobile development
+
+| Term | Plain English | Learn more |
+|---|---|---|
+| Native vs cross-platform vs hybrid | Native: separate code per platform (Swift, Kotlin) for the best performance; cross-platform: one codebase compiled to both (Flutter, React Native); hybrid: a website wrapped in a thin native shell. | [Wikipedia](https://en.wikipedia.org/wiki/Cross-platform_software) |
+| iOS SDK / Android SDK | The official toolkit (compiler, libraries, emulator) Apple or Google give you to build apps for their platform. | [Android docs](https://developer.android.com/guide) |
+| App store review | A human plus automated check of your app before it goes live; can take hours to days, and can reject you. | [Apple docs](https://developer.apple.com/app-store/review/guidelines/) |
+| Push notifications | Messages sent straight to a user's device even when your app isn't open, via Apple's or Google's push service. | [Firebase docs](https://firebase.google.com/docs/cloud-messaging) |
+| Deep links / universal links | A link that opens directly to a specific screen inside your app, instead of a website. | [Android docs](https://developer.android.com/training/app-links) |
+| Offline-first | Design the app to read and write local data first, syncing with the server whenever a connection shows up. | [Android docs](https://developer.android.com/topic/architecture/data-layer/offline-first) |
+| App bundle / APK / IPA | The installable package format: Android's AAB and APK, iOS's IPA. | [Android docs](https://developer.android.com/guide/app-bundle) |
+| OTA updates | Pushing app or config changes to installed apps without going back through app store review. | [Expo docs](https://docs.expo.dev/eas-update/introduction/) |
+| Permissions | Explicit consent your app must ask a user for before touching the camera, location, contacts, and so on. | [Android docs](https://developer.android.com/guide/topics/permissions/overview) |
+| WebView | A mini browser embedded inside a native app, used to show web content in place. | [Apple docs](https://developer.apple.com/documentation/webkit/wkwebview) |
+| Responsive vs adaptive (mobile) | Responsive: one flexible layout that reflows to fit any screen; adaptive: several fixed layouts, swapped in per screen size. | [Material Design](https://m3.material.io/foundations/adaptive-design/overview) |
+| Mobile app signing | Cryptographically signing your app package so the OS and store can trust it wasn't tampered with. | [Android docs](https://developer.android.com/studio/publish/app-signing) |
+| Crash reporting | Automatic capture of crash details from users' devices, so you find bugs you'd never hit yourself. | [Firebase docs](https://firebase.google.com/docs/crashlytics) |
+| React Native bridge / new architecture (JSI) | How RN's JavaScript talks to native code: the old bridge batches messages as JSON; the new architecture (JSI) lets JS call native functions directly. | [React Native docs](https://reactnative.dev/architecture/overview) |
+
+<p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
+
 ## Backend & APIs
 
 > Tools for this: [web-dev-resources → Backend frameworks](https://github.com/alwintwk/web-dev-resources#backend-frameworks)
@@ -476,6 +500,29 @@ flowchart TB
 
 <p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
 
+## System design interview
+
+> Mention the key idea, then talk trade-offs — interviewers care more about *why* than the final diagram.
+
+| Term | Plain English | Learn more |
+|---|---|---|
+| Design a URL shortener | Hash or count up a short code, store code→URL in a fast key-value store, and redirect on lookup. | [System Design Primer](https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/pastebin/README.md) |
+| Design a rate limiter | Keep a rolling counter of requests per user or IP in a fast store like Redis, and reject once it crosses the limit. | [Cloudflare](https://www.cloudflare.com/learning/bots/what-is-rate-limiting/) |
+| Design a news feed | Fan out writes to each follower's feed at post time (fast reads, costly for celebrities) or merge feeds at read time (cheap writes, slower reads). | [System Design Primer](https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/twitter/README.md) |
+| Design a chat app | Real-time delivery over a WebSocket, messages stored per conversation, fanned out to whichever recipients are online. | [MDN](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API) |
+| Consistent hashing | Spread keys across servers so adding or removing one server only reshuffles a small slice of keys, not everything. | [paperplanes.de](http://www.paperplanes.de/2011/12/9/the-magic-of-consistent-hashing.html) |
+| Back-of-the-envelope estimation | Rough math on QPS, storage, and bandwidth done in minutes, to sanity-check a design before drilling into detail. | [System Design Primer](https://github.com/donnemartin/system-design-primer#back-of-the-envelope-calculations) |
+| Read-heavy vs write-heavy | Read-heavy systems lean on caching and read replicas; write-heavy systems lean on sharding and async writes. | [System Design Primer](https://github.com/donnemartin/system-design-primer#database) |
+| Caching layer | A fast in-memory store sitting in front of the database so repeat reads never hit it. | [System Design Primer](https://github.com/donnemartin/system-design-primer#cache) |
+| Database replication vs sharding choice | Replication copies the whole dataset for read scaling and durability; sharding splits the data across machines for write and storage scaling. | [System Design Primer](https://github.com/donnemartin/system-design-primer#sharding) |
+| Idempotent APIs in payments | Attach a client-generated key to a payment request so retrying a timed-out call can't charge the card twice. | [Stripe docs](https://docs.stripe.com/api/idempotent_requests) |
+| Design a notification system (fan-out) | One event triggers a queue that fans out to push, email, and SMS workers, so one slow channel can't block the others. | [AWS docs](https://docs.aws.amazon.com/sns/latest/dg/sns-common-scenarios.html) |
+| Design a web crawler | Politely walk links breadth-first, dedupe by URL hash, and respect `robots.txt` and per-site rate limits. | [System Design Primer](https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/web_crawler/README.md) |
+| Load shedding / graceful degradation | Under heavy load, deliberately drop or simplify some requests so the whole system doesn't fall over. | [AWS builders' library](https://aws.amazon.com/builders-library/using-load-shedding-to-avoid-overload/) |
+| Distributed ID generation (Snowflake IDs) | Generate unique, roughly time-sortable IDs across many machines without a central counter. | [Wikipedia](https://en.wikipedia.org/wiki/Snowflake_ID) |
+
+<p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
+
 ## Design principles
 
 | Term | Plain English | Learn more |
@@ -513,6 +560,33 @@ flowchart TB
 | Feature flags | On/off switches in code to release features without redeploying. | [Martin Fowler](https://martinfowler.com/articles/feature-toggles.html) |
 | Rollback | Going back to the last working version when a release breaks. | [Wikipedia](https://en.wikipedia.org/wiki/Rollback_(data_management)) |
 | Artifact | The built output of a pipeline (a binary, image, or bundle) that gets deployed. | [Wikipedia](https://en.wikipedia.org/wiki/Artifact_(software_development)) |
+
+<p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
+
+## Cloud services
+
+> Provider docs go deep fast — these rows map the shape of each building block, not one vendor's exact feature list.
+
+| Term | Plain English | Learn more |
+|---|---|---|
+| Virtual machines (AWS EC2, Google Compute Engine, Azure VMs) | A rented computer in the cloud you fully control, like leasing a bare desktop instead of buying one. | [AWS docs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html) |
+| Object storage (AWS S3, Google Cloud Storage, Azure Blob) | Store any file as a named object with a URL; no folder tree, and it scales to any size. | [AWS docs](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html) |
+| Managed SQL database (AWS RDS, Google Cloud SQL, Azure SQL Database) | A regular relational database where the provider handles patching, backups, and scaling. | [AWS docs](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html) |
+| Managed NoSQL database (AWS DynamoDB, Google Firestore, Azure Cosmos DB) | A flexible, schema-less database built to spread across many machines automatically. | [AWS docs](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html) |
+| Serverless functions (AWS Lambda, Google Cloud Functions, Azure Functions) | Upload just your function; the provider runs it on demand and bills only for the time it runs. | [AWS docs](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html) |
+| Containers-as-a-service (AWS Fargate, Google Cloud Run, Azure Container Instances) | Run a container without provisioning or managing the servers underneath it. | [AWS docs](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/what-is-fargate.html) |
+| Managed Kubernetes (AWS EKS, Google Kubernetes Engine, Azure Kubernetes Service) | The provider runs Kubernetes's control plane for you; you only manage what runs on top. | [AWS docs](https://docs.aws.amazon.com/eks/latest/userguide/what-is-eks.html) |
+| CDN (AWS CloudFront, Google Cloud CDN, Azure Front Door) | The provider's own edge-server network that caches your content close to users worldwide. | [AWS docs](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html) |
+| DNS (AWS Route 53, Google Cloud DNS, Azure DNS) | The provider's managed domain-name lookup service, so your domain reliably points at the right IP. | [AWS docs](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/Welcome.html) |
+| Load balancer (AWS Elastic Load Balancing, Google Cloud Load Balancing, Azure Load Balancer) | A managed layer that spreads incoming requests across many servers and stops sending traffic to unhealthy ones. | [AWS docs](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/what-is-load-balancing.html) |
+| Message queue (AWS SQS, Google Cloud Tasks, Azure Queue Storage) | A managed waiting line that holds work until a server is free to pick it up. | [AWS docs](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html) |
+| Pub/sub (AWS SNS, Google Cloud Pub/Sub, Azure Service Bus) | A managed broadcast system: one publisher, many subscribers, nothing to poll. | [AWS docs](https://docs.aws.amazon.com/sns/latest/dg/welcome.html) |
+| IAM (AWS IAM, Google Cloud IAM, Azure RBAC) | The provider's system for deciding exactly which users and services may touch which resources. | [AWS docs](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html) |
+| Secrets manager (AWS Secrets Manager, Google Secret Manager, Azure Key Vault) | A locked vault for passwords and API keys, so they never sit in your code or config files. | [AWS docs](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html) |
+| VPC (AWS VPC, Google VPC, Azure Virtual Network) | Your own private, walled-off slice of the provider's network that you control. | [AWS docs](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html) |
+| Monitoring & logs (AWS CloudWatch, Google Cloud Monitoring, Azure Monitor) | The provider's built-in dashboard for watching metrics and reading logs from everything you run. | [AWS docs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) |
+| Regions & availability zones | A region is a geographic area (like `us-east-1`); zones are separate data centers inside it, so one outage doesn't take everything down. | [AWS docs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html) |
+| Autoscaling (AWS Auto Scaling, Google Cloud autoscaler, Azure Autoscale) | Automatically add or remove servers as traffic rises and falls, so you're not paying for idle capacity. | [AWS docs](https://docs.aws.amazon.com/autoscaling/ec2/userguide/what-is-amazon-ec2-auto-scaling.html) |
 
 <p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
 

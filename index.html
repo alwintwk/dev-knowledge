@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<title>Loading…</title>
+<style>
+  :root{
+    --bg:#ffffff; --fg:#1a1d21; --muted:#5b6470; --border:#e1e4e8;
+    --accent:#0969da; --code-bg:#f6f8fa; --header-bg:#ffffff;
+    --row-hover:#f6f8fa; --focus:#0969da;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0d1117; --fg:#e6edf3; --muted:#9198a1; --border:#30363d;
+      --accent:#4493f8; --code-bg:#161b22; --header-bg:#0d1117;
+      --row-hover:#161b22; --focus:#4493f8;
+    }
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth; max-width:100%;}
+  body{
+    margin:0; background:var(--bg); color:var(--fg); max-width:100%; overflow-x:hidden;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+    line-height:1.55;
+  }
+  a{color:var(--accent);}
+  :focus-visible{outline:2px solid var(--focus); outline-offset:2px;}
+
+  header{
+    position:sticky; top:0; z-index:20; background:var(--header-bg);
+    border-bottom:1px solid var(--border);
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+    padding:10px 16px;
+  }
+  .brand{font-size:1rem; font-weight:600; margin:0; margin-right:auto; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  #navToggle{
+    display:none; background:none; border:1px solid var(--border); color:var(--fg);
+    border-radius:6px; padding:6px 10px; font-size:0.9rem; cursor:pointer;
+  }
+  .search-wrap{display:flex; align-items:center; gap:6px; position:relative;}
+  #searchBox{
+    background:var(--bg); color:var(--fg); border:1px solid var(--border); border-radius:6px;
+    padding:6px 28px 6px 10px; font-size:0.9rem; width:200px; max-width:40vw;
+  }
+  #clearSearch{
+    position:absolute; right:6px; top:50%; transform:translateY(-50%);
+    background:none; border:none; color:var(--muted); cursor:pointer; font-size:1rem; line-height:1;
+    padding:2px 4px;
+  }
+  #searchCount{font-size:0.82rem; color:var(--muted); white-space:nowrap;}
+  #ghLink, #flashLink{font-size:0.9rem; white-space:nowrap; text-decoration:none;}
+  #ghLink[hidden], #flashLink[hidden]{display:none;}
+
+  .layout{display:grid; grid-template-columns:220px minmax(0,1fr); gap:0; align-items:start;}
+  nav#sectionNav{
+    position:sticky; top:53px; align-self:start; max-height:calc(100vh - 53px); overflow-y:auto;
+    padding:16px 12px; border-right:1px solid var(--border);
+    display:flex; flex-direction:column; gap:2px;
+  }
+  nav#sectionNav a{
+    color:var(--fg); text-decoration:none; font-size:0.88rem; padding:5px 8px; border-radius:6px;
+  }
+  nav#sectionNav a:hover{background:var(--row-hover);}
+
+  main{min-width:0; padding:24px 28px 60px; max-width:900px;}
+
+  h1,h2,h3,h4,h5,h6{scroll-margin-top:64px;}
+  main h1{font-size:2.25rem; margin:0 0 0.3em; line-height:1.25;}
+  main h2{font-size:1.75rem; border-bottom:1px solid var(--border); padding-bottom:6px; margin-top:2.2em;}
+  main h3{font-size:1.25rem; margin-top:1.6em;}
+  main > *:first-child{margin-top:0;}
+  main p{color:var(--fg);}
+  main blockquote{
+    margin:0.8em 0; padding:0.6em 1em; border:1px solid var(--border); border-radius:6px;
+    background:var(--code-bg); color:var(--muted);
+  }
+  main blockquote p{margin:0.3em 0;}
+  main code{background:var(--code-bg); padding:0.15em 0.4em; border-radius:4px; font-size:0.9em;}
+  main pre{background:var(--code-bg); padding:12px; border-radius:6px; overflow-x:auto;}
+  main pre code{background:none; padding:0;}
+  main ul, main ol{padding-left:1.4em;}
+
+  .table-wrap{overflow-x:auto; margin:1em 0; border:1px solid var(--border); border-radius:6px;}
+  table{border-collapse:collapse; width:100%; font-size:0.92rem;}
+  th,td{text-align:left; padding:8px 12px; border-bottom:1px solid var(--border); vertical-align:top;}
+  thead th{background:var(--code-bg); white-space:nowrap;}
+  tbody tr:hover{background:var(--row-hover);}
+
+  .mermaid{margin:1em 0; text-align:center; overflow-x:auto;}
+  .mermaid svg{max-width:100%; height:auto;}
+
+  .status{color:var(--muted); padding:20px 0;}
+  .status a{color:var(--accent);}
+
+  @media (max-width:860px){
+    .layout{grid-template-columns:1fr;}
+    #navToggle{display:inline-block;}
+    nav#sectionNav{
+      position:static; max-height:0; overflow:hidden; padding:0 12px; border-right:none;
+      border-bottom:1px solid var(--border);
+    }
+    nav#sectionNav.open{max-height:60vh; overflow-y:auto; padding:10px 12px;}
+    main{padding:18px 16px 48px;}
+    #searchBox{width:140px;}
+  }
+  input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; display: none; }
+</style>
+</head>
+<body>
+<header>
+  <button id="navToggle" aria-expanded="false" aria-controls="sectionNav">Sections ▾</button>
+  <span id="siteTitle" class="brand">Loading…</span>
+  <div class="search-wrap">
+    <input type="search" id="searchBox" placeholder="Search… ( / )" aria-label="Search">
+    <button id="clearSearch" aria-label="Clear search" hidden>×</button>
+  </div>
+  <span id="searchCount" aria-live="polite"></span>
+  <a id="flashLink" href="flashcards.html" hidden>Flashcards</a>
+  <a id="ghLink" href="#" target="_blank" rel="noopener" hidden>View on GitHub</a>
+</header>
+
+<div class="layout">
+  <nav id="sectionNav" aria-label="Sections"></nav>
+  <main id="content"><p class="status">Loading README…</p></main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+(function(){
+  "use strict";
+  var contentEl = document.getElementById('content');
+  var navEl = document.getElementById('sectionNav');
+  var titleEl = document.getElementById('siteTitle');
+  var searchBox = document.getElementById('searchBox');
+  var clearBtn = document.getElementById('clearSearch');
+  var searchCount = document.getElementById('searchCount');
+  var ghLink = document.getElementById('ghLink');
+  var flashLink = document.getElementById('flashLink');
+  var navToggle = document.getElementById('navToggle');
+  var sections = [];
+
+  function currentRepoInfo(){
+    if (location.hostname.endsWith('.github.io')){
+      var owner = location.hostname.split('.')[0];
+      var seg = location.pathname.split('/').filter(Boolean)[0];
+      if (owner && seg) return { owner: owner, repo: seg };
+    }
+    return null;
+  }
+
+  // ponytail: two repos only, no config needed for the cross-repo owner name
+  var repoInfo = currentRepoInfo();
+  if (repoInfo){
+    ghLink.href = 'https://github.com/' + repoInfo.owner + '/' + repoInfo.repo;
+    ghLink.hidden = false;
+  }
+
+  fetch('flashcards.html', { method: 'HEAD' }).then(function(r){
+    if (r.ok) flashLink.hidden = false;
+  }).catch(function(){ /* no flashcards page here */ });
+
+  function slugify(text){
+    return text.toLowerCase().replace(/[^\w\- ]+/g, '').replace(/ /g, '-');
+  }
+
+  function assignHeadingIds(root){
+    var seen = Object.create(null);
+    var heads = root.querySelectorAll('h1,h2,h3,h4,h5,h6');
+    heads.forEach(function(h){
+      var base = slugify(h.textContent);
+      var n = seen[base] || 0;
+      seen[base] = n + 1;
+      h.id = n === 0 ? base : (base + '-' + n);
+    });
+  }
+
+  function removeBackToTop(root){
+    root.querySelectorAll('p').forEach(function(p){
+      if (/back to top/i.test(p.textContent)) p.remove();
+    });
+  }
+
+  function rewriteLinks(root){
+    root.querySelectorAll('a[href]').forEach(function(a){
+      var href = a.getAttribute('href');
+      var m = href.match(/^https:\/\/github\.com\/alwintwk\/([^\/#?]+)\/?(#.*)?$/);
+      if (m){
+        if (repoInfo && m[1] === repoInfo.repo){
+          a.href = m[2] || '#';
+        } else {
+          a.href = 'https://alwintwk.github.io/' + m[1] + '/' + (m[2] || '');
+          a.target = '_blank';
+          a.rel = 'noopener';
+        }
+        return;
+      }
+      if (href.charAt(0) === '#') return; // same-doc anchor, native scroll handles it
+      if (/^https?:\/\//.test(href)){
+        a.target = '_blank';
+        a.rel = 'noopener';
+      }
+    });
+  }
+
+  function wrapTables(root){
+    root.querySelectorAll('table').forEach(function(table){
+      var wrap = document.createElement('div');
+      wrap.className = 'table-wrap';
+      table.parentNode.insertBefore(wrap, table);
+      wrap.appendChild(table);
+    });
+  }
+
+  function convertMermaid(root){
+    var blocks = root.querySelectorAll('code.language-mermaid');
+    blocks.forEach(function(code){
+      var div = document.createElement('div');
+      div.className = 'mermaid';
+      div.textContent = code.textContent;
+      var pre = code.closest('pre') || code;
+      pre.replaceWith(div);
+    });
+  }
+
+  function buildSections(root){
+    var list = [];
+    Array.prototype.forEach.call(root.children, function(el){
+      if (el.tagName === 'H2'){
+        list.push({ heading: el, els: [el] });
+      } else if (list.length){
+        list[list.length - 1].els.push(el);
+      }
+    });
+    // ponytail: the README's own ToC duplicates the site nav
+    return list.filter(function(sec){
+      if (sec.heading.id !== 'table-of-contents') return true;
+      sec.els.forEach(function(el){ el.remove(); });
+      return false;
+    });
+  }
+
+  function buildNav(){
+    sections.forEach(function(sec){
+      var a = document.createElement('a');
+      a.href = '#' + sec.heading.id;
+      a.textContent = sec.heading.textContent;
+      navEl.appendChild(a);
+      a.addEventListener('click', function(){
+        if (navEl.classList.contains('open')){
+          navEl.classList.remove('open');
+          navToggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+    });
+  }
+
+  function runSearch(raw){
+    var q = raw.trim().toLowerCase();
+    var active = q.length > 0;
+    clearBtn.hidden = !active;
+    var total = 0;
+    sections.forEach(function(sec){
+      var wrap = sec.els.filter(function(el){ return el.tagName === 'DIV' && el.classList.contains('table-wrap'); })[0];
+      if (wrap){
+        var rows = wrap.querySelectorAll('tbody tr');
+        var visible = 0;
+        rows.forEach(function(row){
+          var match = !active || row.textContent.toLowerCase().indexOf(q) !== -1;
+          row.style.display = match ? '' : 'none';
+          if (match) visible++;
+        });
+        total += visible;
+        var show = !active || visible > 0;
+        sec.els.forEach(function(el){ el.style.display = show ? '' : 'none'; });
+      } else {
+        sec.els.forEach(function(el){ el.style.display = active ? 'none' : ''; });
+      }
+    });
+    searchCount.textContent = active ? (total + ' result' + (total === 1 ? '' : 's')) : '';
+  }
+
+  searchBox.addEventListener('input', function(){ runSearch(searchBox.value); });
+  clearBtn.addEventListener('click', function(){ searchBox.value = ''; runSearch(''); searchBox.focus(); });
+  document.addEventListener('keydown', function(e){
+    if (e.key === '/'){
+      var t = document.activeElement;
+      var typing = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA');
+      if (!typing){
+        e.preventDefault();
+        searchBox.focus();
+      }
+    } else if (e.key === 'Escape'){
+      if (searchBox.value){ searchBox.value = ''; runSearch(''); }
+    }
+  });
+  navToggle.addEventListener('click', function(){
+    var open = navEl.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', String(open));
+  });
+
+  function errorState(){
+    var msg = 'Could not load README.md.';
+    if (repoInfo){
+      msg += ' See it on <a href="https://github.com/' + repoInfo.owner + '/' + repoInfo.repo +
+        '#readme" target="_blank" rel="noopener">GitHub</a> instead.';
+    } else {
+      msg += ' Open this repository’s README.md on GitHub instead.';
+    }
+    contentEl.innerHTML = '<p class="status">' + msg + '</p>';
+  }
+
+  fetch('README.md').then(function(res){
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    return res.text();
+  }).then(function(md){
+    var html = (marked.parse ? marked.parse(md) : marked(md));
+    contentEl.innerHTML = html;
+
+    var h1 = contentEl.querySelector('h1');
+    var title = h1 ? h1.textContent.trim() : (repoInfo ? repoInfo.repo : 'README');
+    document.title = title;
+    titleEl.textContent = title;
+
+    assignHeadingIds(contentEl);
+    removeBackToTop(contentEl);
+    rewriteLinks(contentEl);
+    wrapTables(contentEl);
+    convertMermaid(contentEl);
+
+    sections = buildSections(contentEl);
+    buildNav();
+
+    if (typeof mermaid !== 'undefined'){
+      var dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'default', securityLevel: 'loose' });
+      mermaid.run({ querySelector: '.mermaid' }).catch(function(){ /* diagram render best-effort */ });
+    }
+
+    if (location.hash){
+      var target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+      if (target) setTimeout(function(){ target.scrollIntoView(); }, 0);
+    }
+  }).catch(function(){
+    errorState();
+  });
+})();
+</script>
+</body>
+</html>

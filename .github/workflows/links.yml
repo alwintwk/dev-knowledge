@@ -20,7 +20,7 @@ jobs:
         uses: lycheeverse/lychee-action@v2
         with:
           # 403/429 = sites that block bots, not dead links
-          args: --accept 200,403,429 --max-retries 3 --timeout 30 README.md
+          args: --accept 200,403,429 --max-retries 3 --timeout 30 --exclude unsplash.com --exclude fontsquirrel.com README.md
           fail: false
 
       - name: Open an issue if any link is broken

@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dev knowledge flashcards</title>
-<meta name="description" content="Study the Dev knowledge glossary with flashcards.">
+<title>Dev knowledge quiz</title>
+<meta name="description" content="Quiz yourself on the Dev knowledge glossary: multiple choice or flip cards.">
 <style>
   :root {
     --bg: #f4f5f7;
@@ -221,6 +221,43 @@
   .btn-knew { background: var(--knew-bg); color: var(--knew); border-color: var(--knew); }
   .btn-missed { background: var(--missed-bg); color: var(--missed); border-color: var(--missed); }
 
+  .quiz {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+  }
+  .quiz-kicker { font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .quiz-q { font-size: 1.25rem; line-height: 1.45; margin: 10px 0 20px; }
+  .quiz-q code, .quiz-opt code, .quiz-feedback code {
+    background: var(--chip-bg); padding: 1px 5px; border-radius: 4px; font-size: 0.9em;
+  }
+  .quiz-opts { display: grid; gap: 10px; }
+  .quiz-opt {
+    display: flex; gap: 12px; align-items: flex-start;
+    text-align: left; width: 100%; min-height: 48px; font-size: 1rem; line-height: 1.4;
+  }
+  .quiz-opt .key {
+    flex: none; width: 1.6em; height: 1.6em; border-radius: 6px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--chip-bg); color: var(--muted); font-size: 0.85rem; font-weight: 600;
+  }
+  .quiz-opt:disabled { cursor: default; opacity: 0.6; }
+  .quiz-opt.correct { background: var(--knew-bg); color: var(--knew); border-color: var(--knew); opacity: 1; }
+  .quiz-opt.wrong { background: var(--missed-bg); color: var(--missed); border-color: var(--missed); opacity: 1; }
+  .quiz-feedback { margin-top: 18px; line-height: 1.5; }
+  .quiz-feedback .verdict { font-weight: 700; }
+  .quiz-feedback .verdict.ok { color: var(--knew); }
+  .quiz-feedback .verdict.no { color: var(--missed); }
+  .quiz-next {
+    margin-top: 16px; width: 100%; min-height: 48px; font-weight: 600;
+    background: var(--accent); color: var(--accent-contrast); border-color: var(--accent);
+  }
+  @media (max-width: 480px) {
+    .quiz { padding: 16px; }
+    .quiz-q { font-size: 1.1rem; }
+  }
+
   .summary {
     border: 1px solid var(--border);
     border-radius: 18px;
@@ -256,7 +293,7 @@
 <body>
 <div class="wrap">
   <header class="top">
-    <h1>Dev knowledge flashcards</h1>
+    <h1>Dev knowledge quiz</h1>
     <nav>
       <a href="./">Glossary site</a>
       <a href="https://github.com/alwintwk/dev-knowledge" target="_blank" rel="noopener">GitHub repo</a>
@@ -272,6 +309,7 @@
         <div class="chips" id="section-chips" role="group" aria-label="Filter by section"></div>
       </details>
       <div class="toolbar">
+        <button id="btn-mode" type="button">Switch to flip cards</button>
         <button id="btn-shuffle" type="button">Shuffle</button>
         <button id="btn-reverse" type="button" aria-pressed="false">Reverse mode</button>
         <button id="btn-review-missed" type="button" aria-pressed="false">Review missed</button>
@@ -287,7 +325,14 @@
     <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
 
     <div id="deck-area">
-      <div class="stage">
+      <div class="quiz" id="quiz">
+        <div class="quiz-kicker" id="quiz-kicker"></div>
+        <div class="quiz-q" id="quiz-q"></div>
+        <div class="quiz-opts" id="quiz-opts" role="group" aria-label="Answer choices"></div>
+        <div class="quiz-feedback hidden" id="quiz-feedback" aria-live="polite"></div>
+        <button class="quiz-next hidden" id="quiz-next" type="button">Next question (Enter)</button>
+      </div>
+      <div class="stage" id="stage">
         <div class="card" id="card" tabindex="0" role="button" aria-label="Flashcard, press Space or Enter to flip">
           <div class="card-face front">
             <div class="card-kicker" id="front-kicker">Term</div>
@@ -434,6 +479,10 @@
   var stats = loadStats();
   var selectedSections = new Set(); // empty = all
   var reverseMode = false;
+  var quizMode = true;
+  var quizFor = null;   // which card+position the current options belong to
+  var quizOpts = [];
+  var quizPicked = -1;
   var reviewMissed = false;
   var deck = [];
   var index = 0;
@@ -467,8 +516,86 @@
     btnReviewMissed: document.getElementById("btn-review-missed"),
     btnReset: document.getElementById("btn-reset"),
     btnRestart: document.getElementById("btn-restart"),
-    btnSummaryReviewMissed: document.getElementById("btn-summary-review-missed")
+    btnSummaryReviewMissed: document.getElementById("btn-summary-review-missed"),
+    btnMode: document.getElementById("btn-mode"),
+    stage: document.getElementById("stage"),
+    quiz: document.getElementById("quiz"),
+    quizKicker: document.getElementById("quiz-kicker"),
+    quizQ: document.getElementById("quiz-q"),
+    quizOptsEl: document.getElementById("quiz-opts"),
+    quizFeedback: document.getElementById("quiz-feedback"),
+    quizNext: document.getElementById("quiz-next")
   };
+
+  // ---- quiz: one right answer + 3 wrong ones, preferring the same section so they're plausible ----
+  function answerText(x) { return reverseMode ? x.back : x.front; }
+  function buildOptions(c) {
+    var same = allCards.filter(function (x) { return x.section === c.section && x !== c; });
+    var pool = shuffle((same.length >= 3 ? same : allCards.filter(function (x) { return x !== c; })).slice());
+    var picked = [];
+    var seen = [answerText(c)];
+    for (var i = 0; i < pool.length && picked.length < 3; i++) {
+      var t = answerText(pool[i]);
+      if (seen.indexOf(t) === -1) { seen.push(t); picked.push(pool[i]); }
+    }
+    return shuffle([c].concat(picked));
+  }
+
+  function renderQuiz(c) {
+    var key = c.id + "@" + index + (reverseMode ? "r" : "");
+    if (quizFor !== key) {
+      quizFor = key;
+      quizOpts = buildOptions(c);
+      quizPicked = -1;
+    }
+    el.quizKicker.textContent = c.section + (reverseMode ? " · which meaning fits?" : " · which term is this?");
+    el.quizQ.innerHTML = renderInline(reverseMode ? c.front : c.back);
+
+    el.quizOptsEl.innerHTML = "";
+    quizOpts.forEach(function (o, i) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "quiz-opt";
+      b.innerHTML = '<span class="key" aria-hidden="true">' + (i + 1) + "</span><span>" + renderInline(answerText(o)) + "</span>";
+      if (quizPicked >= 0) {
+        b.disabled = true;
+        if (o === c) b.classList.add("correct");
+        else if (i === quizPicked) b.classList.add("wrong");
+      }
+      b.addEventListener("click", function () { answer(i); });
+      el.quizOptsEl.appendChild(b);
+    });
+
+    var answered = quizPicked >= 0;
+    el.quizFeedback.classList.toggle("hidden", !answered);
+    el.quizNext.classList.toggle("hidden", !answered);
+    if (answered) {
+      var right = quizOpts[quizPicked] === c;
+      var html = '<span class="verdict ' + (right ? "ok" : "no") + '">' + (right ? "Correct!" : "Not quite.") + "</span> " +
+        "<strong>" + renderInline(c.front) + "</strong>: " + renderInline(c.back);
+      if (c.linkUrl) {
+        html += ' <a href="' + escapeHtml(c.linkUrl) + '" target="_blank" rel="noopener">' +
+          renderInline(c.linkText || "Learn more") + " ↗</a>";
+      }
+      el.quizFeedback.innerHTML = html;
+    }
+  }
+
+  function answer(i) {
+    if (quizPicked >= 0 || index >= deck.length) return;
+    quizPicked = i;
+    recordResult(quizOpts[i] === currentCard() ? "knew" : "missed");
+    render();
+    el.quizNext.focus();
+  }
+
+  function nextQuestion() {
+    if (quizPicked < 0) return;
+    index += 1;
+    render();
+    var first = el.quizOptsEl.querySelector("button");
+    if (first) first.focus();
+  }
 
   function buildChips() {
     var sections = [];
@@ -540,6 +667,7 @@
     if (!keepOrder) shuffle(filtered);
     deck = filtered;
     index = 0;
+    quizFor = null;
     showingBack = false;
     sessionKnew = 0;
     sessionMissed = 0;
@@ -576,6 +704,16 @@
     el.deckArea.classList.remove("hidden");
 
     var c = currentCard();
+    el.quiz.classList.toggle("hidden", !quizMode);
+    el.stage.classList.toggle("hidden", quizMode);
+    el.counter.textContent = (index + 1) + " / " + deck.length;
+    el.progressFill.style.transform = "scaleX(" + (index / deck.length) + ")";
+    if (quizMode) {
+      el.judgeRow.classList.add("hidden");
+      renderQuiz(c);
+      return;
+    }
+
     var frontMainHtml = renderInline(reverseMode ? c.back : c.front);
     var backKickerText = reverseMode ? "Term" : "Plain English";
     var backMainHtml = renderInline(reverseMode ? c.front : c.back);
@@ -605,6 +743,13 @@
 
   function judge(result) {
     if (deck.length === 0 || index >= deck.length || !showingBack) return;
+    recordResult(result);
+    index += 1;
+    showingBack = false;
+    render();
+  }
+
+  function recordResult(result) {
     var c = currentCard();
     var st = stats[c.id] || { seen: 0, missed: 0, last: null };
     st.seen += 1;
@@ -618,10 +763,6 @@
     }
     stats[c.id] = st;
     saveStats(stats);
-
-    index += 1;
-    showingBack = false;
-    render();
   }
 
   // ---- events ----
@@ -634,6 +775,18 @@
   });
   document.addEventListener("keydown", function (e) {
     var tag = (document.activeElement && document.activeElement.tagName) || "";
+    if (quizMode) {
+      if (el.app.classList.contains("hidden") || index >= deck.length || deck.length === 0) return;
+      if (/^[1-4]$/.test(e.key) && quizPicked < 0) {
+        e.preventDefault();
+        if (Number(e.key) <= quizOpts.length) answer(Number(e.key) - 1);
+      } else if ((e.key === "Enter" && tag !== "BUTTON") || e.key === "ArrowRight") {
+        // Enter on a focused button already fires its click
+        e.preventDefault();
+        nextQuestion();
+      }
+      return;
+    }
     if (tag === "BUTTON" && e.key !== "k" && e.key !== "K" && e.key !== "m" && e.key !== "M" &&
         e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
     if (e.key === "k" || e.key === "K" || e.key === "ArrowRight") {
@@ -646,6 +799,15 @@
   });
   el.btnKnew.addEventListener("click", function () { judge("knew"); });
   el.btnMissed.addEventListener("click", function () { judge("missed"); });
+
+  el.quizNext.addEventListener("click", nextQuestion);
+  el.btnMode.addEventListener("click", function () {
+    quizMode = !quizMode;
+    el.btnMode.textContent = quizMode ? "Switch to flip cards" : "Switch to quiz";
+    showingBack = false;
+    quizFor = null;
+    render();
+  });
 
   el.btnShuffle.addEventListener("click", function () { rebuildDeck(); });
 

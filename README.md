@@ -1,6 +1,6 @@
 <h1 align="center">Dev knowledge</h1>
 <p align="center"><i>Software engineering terms and concepts, explained in plain English, with links to learn more.</i></p>
-<p align="center">Companion to <a href="https://github.com/alwintwk/web-dev-resources">web-dev-resources</a>. Last reviewed: September 2026.<br /><a href="https://alwintwk.github.io/dev-knowledge/">Search it online</a> · <a href="https://alwintwk.github.io/dev-knowledge/flashcards.html">Study with flashcards</a></p>
+<p align="center">Companion to <a href="https://github.com/alwintwk/web-dev-resources">web-dev-resources</a>. Last reviewed: September 2026.<br /><a href="https://alwintwk.github.io/dev-knowledge/">Search it online</a> · <a href="https://alwintwk.github.io/dev-knowledge/flashcards.html">Quiz yourself</a></p>
 
 ## Table of contents
 

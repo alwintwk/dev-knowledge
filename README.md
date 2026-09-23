@@ -4,6 +4,12 @@
 
 ## Table of contents
 
+* [Start here](#start-here)
+* [Common mix-ups](#common-mix-ups)
+* [Diagrams](#diagrams)
+* [Programming concepts](#programming-concepts)
+* [Data structures & algorithms](#data-structures--algorithms)
+* [Command line & Linux](#command-line--linux)
 * [Web fundamentals](#web-fundamentals)
 * [Networking](#networking)
 * [Security](#security)
@@ -17,11 +23,244 @@
 * [Observability & reliability](#observability--reliability)
 * [Testing](#testing)
 * [Performance](#performance)
+* [Concurrency](#concurrency)
 * [Git & workflow](#git--workflow)
 * [AI & LLMs](#ai--llms)
 * [Privacy & compliance](#privacy--compliance)
 
 ---
+
+## Start here
+
+New to all this? Read the sections in this order. Each step pairs the ideas (this repo) with the tools that use them ([web-dev-resources](https://github.com/alwintwk/web-dev-resources)).
+
+1. **How the web works:** [Web fundamentals](#web-fundamentals), [Networking](#networking), and the [visit-a-URL diagram](#what-happens-when-you-visit-a-url).
+2. **Programming basics:** [Programming concepts](#programming-concepts), [Data structures & algorithms](#data-structures--algorithms), [Command line & Linux](#command-line--linux).
+3. **Frontend:** [Frontend concepts](#frontend-concepts) and the [rendering diagram](#csr-vs-ssr-vs-ssg). Tools: [UI frameworks](https://github.com/alwintwk/web-dev-resources#ui-frameworks), [CSS](https://github.com/alwintwk/web-dev-resources#css-frameworks--styling).
+4. **Backend:** [Backend & APIs](#backend--apis), [Databases](#databases). Tools: [Backend frameworks](https://github.com/alwintwk/web-dev-resources#backend-frameworks), [Databases & ORMs](https://github.com/alwintwk/web-dev-resources#databases-orms--search).
+5. **Security & login:** [Security](#security), [Auth & identity](#auth--identity), and the [OAuth](#oauth-20-login-with-pkce) and [SSO](#single-sign-on-sso) diagrams.
+6. **Shipping it:** [Git & workflow](#git--workflow), [Testing](#testing), [DevOps & cloud](#devops--cloud), [Observability](#observability--reliability), and the [CI/CD diagram](#cicd-pipeline).
+7. **Leveling up:** [Architecture](#architecture--design), [Design principles](#design-principles), [Performance](#performance), [Concurrency](#concurrency), [AI & LLMs](#ai--llms).
+
+Want a structured course alongside? [The Odin Project](https://www.theodinproject.com/) or [Full Stack Open](https://fullstackopen.com/en/) are free.
+
+Unsure about two similar-sounding terms? Check [Common mix-ups](#common-mix-ups).
+
+<p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
+
+## Common mix-ups
+
+| These two (or three) | The difference in one line |
+|---|---|
+| Authentication vs authorization | Authentication = *who are you?* Authorization = *what may you do?* |
+| OAuth vs OIDC vs SAML | OAuth grants an app access; OIDC adds "who the user is" on top of OAuth; SAML is the older XML way to do SSO. |
+| Cookie vs localStorage vs sessionStorage | Cookie is sent to the server on every request; localStorage stays in the browser forever; sessionStorage is cleared when the tab closes. |
+| Session vs JWT | Session: server keeps the login record, browser holds an ID. JWT: the browser holds the whole signed record, server stores nothing. |
+| Encoding vs encryption vs hashing | Encoding changes format and anyone can reverse it (Base64); encryption needs a key to reverse; hashing can't be reversed. |
+| 401 vs 403 | 401: "I don't know who you are, log in." 403: "I know who you are, and the answer is no." |
+| PUT vs PATCH | PUT replaces the whole thing; PATCH changes only the fields you send. |
+| CSR vs SSR vs SSG | Page is built in the browser / on the server per request / once at build time. |
+| Library vs framework | You call a library; a framework calls your code. |
+| Frontend vs backend vs full-stack | What runs in the browser / what runs on the server / both. |
+| Compiler vs interpreter | Compiler translates the whole program before running; interpreter translates as it runs. |
+| Git vs GitHub | Git is the version-control tool on your machine; GitHub is a website that hosts Git repos. |
+| `==` vs `===` (JavaScript) | `==` converts types before comparing (`"1" == 1` is true); `===` doesn't. Use `===`. |
+| `var` vs `let` vs `const` (JavaScript) | `var` is old and function-scoped; `let` can be reassigned; `const` can't. Default to `const`. |
+| Process vs thread | A process is a running program with its own memory; threads are workers inside one process sharing memory. |
+| Concurrency vs parallelism | Concurrency: juggling many tasks by switching. Parallelism: doing many tasks at the exact same time on multiple cores. |
+| Stack vs heap | Stack: fast, small, automatic memory for function calls. Heap: bigger memory for data that lives longer. |
+| SQL vs NoSQL | Fixed tables with relations vs flexible documents or key-value pairs. |
+| Container vs virtual machine | A container shares the host's OS kernel and starts in seconds; a VM runs a whole separate OS. |
+| Monolith vs microservices | One deployable app vs many small apps talking over the network. |
+| Latency vs throughput | How long one request takes vs how many requests you handle per second. |
+| Unit vs integration vs E2E test | One function / several parts together / the whole app like a real user. |
+| Continuous delivery vs continuous deployment | Delivery: every change is *ready* to ship with a button press. Deployment: every change ships automatically. |
+| Merge vs rebase | Merge keeps both histories and adds a join commit; rebase rewrites your commits on top for a straight line. |
+
+<p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
+
+## Diagrams
+
+### What happens when you visit a URL
+
+```mermaid
+sequenceDiagram
+    participant U as You
+    participant B as Browser
+    participant D as DNS
+    participant S as Web server
+    U->>B: Type example.com and press Enter
+    B->>D: What is the IP address of example.com?
+    D-->>B: 93.184.215.14
+    B->>S: Open TCP connection and TLS handshake
+    B->>S: GET / (HTTP request)
+    S-->>B: 200 OK with HTML
+    B->>S: GET styles, scripts, images
+    S-->>B: CSS, JS, images
+    B-->>U: Page painted on screen
+```
+
+### OAuth 2.0 login with PKCE
+
+"Sign in with Google" on a web app. The app never sees your Google password.
+
+```mermaid
+sequenceDiagram
+    participant U as You
+    participant A as The app
+    participant G as Google (authorization server)
+    participant API as Google API
+    U->>A: Click Sign in with Google
+    A->>A: Create secret code_verifier and its hash code_challenge
+    A->>G: Redirect you with client_id, scopes, code_challenge
+    U->>G: Log in and approve the requested scopes
+    G-->>A: Redirect back with a one-time authorization code
+    A->>G: Exchange code plus code_verifier
+    G->>G: Check the hash matches the challenge
+    G-->>A: Access token (plus ID token with OIDC)
+    A->>API: Call API with the access token
+    API-->>A: Your profile data
+```
+
+### Single sign-on (SSO)
+
+Log in once at the identity provider, then other apps let you straight in.
+
+```mermaid
+sequenceDiagram
+    participant U as You
+    participant A as App A
+    participant B as App B
+    participant I as Identity provider (IdP)
+    U->>A: Open App A
+    A->>I: Not logged in, send to IdP
+    U->>I: Enter password and MFA once
+    I-->>A: Signed assertion that you are you
+    A-->>U: Logged in to App A
+    U->>B: Later, open App B
+    B->>I: Not logged in, send to IdP
+    I->>I: Already has a session for you
+    I-->>B: Signed assertion, no password asked
+    B-->>U: Logged in to App B
+```
+
+### CSR vs SSR vs SSG
+
+```mermaid
+flowchart LR
+    subgraph CSR [Client-side rendering]
+        C1[Browser gets empty HTML] --> C2[Downloads JavaScript] --> C3[JS fetches data and builds page]
+    end
+    subgraph SSR [Server-side rendering]
+        S1[Request arrives] --> S2[Server fetches data and builds HTML] --> S3[Browser shows page, JS hydrates it]
+    end
+    subgraph SSG [Static site generation]
+        G1[At build time, all pages built once] --> G2[Files put on a CDN] --> G3[Every visitor gets the same ready file]
+    end
+```
+
+### CI/CD pipeline
+
+```mermaid
+flowchart LR
+    A[Push code to a branch] --> B[Open pull request]
+    B --> C[CI: install, lint, test, build]
+    C -->|fails| A
+    C -->|passes| D[Code review]
+    D --> E[Merge to main]
+    E --> F[Deploy to staging]
+    F --> G{Checks OK?}
+    G -->|no| H[Roll back and fix]
+    G -->|yes| I[Deploy to production]
+```
+
+### Test pyramid
+
+```mermaid
+flowchart TB
+    E2E[Few E2E tests: slow, realistic]
+    INT[Some integration tests]
+    UNIT[Many unit tests: fast, focused]
+    E2E --- INT --- UNIT
+```
+
+<p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
+
+## Programming concepts
+
+| Term | Plain English | Learn more |
+|---|---|---|
+| Variable | A named box that holds a value. | [MDN](https://developer.mozilla.org/en-US/docs/Glossary/Variable) |
+| Function | A reusable recipe: give it inputs, it gives back an output. | [MDN](https://developer.mozilla.org/en-US/docs/Glossary/Function) |
+| Scope | Where in the code a variable can be seen and used. | [MDN](https://developer.mozilla.org/en-US/docs/Glossary/Scope) |
+| Closure | A function that remembers the variables around where it was created. | [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures) |
+| Callback | A function you hand to another function to call later. | [MDN](https://developer.mozilla.org/en-US/docs/Glossary/Callback_function) |
+| Promise | A placeholder for a value that will arrive later (or fail). | [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises) |
+| async / await | Write waiting-for-results code that reads top to bottom like normal code. | [MDN](https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Async_JS/Promises) |
+| Recursion | A function that solves a problem by calling itself on a smaller piece. | [MDN](https://developer.mozilla.org/en-US/docs/Glossary/Recursion) |
+| Static vs dynamic typing | Types checked before running (TypeScript, Java) vs while running (JavaScript, Python). | [Wikipedia](https://en.wikipedia.org/wiki/Type_system) |
+| Generics | Code that works for any type while keeping type safety, like `List<T>`. | [TypeScript docs](https://www.typescriptlang.org/docs/handbook/2/generics.html) |
+| Immutability | Once created, a value never changes; you make a new one instead. | [MDN](https://developer.mozilla.org/en-US/docs/Glossary/Immutable) |
+| Pure function | Same input always gives the same output, and nothing outside is changed. | [Wikipedia](https://en.wikipedia.org/wiki/Pure_function) |
+| Higher-order function | A function that takes or returns other functions, like `map` or `filter`. | [Wikipedia](https://en.wikipedia.org/wiki/Higher-order_function) |
+| Object-oriented programming (OOP) | Organize code as objects that bundle data with the functions that act on it. | [MDN](https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Advanced_JavaScript_objects/Object-oriented_programming) |
+| Functional programming | Build programs from pure functions and immutable data. | [Wikipedia](https://en.wikipedia.org/wiki/Functional_programming) |
+| Interface | A contract listing what something must provide, without saying how. | [TypeScript docs](https://www.typescriptlang.org/docs/handbook/2/objects.html) |
+| Exception / error handling | Signaling that something went wrong and catching it instead of crashing. | [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch) |
+| Null / undefined | "No value here." A common source of crashes when code assumes a value exists. | [MDN](https://developer.mozilla.org/en-US/docs/Glossary/Null) |
+| Dependency injection | Hand a piece of code the things it needs instead of letting it create them. Easier to test. | [Martin Fowler](https://martinfowler.com/articles/injection.html) |
+| Garbage collection | The runtime automatically frees memory you're no longer using. | [MDN](https://developer.mozilla.org/en-US/docs/Glossary/Garbage_collection) |
+
+<p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
+
+## Data structures & algorithms
+
+> See them animated at [VisuAlgo](https://visualgo.net/en). How fast they are: [Big O](#performance).
+
+| Term | Plain English | Learn more |
+|---|---|---|
+| Array | A numbered row of items; instant access by position. | [Wikipedia](https://en.wikipedia.org/wiki/Array_(data_structure)) |
+| Linked list | Items that each point to the next, like a treasure hunt. Easy inserts, slow lookups. | [Wikipedia](https://en.wikipedia.org/wiki/Linked_list) |
+| Hash map | Look up a value by key almost instantly (`Map`, `dict`, object). | [Wikipedia](https://en.wikipedia.org/wiki/Hash_table) |
+| Set | A collection with no duplicates, fast "is it in here?" checks. | [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set) |
+| Stack | Last in, first out, like a stack of plates (undo history). | [Wikipedia](https://en.wikipedia.org/wiki/Stack_(abstract_data_type)) |
+| Queue | First in, first out, like a line at a shop. | [Wikipedia](https://en.wikipedia.org/wiki/Queue_(abstract_data_type)) |
+| Tree | Items arranged as parents and children, like folders. The DOM is a tree. | [Wikipedia](https://en.wikipedia.org/wiki/Tree_(abstract_data_type)) |
+| Binary search tree | A tree kept sorted so you can find things by going left or right. | [Wikipedia](https://en.wikipedia.org/wiki/Binary_search_tree) |
+| Heap / priority queue | Always gives you the smallest (or largest) item first. | [Wikipedia](https://en.wikipedia.org/wiki/Heap_(data_structure)) |
+| Graph | Points connected by lines: maps, social networks, dependencies. | [Wikipedia](https://en.wikipedia.org/wiki/Graph_(abstract_data_type)) |
+| Trie | A tree of letters, great for autocomplete. | [Wikipedia](https://en.wikipedia.org/wiki/Trie) |
+| Binary search | Find an item in a sorted list by halving the search area each step. | [Wikipedia](https://en.wikipedia.org/wiki/Binary_search) |
+| Sorting algorithms | Ways to put items in order (merge sort, quicksort). Built-in `sort` is usually enough. | [Wikipedia](https://en.wikipedia.org/wiki/Sorting_algorithm) |
+| BFS / DFS | Explore a graph level by level / go as deep as possible first. | [Wikipedia](https://en.wikipedia.org/wiki/Breadth-first_search) |
+| Dynamic programming | Solve big problems by saving answers to smaller overlapping ones. | [Wikipedia](https://en.wikipedia.org/wiki/Dynamic_programming) |
+| Two pointers / sliding window | Walk through a list with two markers to avoid nested loops. | [NeetCode](https://neetcode.io/roadmap) |
+
+<p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
+
+## Command line & Linux
+
+> Free course: [The Missing Semester of Your CS Education](https://missing.csail.mit.edu/) (MIT).
+
+| Term | Plain English | Learn more |
+|---|---|---|
+| Terminal vs shell | The terminal is the window; the shell (bash, zsh) is the program that reads your commands. | [Missing Semester](https://missing.csail.mit.edu/2020/course-shell/) |
+| Working directory | The folder your commands currently run in (`pwd` shows it, `cd` changes it). | [Wikipedia](https://en.wikipedia.org/wiki/Working_directory) |
+| PATH | The list of folders the shell searches to find a command you type. | [Wikipedia](https://en.wikipedia.org/wiki/PATH_(variable)) |
+| stdin / stdout / stderr | A program's input, normal output, and error output streams. | [Wikipedia](https://en.wikipedia.org/wiki/Standard_streams) |
+| Pipe (`\|`) | Feed one command's output straight into another's input. | [Wikipedia](https://en.wikipedia.org/wiki/Pipeline_(Unix)) |
+| Exit code | A number a program returns when it ends: 0 = success, anything else = failure. | [Wikipedia](https://en.wikipedia.org/wiki/Exit_status) |
+| File permissions (`chmod`) | Who may read, write, or run a file: owner, group, everyone. | [Wikipedia](https://en.wikipedia.org/wiki/Chmod) |
+| root / `sudo` | The all-powerful admin user / run one command as that user. | [Wikipedia](https://en.wikipedia.org/wiki/Sudo) |
+| Process / PID | A running program and its ID number (`ps`, `kill`). | [Wikipedia](https://en.wikipedia.org/wiki/Process_identifier) |
+| SSH | Securely log in to and run commands on another computer. | [Wikipedia](https://en.wikipedia.org/wiki/Secure_Shell) |
+| SSH keys | A key pair that logs you in without a password; the public half goes on the server. | [GitHub docs](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/about-ssh) |
+| Package manager (apt, Homebrew) | Installs and updates software from the command line. | [Homebrew](https://brew.sh/) |
+| Symlink | A shortcut that points to another file or folder. | [Wikipedia](https://en.wikipedia.org/wiki/Symbolic_link) |
+| Dotfiles | Hidden config files like `.zshrc` and `.gitconfig` in your home folder. | [dotfiles.github.io](https://dotfiles.github.io/) |
+| grep / curl | Search text in files / make HTTP requests from the terminal. | [Missing Semester](https://missing.csail.mit.edu/2020/data-wrangling/) |
+
+<p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
 
 ## Web fundamentals
 
@@ -101,6 +340,8 @@
 
 ## Auth & identity
 
+> Tools for this: [web-dev-resources → Auth](https://github.com/alwintwk/web-dev-resources#auth)
+
 | Term | Plain English | Learn more |
 |---|---|---|
 | Authentication (AuthN) | Proving who you are (logging in). | [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication) |
@@ -127,6 +368,8 @@
 <p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
 
 ## Frontend concepts
+
+> Tools for this: [web-dev-resources → UI frameworks](https://github.com/alwintwk/web-dev-resources#ui-frameworks)
 
 | Term | Plain English | Learn more |
 |---|---|---|
@@ -160,6 +403,8 @@
 
 ## Backend & APIs
 
+> Tools for this: [web-dev-resources → Backend frameworks](https://github.com/alwintwk/web-dev-resources#backend-frameworks)
+
 | Term | Plain English | Learn more |
 |---|---|---|
 | API | A menu of requests one program offers another. | [MDN](https://developer.mozilla.org/en-US/docs/Glossary/API) |
@@ -182,6 +427,8 @@
 <p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
 
 ## Databases
+
+> Tools for this: [web-dev-resources → Databases & ORMs](https://github.com/alwintwk/web-dev-resources#databases-orms--search)
 
 | Term | Plain English | Learn more |
 |---|---|---|
@@ -248,6 +495,8 @@
 
 ## DevOps & cloud
 
+> Tools for this: [web-dev-resources → Hosting & deployment](https://github.com/alwintwk/web-dev-resources#hosting--deployment)
+
 | Term | Plain English | Learn more |
 |---|---|---|
 | DevOps | Developers and operations working as one team to ship and run software. | [Atlassian](https://www.atlassian.com/devops) |
@@ -269,6 +518,8 @@
 
 ## Observability & reliability
 
+> Tools for this: [web-dev-resources → Analytics & monitoring](https://github.com/alwintwk/web-dev-resources#analytics--monitoring)
+
 | Term | Plain English | Learn more |
 |---|---|---|
 | Observability | Being able to tell what's happening inside a running system from its outputs. | [OpenTelemetry](https://opentelemetry.io/docs/concepts/observability-primer/) |
@@ -286,6 +537,8 @@
 <p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
 
 ## Testing
+
+> Tools for this: [web-dev-resources → Testing](https://github.com/alwintwk/web-dev-resources#testing)
 
 | Term | Plain English | Learn more |
 |---|---|---|
@@ -306,6 +559,8 @@
 
 ## Performance
 
+> Tools for this: [web-dev-resources → Performance tools](https://github.com/alwintwk/web-dev-resources#performance--browser-support)
+
 | Term | Plain English | Learn more |
 |---|---|---|
 | Big O notation | How work grows as input grows: O(1) flat, O(n) linear, O(n²) explodes. | [Big-O Cheat Sheet](https://www.bigocheatsheet.com/) |
@@ -318,6 +573,23 @@
 | Profiling | Measuring where a program actually spends its time before optimizing. | [Chrome DevTools](https://developer.chrome.com/docs/devtools/performance) |
 | Memory leak | Memory that's never freed, so the app gets slower and eventually crashes. | [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Memory_management) |
 | Event loop | How JavaScript runs one thing at a time yet handles many waiting tasks. | [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Execution_model) |
+
+<p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
+
+## Concurrency
+
+| Term | Plain English | Learn more |
+|---|---|---|
+| Process vs thread | A running program with its own memory vs a worker inside it that shares that memory. | [Wikipedia](https://en.wikipedia.org/wiki/Thread_(computing)) |
+| Concurrency vs parallelism | Juggling many tasks by switching vs truly running them at the same moment. | [Go blog](https://go.dev/blog/waza-talk) |
+| Race condition | Two things touch the same data at once and the result depends on who wins. | [Wikipedia](https://en.wikipedia.org/wiki/Race_condition) |
+| Lock / mutex | Only one worker may hold it at a time, so shared data isn't changed simultaneously. | [Wikipedia](https://en.wikipedia.org/wiki/Lock_(computer_science)) |
+| Deadlock | Two workers each wait for the other's lock forever. | [Wikipedia](https://en.wikipedia.org/wiki/Deadlock_(computer_science)) |
+| Atomic operation | A step that happens completely or not at all, with nothing sneaking in between. | [Wikipedia](https://en.wikipedia.org/wiki/Linearizability) |
+| Optimistic vs pessimistic locking | Assume no conflict and check at save time vs lock the row up front. | [Wikipedia](https://en.wikipedia.org/wiki/Optimistic_concurrency_control) |
+| Non-blocking I/O | Start slow work (disk, network) and do other things instead of waiting. How Node.js scales. | [Node.js docs](https://nodejs.org/en/learn/asynchronous-work/overview-of-blocking-vs-non-blocking) |
+| Web Workers | Run JavaScript on a background thread so the page stays smooth. | [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) |
+| Backpressure | A slow consumer telling a fast producer to slow down. | [Node.js docs](https://nodejs.org/en/learn/modules/backpressuring-in-streams) |
 
 <p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
 
@@ -384,3 +656,7 @@
 ## Contributing
 
 PRs welcome. One term per row, a plain-English explanation anyone can follow, and a link to a trustworthy source.
+
+## License
+
+[CC0 1.0](LICENSE): public domain. Copy, share, and reuse freely.

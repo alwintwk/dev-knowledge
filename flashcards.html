@@ -527,8 +527,34 @@
     quizNext: document.getElementById("quiz-next")
   };
 
+  // ---- mask: blank out a term's own words inside its definition so the question doesn't give the answer away ----
+  var STOP = ["vs", "and", "or", "the", "a", "an", "of", "to", "in", "for", "with", "by", "on", "is", "at", "as"];
+  // common short words that happen to start a term (e.g. "the" in "theorem") and must stay visible
+  var COMMON = ["the", "and", "for", "you", "are", "can", "not", "one", "all", "any", "how", "its", "own", "but",
+    "has", "had", "was", "who", "why", "out", "use", "per", "via", "set", "get", "run", "new", "way", "data"];
+  function termKeywords(term) {
+    return term.replace(/`/g, "").split(/[^A-Za-z0-9+#]+/)
+      .filter(function (w) { return w.length >= 2 && STOP.indexOf(w.toLowerCase()) === -1; });
+  }
+  // ponytail: prefix heuristics, not a real stemmer. A word is hidden if it equals a term word (plurals too),
+  // shares its first 4 letters, or is the start of it ("call" in "callback"). Occasionally over-hides a related word.
+  function isTermWord(word, kws) {
+    var w = word.toLowerCase();
+    return kws.some(function (kw) {
+      if (w === kw || w === kw + "s" || w === kw + "es") return true;
+      if (kw.length >= 4 && w.length >= 4 && w.slice(0, 4) === kw.slice(0, 4)) return true;
+      return w.length >= 3 && COMMON.indexOf(w) === -1 && kw.indexOf(w) === 0;
+    });
+  }
+  function maskTerm(text, term) {
+    var kws = termKeywords(term).map(function (k) { return k.toLowerCase(); });
+    return text.replace(/[A-Za-z0-9][A-Za-z0-9+#]*/g, function (word) {
+      return isTermWord(word, kws) ? "_____" : word;
+    });
+  }
+
   // ---- quiz: one right answer + 3 wrong ones, preferring the same section so they're plausible ----
-  function answerText(x) { return reverseMode ? x.back : x.front; }
+  function answerText(x) { return reverseMode ? maskTerm(x.back, x.front) : x.front; }
   function buildOptions(c) {
     var same = allCards.filter(function (x) { return x.section === c.section && x !== c; });
     var pool = shuffle((same.length >= 3 ? same : allCards.filter(function (x) { return x !== c; })).slice());
@@ -549,7 +575,7 @@
       quizPicked = -1;
     }
     el.quizKicker.textContent = c.section + (reverseMode ? " · which meaning fits?" : " · which term is this?");
-    el.quizQ.innerHTML = renderInline(reverseMode ? c.front : c.back);
+    el.quizQ.innerHTML = renderInline(reverseMode ? c.front : maskTerm(c.back, c.front));
 
     el.quizOptsEl.innerHTML = "";
     quizOpts.forEach(function (o, i) {

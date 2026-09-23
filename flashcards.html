@@ -476,6 +476,7 @@
 
   // ---- app state ----
   var allCards = [];
+  var clues = {}; // quiz-questions.json: term -> reworded definition that avoids the term's own words
   var stats = loadStats();
   var selectedSections = new Set(); // empty = all
   var reverseMode = false;
@@ -554,7 +555,9 @@
   }
 
   // ---- quiz: one right answer + 3 wrong ones, preferring the same section so they're plausible ----
-  function answerText(x) { return reverseMode ? maskTerm(x.back, x.front) : x.front; }
+  // reworded clue if we have one; blanks are only a fallback for terms without a clue yet
+  function clue(x) { return maskTerm(clues[x.front] || x.back, x.front); }
+  function answerText(x) { return reverseMode ? clue(x) : x.front; }
   function buildOptions(c) {
     var same = allCards.filter(function (x) { return x.section === c.section && x !== c; });
     var pool = shuffle((same.length >= 3 ? same : allCards.filter(function (x) { return x !== c; })).slice());
@@ -575,7 +578,7 @@
       quizPicked = -1;
     }
     el.quizKicker.textContent = c.section + (reverseMode ? " · which meaning fits?" : " · which term is this?");
-    el.quizQ.innerHTML = renderInline(reverseMode ? c.front : maskTerm(c.back, c.front));
+    el.quizQ.innerHTML = renderInline(reverseMode ? c.front : clue(c));
 
     el.quizOptsEl.innerHTML = "";
     quizOpts.forEach(function (o, i) {
@@ -863,7 +866,11 @@
   el.btnRestart.addEventListener("click", function () { rebuildDeck(); });
 
   // ---- boot ----
-  fetch("README.md")
+  // clues are optional: if the file is missing the quiz still works with blanks
+  fetch("quiz-questions.json")
+    .then(function (res) { return res.ok ? res.json() : {}; })
+    .catch(function () { return {}; })
+    .then(function (c) { clues = c || {}; return fetch("README.md"); })
     .then(function (res) {
       if (!res.ok) throw new Error("HTTP " + res.status);
       return res.text();

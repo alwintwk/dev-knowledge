@@ -1,35 +1,25 @@
 <h1 align="center">Dev knowledge</h1>
 <p align="center"><i>Software engineering terms and concepts, explained in plain English, with links to learn more.</i></p>
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-CC0-blue" alt="License: CC0" /></a>
+  <a href="https://github.com/alwintwk/dev-knowledge/actions/workflows/links.yml"><img src="https://github.com/alwintwk/dev-knowledge/actions/workflows/links.yml/badge.svg" alt="Link check" /></a>
+  <a href="https://alwintwk.github.io/dev-knowledge/"><img src="https://img.shields.io/badge/search-online-2ea44f" alt="Search online" /></a>
+  <a href="https://alwintwk.github.io/dev-knowledge/flashcards.html"><img src="https://img.shields.io/badge/quiz-yourself-8a63d2" alt="Quiz yourself" /></a>
+</p>
 <p align="center">Companion to <a href="https://github.com/alwintwk/web-dev-resources">web-dev-resources</a>. Last reviewed: September 2026.<br /><a href="https://alwintwk.github.io/dev-knowledge/">Search it online</a> · <a href="https://alwintwk.github.io/dev-knowledge/flashcards.html">Quiz yourself</a></p>
+<p align="center"><b>How to use:</b> skim a section's first table for the essentials · open "Show all" for more · follow a <a href="#learning-tracks">Learning track</a> · test yourself with the <a href="https://alwintwk.github.io/dev-knowledge/flashcards.html">quiz</a></p>
 
 ## Table of contents
 
-* [Start here](#start-here)
-* [Common mix-ups](#common-mix-ups)
-* [Diagrams](#diagrams)
-* [Programming concepts](#programming-concepts)
-* [Data structures & algorithms](#data-structures--algorithms)
-* [Command line & Linux](#command-line--linux)
-* [Web fundamentals](#web-fundamentals)
-* [Networking](#networking)
-* [Security](#security)
-* [Auth & identity](#auth--identity)
-* [Frontend concepts](#frontend-concepts)
-* [Mobile development](#mobile-development)
-* [Backend & APIs](#backend--apis)
-* [Databases](#databases)
-* [Architecture & design](#architecture--design)
-* [System design interview](#system-design-interview)
-* [Design principles](#design-principles)
-* [DevOps & cloud](#devops--cloud)
-* [Cloud services](#cloud-services)
-* [Observability & reliability](#observability--reliability)
-* [Testing](#testing)
-* [Performance](#performance)
-* [Concurrency](#concurrency)
-* [Git & workflow](#git--workflow)
-* [AI & LLMs](#ai--llms)
-* [Privacy & compliance](#privacy--compliance)
+**Start:** [Start here](#start-here) · [Learning tracks](#learning-tracks) · [Common mix-ups](#common-mix-ups) · [Diagrams](#diagrams)<br />
+**Foundations:** [Programming concepts](#programming-concepts) · [Data structures & algorithms](#data-structures--algorithms) · [Command line & Linux](#command-line--linux) · [Design principles](#design-principles) · [Concurrency](#concurrency)<br />
+**Web & frontend:** [Web fundamentals](#web-fundamentals) · [Networking](#networking) · [Frontend concepts](#frontend-concepts) · [Mobile development](#mobile-development) · [Performance](#performance)<br />
+**Backend & data:** [Backend & APIs](#backend--apis) · [Databases](#databases)<br />
+**Architecture:** [Architecture & design](#architecture--design) · [System design interview](#system-design-interview)<br />
+**Shipping & ops:** [Git & workflow](#git--workflow) · [Testing](#testing) · [DevOps & cloud](#devops--cloud) · [Cloud services](#cloud-services) · [Observability & reliability](#observability--reliability)<br />
+**Security & compliance:** [Security](#security) · [Auth & identity](#auth--identity) · [Privacy & compliance](#privacy--compliance)<br />
+**AI:** [AI & LLMs](#ai--llms)<br />
+**About:** [Contributing](#contributing) · [License](#license)
 
 ---
 
@@ -48,6 +38,86 @@ New to all this? Read the sections in this order. Each step pairs the ideas (thi
 Want a structured course alongside? [The Odin Project](https://www.theodinproject.com/) or [Full Stack Open](https://fullstackopen.com/en/) are free.
 
 Unsure about two similar-sounding terms? Check [Common mix-ups](#common-mix-ups).
+
+<p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
+
+## Learning tracks
+
+Pick the track closest to the job you want. Each step names a section and what to focus on there.
+
+### Frontend developer
+
+For people who want to build what users see and click in the browser.
+
+1. [Web fundamentals](#web-fundamentals) — learn HTTP, status codes, cookies, and CORS
+2. [What happens when you visit a URL](#what-happens-when-you-visit-a-url) — follow one page load from DNS to paint
+3. [Programming concepts](#programming-concepts) — get comfortable with callbacks, promises, and async / await
+4. [Frontend concepts](#frontend-concepts) — DOM, components, props & state, and SPAs
+5. [CSR vs SSR vs SSG](#csr-vs-ssr-vs-ssg) — know where a page gets built and why it matters
+6. [Performance](#performance) — Core Web Vitals, lazy loading, and debounce / throttle
+7. [Testing](#testing) — unit tests first, then E2E tests in a real browser
+8. [Auth & identity](#auth--identity) — sessions vs JWTs from the browser's side
+
+### Backend developer
+
+For people who want to build the APIs, jobs, and data behind an app.
+
+1. [Web fundamentals](#web-fundamentals) — HTTP methods and status codes are your daily tools
+2. [Backend & APIs](#backend--apis) — REST, JSON, middleware, and idempotency
+3. [Databases](#databases) — indexes, transactions, and the N+1 query problem
+4. [Auth & identity](#auth--identity) — authentication vs authorization, sessions, and tokens
+5. [Security](#security) — SQL injection, input validation, and secrets management
+6. [Concurrency](#concurrency) — race conditions and locks before they bite in production
+7. [Architecture & design](#architecture--design) — monolith vs microservices and message queues
+8. [Observability & reliability](#observability--reliability) — logs, metrics, traces, and retries with backoff
+
+### DevOps and cloud
+
+For people who want to own how code gets built, shipped, and kept running.
+
+1. [Command line & Linux](#command-line--linux) — shells, permissions, processes, and SSH
+2. [Networking](#networking) — ports, TLS, load balancers, and reverse proxies
+3. [Git & workflow](#git--workflow) — branches, pull requests, and trunk-based development
+4. [CI/CD pipeline](#cicd-pipeline) — follow a change from push to production
+5. [DevOps & cloud](#devops--cloud) — containers, Kubernetes, IaC, and safe release strategies
+6. [Cloud services](#cloud-services) — the standard building blocks and IAM
+7. [Observability & reliability](#observability--reliability) — SLOs, error budgets, and on-call
+
+### Security-minded developer
+
+For people who want to write code that holds up against attackers and audits.
+
+1. [Security](#security) — start with the OWASP Top 10, XSS, CSRF, and SQL injection
+2. [Authentication vs authorization](#common-mix-ups) — the first mix-up to get right
+3. [Auth & identity](#auth--identity) — OAuth, OIDC, MFA, and passkeys
+4. [OAuth 2.0 login with PKCE](#oauth-20-login-with-pkce) — trace each step of a login flow
+5. [Networking](#networking) — TLS, firewalls, and VPNs
+6. [Cloud services](#cloud-services) — IAM, VPCs, and secrets managers
+7. [Privacy & compliance](#privacy--compliance) — PII, GDPR, and audit logs
+
+### Working with AI
+
+For people who want to build features on top of language models.
+
+1. [AI & LLMs](#ai--llms) — tokens, context windows, and prompt engineering
+2. [Backend & APIs](#backend--apis) — model APIs are ordinary HTTP APIs with JSON
+3. [AI & LLMs](#ai--llms) — embeddings, RAG, tool use, and agents
+4. [Databases](#databases) — vector databases for search by meaning
+5. [Security](#security) — prompt injection and why model output is untrusted input
+6. [Testing](#testing) — evals are tests for prompts, so pair them with regular tests
+7. [Privacy & compliance](#privacy--compliance) — what personal data may be sent to a model
+
+### Interview prep
+
+For people preparing for coding and system design interviews.
+
+1. [Data structures & algorithms](#data-structures--algorithms) — arrays, hash maps, trees, and graphs
+2. [Performance](#performance) — explain Big O for every solution you write
+3. [Programming concepts](#programming-concepts) — closures, recursion, and OOP come up often
+4. [Common mix-ups](#common-mix-ups) — process vs thread, SQL vs NoSQL, and similar pairs
+5. [Design principles](#design-principles) — DRY, SOLID, and composition over inheritance
+6. [Architecture & design](#architecture--design) — scaling, caching, and message queues
+7. [System design interview](#system-design-interview) — estimate first, then talk trade-offs
 
 <p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
 
@@ -191,6 +261,8 @@ flowchart TB
 
 ## Programming concepts
 
+These are the building blocks of every language, so you will meet them in your first week of reading or writing code.
+
 | Term | Plain English | Learn more |
 |---|---|---|
 | Variable | A named box that holds a value. | [MDN](https://developer.mozilla.org/en-US/docs/Glossary/Variable) |
@@ -198,6 +270,12 @@ flowchart TB
 | Scope | Where in the code a variable can be seen and used. | [MDN](https://developer.mozilla.org/en-US/docs/Glossary/Scope) |
 | Closure | A function that remembers the variables around where it was created. | [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures) |
 | Callback | A function you hand to another function to call later. | [MDN](https://developer.mozilla.org/en-US/docs/Glossary/Callback_function) |
+
+<details>
+<summary>Show all 20 terms</summary>
+
+| Term | Plain English | Learn more |
+|---|---|---|
 | Promise | A placeholder for a value that will arrive later (or fail). | [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises) |
 | async / await | Write waiting-for-results code that reads top to bottom like normal code. | [MDN](https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Async_JS/Promises) |
 | Recursion | A function that solves a problem by calling itself on a smaller piece. | [MDN](https://developer.mozilla.org/en-US/docs/Glossary/Recursion) |
@@ -214,21 +292,31 @@ flowchart TB
 | Dependency injection | Hand a piece of code the things it needs instead of letting it create them. Easier to test. | [Martin Fowler](https://martinfowler.com/articles/injection.html) |
 | Garbage collection | The runtime automatically frees memory you're no longer using. | [MDN](https://developer.mozilla.org/en-US/docs/Glossary/Garbage_collection) |
 
+</details>
+
 <p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
 
 ## Data structures & algorithms
+
+Picking the right container for your data decides whether code stays fast as it grows, and these come up in almost every coding interview.
 
 > See them animated at [VisuAlgo](https://visualgo.net/en). How fast they are: [Big O](#performance).
 
 | Term | Plain English | Learn more |
 |---|---|---|
 | Array | A numbered row of items; instant access by position. | [Wikipedia](https://en.wikipedia.org/wiki/Array_(data_structure)) |
-| Linked list | Items that each point to the next, like a treasure hunt. Easy inserts, slow lookups. | [Wikipedia](https://en.wikipedia.org/wiki/Linked_list) |
 | Hash map | Look up a value by key almost instantly (`Map`, `dict`, object). | [Wikipedia](https://en.wikipedia.org/wiki/Hash_table) |
-| Set | A collection with no duplicates, fast "is it in here?" checks. | [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set) |
 | Stack | Last in, first out, like a stack of plates (undo history). | [Wikipedia](https://en.wikipedia.org/wiki/Stack_(abstract_data_type)) |
 | Queue | First in, first out, like a line at a shop. | [Wikipedia](https://en.wikipedia.org/wiki/Queue_(abstract_data_type)) |
 | Tree | Items arranged as parents and children, like folders. The DOM is a tree. | [Wikipedia](https://en.wikipedia.org/wiki/Tree_(abstract_data_type)) |
+
+<details>
+<summary>Show all 16 terms</summary>
+
+| Term | Plain English | Learn more |
+|---|---|---|
+| Linked list | Items that each point to the next, like a treasure hunt. Easy inserts, slow lookups. | [Wikipedia](https://en.wikipedia.org/wiki/Linked_list) |
+| Set | A collection with no duplicates, fast "is it in here?" checks. | [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set) |
 | Binary search tree | A tree kept sorted so you can find things by going left or right. | [Wikipedia](https://en.wikipedia.org/wiki/Binary_search_tree) |
 | Heap / priority queue | Always gives you the smallest (or largest) item first. | [Wikipedia](https://en.wikipedia.org/wiki/Heap_(data_structure)) |
 | Graph | Points connected by lines: maps, social networks, dependencies. | [Wikipedia](https://en.wikipedia.org/wiki/Graph_(abstract_data_type)) |
@@ -239,9 +327,13 @@ flowchart TB
 | Dynamic programming | Solve big problems by saving answers to smaller overlapping ones. | [Wikipedia](https://en.wikipedia.org/wiki/Dynamic_programming) |
 | Two pointers / sliding window | Walk through a list with two markers to avoid nested loops. | [NeetCode](https://neetcode.io/roadmap) |
 
+</details>
+
 <p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
 
 ## Command line & Linux
+
+Servers, Docker, Git, and most dev tools are driven from a terminal, so these basics save you time every day.
 
 > Free course: [The Missing Semester of Your CS Education](https://missing.csail.mit.edu/) (MIT).
 
@@ -252,6 +344,12 @@ flowchart TB
 | PATH | The list of folders the shell searches to find a command you type. | [Wikipedia](https://en.wikipedia.org/wiki/PATH_(variable)) |
 | stdin / stdout / stderr | A program's input, normal output, and error output streams. | [Wikipedia](https://en.wikipedia.org/wiki/Standard_streams) |
 | Pipe (`\|`) | Feed one command's output straight into another's input. | [Wikipedia](https://en.wikipedia.org/wiki/Pipeline_(Unix)) |
+
+<details>
+<summary>Show all 15 terms</summary>
+
+| Term | Plain English | Learn more |
+|---|---|---|
 | Exit code | A number a program returns when it ends: 0 = success, anything else = failure. | [Wikipedia](https://en.wikipedia.org/wiki/Exit_status) |
 | File permissions (`chmod`) | Who may read, write, or run a file: owner, group, everyone. | [Wikipedia](https://en.wikipedia.org/wiki/Chmod) |
 | root / `sudo` | The all-powerful admin user / run one command as that user. | [Wikipedia](https://en.wikipedia.org/wiki/Sudo) |
@@ -263,9 +361,13 @@ flowchart TB
 | Dotfiles | Hidden config files like `.zshrc` and `.gitconfig` in your home folder. | [dotfiles.github.io](https://dotfiles.github.io/) |
 | grep / curl | Search text in files / make HTTP requests from the terminal. | [Missing Semester](https://missing.csail.mit.edu/2020/data-wrangling/) |
 
+</details>
+
 <p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
 
 ## Web fundamentals
+
+Every web app, whether frontend or backend, runs on these rules, and most confusing bugs trace back to one of them.
 
 | Term | Plain English | Learn more |
 |---|---|---|
@@ -274,6 +376,12 @@ flowchart TB
 | HTTP methods | The verb of a request: GET (read), POST (create), PUT/PATCH (update), DELETE (remove). | [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods) |
 | HTTP status codes | Three-digit reply codes: 2xx ok, 3xx go elsewhere, 4xx your mistake, 5xx server's mistake. | [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status) |
 | URL | The full address of something on the web: scheme, domain, path, query. | [MDN](https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/What_is_a_URL) |
+
+<details>
+<summary>Show all 15 terms</summary>
+
+| Term | Plain English | Learn more |
+|---|---|---|
 | DNS | The internet's phone book: turns `example.com` into the server's IP address. | [MDN](https://developer.mozilla.org/en-US/docs/Glossary/DNS) |
 | Cookie | A small note the server asks your browser to keep and send back on every visit. | [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies) |
 | localStorage | Key-value storage in the browser that survives page reloads. | [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) |
@@ -285,9 +393,13 @@ flowchart TB
 | Server-Sent Events | A one-way stream where the server keeps pushing updates to the browser. | [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) |
 | Web standards | Shared rules (W3C, WHATWG, TC39) that make every browser behave the same. | [MDN](https://developer.mozilla.org/en-US/docs/Glossary/Web_standards) |
 
+</details>
+
 <p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
 
 ## Networking
+
+When a request is slow or fails to connect, these ideas are what you need to figure out where it broke.
 
 | Term | Plain English | Learn more |
 |---|---|---|
@@ -295,8 +407,14 @@ flowchart TB
 | TCP | Reliable delivery: packets arrive complete and in order, or get resent. | [MDN](https://developer.mozilla.org/en-US/docs/Glossary/TCP) |
 | UDP | Fast, fire-and-forget delivery: no guarantee packets arrive. Used for video and games. | [Wikipedia](https://en.wikipedia.org/wiki/User_Datagram_Protocol) |
 | TLS | The encryption layer under HTTPS; proves the server is who it claims to be. | [MDN](https://developer.mozilla.org/en-US/docs/Glossary/TLS) |
-| HTTP/2 & HTTP/3 | Newer HTTP versions that send many requests at once over one connection; HTTP/3 runs on QUIC (UDP). | [MDN](https://developer.mozilla.org/en-US/docs/Glossary/HTTP_3) |
 | Port | A numbered door on a machine; different programs listen on different doors (443 = HTTPS). | [Wikipedia](https://en.wikipedia.org/wiki/Port_(computer_networking)) |
+
+<details>
+<summary>Show all 13 terms</summary>
+
+| Term | Plain English | Learn more |
+|---|---|---|
+| HTTP/2 & HTTP/3 | Newer HTTP versions that send many requests at once over one connection; HTTP/3 runs on QUIC (UDP). | [MDN](https://developer.mozilla.org/en-US/docs/Glossary/HTTP_3) |
 | Load balancer | A traffic cop spreading incoming requests across several servers. | [Wikipedia](https://en.wikipedia.org/wiki/Load_balancing_(computing)) |
 | Reverse proxy | A front desk server that receives requests and forwards them to the right backend. | [Cloudflare](https://www.cloudflare.com/learning/cdn/glossary/reverse-proxy/) |
 | Firewall | A guard that blocks network traffic that doesn't match its rules. | [Wikipedia](https://en.wikipedia.org/wiki/Firewall_(computing)) |
@@ -305,24 +423,34 @@ flowchart TB
 | Latency vs bandwidth | Latency: how long one trip takes. Bandwidth: how much fits through at once. | [MDN](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Understanding_latency) |
 | OSI model | A 7-layer mental map of networking, from cables up to apps. | [Cloudflare](https://www.cloudflare.com/learning/ddos/glossary/open-systems-interconnection-model-osi/) |
 
+</details>
+
 <p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
 
 ## Security
 
+One unchecked input can leak every user's data, so juniors are expected to recognize these attacks and their fixes in code review.
+
 | Term | Plain English | Learn more |
 |---|---|---|
-| OWASP | Non-profit that publishes free web security guides and tools. | [OWASP](https://owasp.org/) |
 | OWASP Top 10 | OWASP's ranked list of the most common, dangerous web app weaknesses. | [OWASP](https://owasp.org/www-project-top-ten/) |
-| OWASP ASVS | A detailed checklist for verifying an app's security, by level. | [OWASP](https://owasp.org/ASVS/) |
 | XSS (Cross-site scripting) | An attacker sneaks their JavaScript into your page, which then runs in other users' browsers. | [OWASP](https://owasp.org/www-community/attacks/xss/) |
 | CSRF (Cross-site request forgery) | A bad site tricks your logged-in browser into sending a request you didn't mean to. | [OWASP](https://owasp.org/www-community/attacks/csrf) |
 | SQL injection | User input gets glued into a database query and changes what it does. Fix: parameterized queries. | [OWASP](https://owasp.org/www-community/attacks/SQL_Injection) |
+| Input validation | Checking every piece of outside data before trusting it. | [OWASP Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html) |
+
+<details>
+<summary>Show all 27 terms</summary>
+
+| Term | Plain English | Learn more |
+|---|---|---|
+| OWASP | Non-profit that publishes free web security guides and tools. | [OWASP](https://owasp.org/) |
+| OWASP ASVS | A detailed checklist for verifying an app's security, by level. | [OWASP](https://owasp.org/ASVS/) |
 | SSRF | Tricking your server into fetching a URL the attacker picks, often internal-only. | [OWASP](https://owasp.org/www-community/attacks/Server_Side_Request_Forgery) |
 | IDOR / broken access control | Changing an ID in a URL shows someone else's data because the server never checked ownership. | [OWASP](https://owasp.org/Top10/A01_2021-Broken_Access_Control/) |
 | Clickjacking | Hiding your real page under a fake one so users click buttons they can't see. | [OWASP](https://owasp.org/www-community/attacks/Clickjacking) |
 | CSP (Content Security Policy) | A header listing which scripts and sources a page may load; blunts XSS. | [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) |
 | HSTS | A header telling browsers "only ever use HTTPS for this site". | [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security) |
-| Input validation | Checking every piece of outside data before trusting it. | [OWASP Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html) |
 | Hashing | One-way scrambling; you can check a match but can't un-scramble. | [Wikipedia](https://en.wikipedia.org/wiki/Cryptographic_hash_function) |
 | Password hashing (bcrypt, Argon2) | Deliberately slow hashing with a salt so stolen password lists are hard to crack. | [OWASP Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html) |
 | Encryption (symmetric vs asymmetric) | Symmetric: one shared key. Asymmetric: public key locks, private key unlocks. | [Cloudflare](https://www.cloudflare.com/learning/ssl/what-is-asymmetric-encryption/) |
@@ -339,9 +467,13 @@ flowchart TB
 | Penetration testing | Hiring friendly hackers to break in and report how. | [Wikipedia](https://en.wikipedia.org/wiki/Penetration_test) |
 | Threat modeling | Sitting down to list what could go wrong and who would attack it, before building. | [OWASP](https://owasp.org/www-community/Threat_Modeling) |
 
+</details>
+
 <p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
 
 ## Auth & identity
+
+Almost every app has a login, and getting it wrong is one of the most common ways apps get breached.
 
 > Tools for this: [web-dev-resources → Auth](https://github.com/alwintwk/web-dev-resources#auth)
 
@@ -350,12 +482,18 @@ flowchart TB
 | Authentication (AuthN) | Proving who you are (logging in). | [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication) |
 | Authorization (AuthZ) | Deciding what you're allowed to do once logged in. | [OWASP Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html) |
 | Session | The server remembers you're logged in, usually via a cookie holding a session ID. | [OWASP Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html) |
+| OAuth 2.0 | A way to let an app act on your behalf at another service without giving it your password. It's about access, not identity. | [oauth.net](https://oauth.net/2/) |
+| JWT (JSON Web Token) | A signed, tamper-proof note containing claims like "user 42, expires 5pm". | [jwt.io](https://jwt.io/introduction) |
+
+<details>
+<summary>Show all 20 terms</summary>
+
+| Term | Plain English | Learn more |
+|---|---|---|
 | SSO (Single Sign-On) | Log in once, get into many apps (e.g., "Sign in with Google" at work). | [Wikipedia](https://en.wikipedia.org/wiki/Single_sign-on) |
 | IdP (Identity Provider) | The service that actually checks your identity for other apps (Google, Okta, Entra ID). | [Wikipedia](https://en.wikipedia.org/wiki/Identity_provider) |
-| OAuth 2.0 | A way to let an app act on your behalf at another service without giving it your password. It's about access, not identity. | [oauth.net](https://oauth.net/2/) |
 | OpenID Connect (OIDC) | A login layer on top of OAuth 2.0 that also tells the app who you are. | [OpenID](https://openid.net/developers/how-connect-works/) |
 | SAML | Older XML-based SSO standard, common in enterprises. | [Wikipedia](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language) |
-| JWT (JSON Web Token) | A signed, tamper-proof note containing claims like "user 42, expires 5pm". | [jwt.io](https://jwt.io/introduction) |
 | Access token / refresh token | Short-lived pass for API calls / longer-lived pass used to get new access tokens. | [oauth.net](https://oauth.net/2/refresh-tokens/) |
 | PKCE | An extra check in OAuth that stops stolen login codes being reused; required for apps and SPAs. | [oauth.net](https://oauth.net/2/pkce/) |
 | Scopes | The list of permissions an OAuth token carries, like `read:email`. | [oauth.net](https://oauth.net/2/scope/) |
@@ -368,9 +506,13 @@ flowchart TB
 | SCIM | A standard for automatically creating and removing user accounts across apps. | [scim.cloud](https://scim.cloud/) |
 | API key | A long secret string identifying which app is calling an API. | [Cloudflare](https://www.cloudflare.com/learning/security/api/what-is-api-key/) |
 
+</details>
+
 <p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
 
 ## Frontend concepts
+
+These explain what frameworks like React do for you, which makes their errors and docs much easier to follow.
 
 > Tools for this: [web-dev-resources → UI frameworks](https://github.com/alwintwk/web-dev-resources#ui-frameworks)
 
@@ -379,9 +521,16 @@ flowchart TB
 | DOM | The browser's live tree of every element on a page, which JavaScript can change. | [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model) |
 | Component | A reusable, self-contained piece of UI, like a button or a card. | [React docs](https://react.dev/learn/your-first-component) |
 | Props & state | Props: inputs a component receives. State: data a component remembers and changes. | [React docs](https://react.dev/learn/state-a-components-memory) |
+| SPA (Single-page app) | One page load; JavaScript swaps content as you navigate. | [MDN](https://developer.mozilla.org/en-US/docs/Glossary/SPA) |
+| Responsive design | Layouts that adapt to phone, tablet, and desktop screens. | [MDN](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Responsive_Design) |
+
+<details>
+<summary>Show all 25 terms</summary>
+
+| Term | Plain English | Learn more |
+|---|---|---|
 | Virtual DOM | A lightweight copy of the DOM that frameworks compare to find the minimum real changes. | [Wikipedia](https://en.wikipedia.org/wiki/Virtual_DOM) |
 | Reactivity / signals | Values that automatically update the UI wherever they're used when they change. | [Solid docs](https://docs.solidjs.com/concepts/signals) |
-| SPA (Single-page app) | One page load; JavaScript swaps content as you navigate. | [MDN](https://developer.mozilla.org/en-US/docs/Glossary/SPA) |
 | MPA (Multi-page app) | Classic sites where each link loads a fresh page from the server. | [web.dev](https://web.dev/articles/rendering-on-the-web) |
 | CSR (Client-side rendering) | The browser builds the page with JavaScript after downloading an almost-empty HTML file. | [web.dev](https://web.dev/articles/rendering-on-the-web) |
 | SSR (Server-side rendering) | The server builds the full HTML for each request. Faster first view, better SEO. | [web.dev](https://web.dev/articles/rendering-on-the-web) |
@@ -390,7 +539,6 @@ flowchart TB
 | Hydration | JavaScript "waking up" server-rendered HTML so buttons start working. | [web.dev](https://web.dev/articles/rendering-on-the-web) |
 | Islands architecture | Mostly static HTML with small interactive "islands" of JavaScript. | [patterns.dev](https://www.patterns.dev/vanilla/islands-architecture/) |
 | Server components | Components that run only on the server and send finished UI, no JS shipped for them. | [React docs](https://react.dev/reference/rsc/server-components) |
-| Responsive design | Layouts that adapt to phone, tablet, and desktop screens. | [MDN](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Responsive_Design) |
 | Accessibility (a11y) | Making sites usable for everyone, including people using screen readers or keyboards. | [MDN](https://developer.mozilla.org/en-US/docs/Web/Accessibility) |
 | ARIA | Extra HTML attributes that describe custom widgets to assistive technology. | [MDN](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) |
 | PWA | A website that can be installed and work offline like an app. | [MDN](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps) |
@@ -402,9 +550,13 @@ flowchart TB
 | Polyfill | Code that adds a missing feature to older browsers. | [MDN](https://developer.mozilla.org/en-US/docs/Glossary/Polyfill) |
 | Design tokens | Named values (colors, spacing, fonts) shared across a design system. | [W3C Community Group](https://www.designtokens.org/) |
 
+</details>
+
 <p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
 
 ## Mobile development
+
+Shipping to phones adds store reviews, signing, and offline use, which web developers rarely think about.
 
 | Term | Plain English | Learn more |
 |---|---|---|
@@ -413,6 +565,12 @@ flowchart TB
 | App store review | A human plus automated check of your app before it goes live; can take hours to days, and can reject you. | [Apple docs](https://developer.apple.com/app-store/review/guidelines/) |
 | Push notifications | Messages sent straight to a user's device even when your app isn't open, via Apple's or Google's push service. | [Firebase docs](https://firebase.google.com/docs/cloud-messaging) |
 | Deep links / universal links | A link that opens directly to a specific screen inside your app, instead of a website. | [Android docs](https://developer.android.com/training/app-links) |
+
+<details>
+<summary>Show all 14 terms</summary>
+
+| Term | Plain English | Learn more |
+|---|---|---|
 | Offline-first | Design the app to read and write local data first, syncing with the server whenever a connection shows up. | [Android docs](https://developer.android.com/topic/architecture/data-layer/offline-first) |
 | App bundle / APK / IPA | The installable package format: Android's AAB and APK, iOS's IPA. | [Android docs](https://developer.android.com/guide/app-bundle) |
 | OTA updates | Pushing app or config changes to installed apps without going back through app store review. | [Expo docs](https://docs.expo.dev/eas-update/introduction/) |
@@ -423,9 +581,13 @@ flowchart TB
 | Crash reporting | Automatic capture of crash details from users' devices, so you find bugs you'd never hit yourself. | [Firebase docs](https://firebase.google.com/docs/crashlytics) |
 | React Native bridge / new architecture (JSI) | How RN's JavaScript talks to native code: the old bridge batches messages as JSON; the new architecture (JSI) lets JS call native functions directly. | [React Native docs](https://reactnative.dev/architecture/overview) |
 
+</details>
+
 <p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
 
 ## Backend & APIs
+
+Most junior tickets involve adding or changing an endpoint, and these terms are the vocabulary of that work.
 
 > Tools for this: [web-dev-resources → Backend frameworks](https://github.com/alwintwk/web-dev-resources#backend-frameworks)
 
@@ -433,9 +595,16 @@ flowchart TB
 |---|---|---|
 | API | A menu of requests one program offers another. | [MDN](https://developer.mozilla.org/en-US/docs/Glossary/API) |
 | REST | API style using URLs for things and HTTP verbs for actions (`GET /users/42`). | [MDN](https://developer.mozilla.org/en-US/docs/Glossary/REST) |
-| GraphQL | API style where the client asks for exactly the fields it wants in one query. | [graphql.org](https://graphql.org/learn/) |
-| RPC / gRPC | Calling a function on another server as if it were local; gRPC is Google's fast binary version. | [grpc.io](https://grpc.io/docs/what-is-grpc/introduction/) |
 | JSON | The standard text format for sending data between programs. | [MDN](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/JSON) |
+| GraphQL | API style where the client asks for exactly the fields it wants in one query. | [graphql.org](https://graphql.org/learn/) |
+| Environment variables | Settings (like secrets or URLs) passed in from outside the code. | [Twelve-Factor](https://12factor.net/config) |
+
+<details>
+<summary>Show all 16 terms</summary>
+
+| Term | Plain English | Learn more |
+|---|---|---|
+| RPC / gRPC | Calling a function on another server as if it were local; gRPC is Google's fast binary version. | [grpc.io](https://grpc.io/docs/what-is-grpc/introduction/) |
 | OpenAPI | A file describing every endpoint of a REST API, used to generate docs and clients. | [OpenAPI](https://www.openapis.org/what-is-openapi) |
 | Webhook | The other service calls *your* URL when something happens ("payment succeeded"). | [Wikipedia](https://en.wikipedia.org/wiki/Webhook) |
 | Middleware | Code that runs on every request before your handler (logging, auth, parsing). | [Express docs](https://expressjs.com/en/guide/using-middleware.html) |
@@ -446,11 +615,14 @@ flowchart TB
 | Edge functions | Serverless functions running in data centers close to users. | [Cloudflare](https://www.cloudflare.com/learning/serverless/glossary/what-is-edge-computing/) |
 | Background job / queue | Slow work (emails, video) put in a line and processed later by a worker. | [Wikipedia](https://en.wikipedia.org/wiki/Message_queue) |
 | Cron job | A task scheduled to run at set times, like every night at 2am. | [Wikipedia](https://en.wikipedia.org/wiki/Cron) |
-| Environment variables | Settings (like secrets or URLs) passed in from outside the code. | [Twelve-Factor](https://12factor.net/config) |
+
+</details>
 
 <p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
 
 ## Databases
+
+Nearly every app stores data, and slow pages usually come from how it is queried, not from the code around it.
 
 > Tools for this: [web-dev-resources → Databases & ORMs](https://github.com/alwintwk/web-dev-resources#databases-orms--search)
 
@@ -461,6 +633,12 @@ flowchart TB
 | Index | A sorted lookup table so the DB finds rows without scanning everything, like a book index. | [Use The Index, Luke](https://use-the-index-luke.com/) |
 | Transaction | A group of changes that all succeed together or all get undone. | [PostgreSQL docs](https://www.postgresql.org/docs/current/tutorial-transactions.html) |
 | ACID | The four promises of a reliable transaction: Atomic, Consistent, Isolated, Durable. | [Wikipedia](https://en.wikipedia.org/wiki/ACID) |
+
+<details>
+<summary>Show all 18 terms</summary>
+
+| Term | Plain English | Learn more |
+|---|---|---|
 | Normalization | Splitting data so each fact is stored once, avoiding contradictions. | [Wikipedia](https://en.wikipedia.org/wiki/Database_normalization) |
 | JOIN | Combining rows from two tables that share a key. | [PostgreSQL docs](https://www.postgresql.org/docs/current/tutorial-join.html) |
 | ORM | A library that lets you use database rows as objects in your code. | [Wikipedia](https://en.wikipedia.org/wiki/Object%E2%80%93relational_mapping) |
@@ -475,9 +653,13 @@ flowchart TB
 | Cache | A fast, temporary copy of data (often in Redis) to avoid repeating slow work. | [AWS](https://aws.amazon.com/caching/) |
 | Vector database | Stores embeddings so you can search by meaning, not exact words. | [Cloudflare](https://www.cloudflare.com/learning/ai/what-is-vector-database/) |
 
+</details>
+
 <p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
 
 ## Architecture & design
+
+These words come up whenever a team decides how to split a system, so knowing them lets you follow design discussions.
 
 | Term | Plain English | Learn more |
 |---|---|---|
@@ -486,6 +668,12 @@ flowchart TB
 | Client-server | Clients ask, servers answer. The basic shape of the web. | [Wikipedia](https://en.wikipedia.org/wiki/Client%E2%80%93server_model) |
 | MVC | Split code into Model (data), View (UI), Controller (glue). | [MDN](https://developer.mozilla.org/en-US/docs/Glossary/MVC) |
 | Event-driven architecture | Parts of the system react to events ("order placed") instead of calling each other directly. | [AWS](https://aws.amazon.com/event-driven-architecture/) |
+
+<details>
+<summary>Show all 16 terms</summary>
+
+| Term | Plain English | Learn more |
+|---|---|---|
 | Pub/sub | Publishers shout messages to a topic; any subscriber listening gets them. | [Wikipedia](https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern) |
 | Message queue | A waiting line between services so work isn't lost when one side is busy. | [AWS](https://aws.amazon.com/message-queue/) |
 | CQRS | Separate models for writing data and reading data. | [Martin Fowler](https://martinfowler.com/bliki/CQRS.html) |
@@ -498,32 +686,46 @@ flowchart TB
 | Design patterns | Named, reusable solutions to common code problems (Factory, Observer, Adapter). | [Refactoring.Guru](https://refactoring.guru/design-patterns) |
 | System design | Planning how the pieces of a large system fit together to meet scale and reliability needs. | [System Design Primer](https://github.com/donnemartin/system-design-primer) |
 
+</details>
+
 <p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
 
 ## System design interview
+
+Mid-level interviews usually include one of these problems, and the same trade-offs show up in real design reviews.
 
 > Mention the key idea, then talk trade-offs — interviewers care more about *why* than the final diagram.
 
 | Term | Plain English | Learn more |
 |---|---|---|
+| Back-of-the-envelope estimation | Rough math on QPS, storage, and bandwidth done in minutes, to sanity-check a design before drilling into detail. | [System Design Primer](https://github.com/donnemartin/system-design-primer#back-of-the-envelope-calculations) |
+| Caching layer | A fast in-memory store sitting in front of the database so repeat reads never hit it. | [System Design Primer](https://github.com/donnemartin/system-design-primer#cache) |
+| Read-heavy vs write-heavy | Read-heavy systems lean on caching and read replicas; write-heavy systems lean on sharding and async writes. | [System Design Primer](https://github.com/donnemartin/system-design-primer#database) |
+| Database replication vs sharding choice | Replication copies the whole dataset for read scaling and durability; sharding splits the data across machines for write and storage scaling. | [System Design Primer](https://github.com/donnemartin/system-design-primer#sharding) |
 | Design a URL shortener | Hash or count up a short code, store code→URL in a fast key-value store, and redirect on lookup. | [System Design Primer](https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/pastebin/README.md) |
+
+<details>
+<summary>Show all 14 terms</summary>
+
+| Term | Plain English | Learn more |
+|---|---|---|
 | Design a rate limiter | Keep a rolling counter of requests per user or IP in a fast store like Redis, and reject once it crosses the limit. | [Cloudflare](https://www.cloudflare.com/learning/bots/what-is-rate-limiting/) |
 | Design a news feed | Fan out writes to each follower's feed at post time (fast reads, costly for celebrities) or merge feeds at read time (cheap writes, slower reads). | [System Design Primer](https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/twitter/README.md) |
 | Design a chat app | Real-time delivery over a WebSocket, messages stored per conversation, fanned out to whichever recipients are online. | [MDN](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API) |
 | Consistent hashing | Spread keys across servers so adding or removing one server only reshuffles a small slice of keys, not everything. | [paperplanes.de](http://www.paperplanes.de/2011/12/9/the-magic-of-consistent-hashing.html) |
-| Back-of-the-envelope estimation | Rough math on QPS, storage, and bandwidth done in minutes, to sanity-check a design before drilling into detail. | [System Design Primer](https://github.com/donnemartin/system-design-primer#back-of-the-envelope-calculations) |
-| Read-heavy vs write-heavy | Read-heavy systems lean on caching and read replicas; write-heavy systems lean on sharding and async writes. | [System Design Primer](https://github.com/donnemartin/system-design-primer#database) |
-| Caching layer | A fast in-memory store sitting in front of the database so repeat reads never hit it. | [System Design Primer](https://github.com/donnemartin/system-design-primer#cache) |
-| Database replication vs sharding choice | Replication copies the whole dataset for read scaling and durability; sharding splits the data across machines for write and storage scaling. | [System Design Primer](https://github.com/donnemartin/system-design-primer#sharding) |
 | Idempotent APIs in payments | Attach a client-generated key to a payment request so retrying a timed-out call can't charge the card twice. | [Stripe docs](https://docs.stripe.com/api/idempotent_requests) |
 | Design a notification system (fan-out) | One event triggers a queue that fans out to push, email, and SMS workers, so one slow channel can't block the others. | [AWS docs](https://docs.aws.amazon.com/sns/latest/dg/sns-common-scenarios.html) |
 | Design a web crawler | Politely walk links breadth-first, dedupe by URL hash, and respect `robots.txt` and per-site rate limits. | [System Design Primer](https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/web_crawler/README.md) |
 | Load shedding / graceful degradation | Under heavy load, deliberately drop or simplify some requests so the whole system doesn't fall over. | [AWS builders' library](https://aws.amazon.com/builders-library/using-load-shedding-to-avoid-overload/) |
 | Distributed ID generation (Snowflake IDs) | Generate unique, roughly time-sortable IDs across many machines without a central counter. | [Wikipedia](https://en.wikipedia.org/wiki/Snowflake_ID) |
 
+</details>
+
 <p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
 
 ## Design principles
+
+These rules of thumb show up in code review comments, and they help you judge when code is getting hard to change.
 
 | Term | Plain English | Learn more |
 |---|---|---|
@@ -532,15 +734,25 @@ flowchart TB
 | YAGNI | You Aren't Gonna Need It: don't build features for an imagined future. | [Martin Fowler](https://martinfowler.com/bliki/Yagni.html) |
 | SOLID | Five object-oriented design rules for code that's easy to change. | [Wikipedia](https://en.wikipedia.org/wiki/SOLID) |
 | Separation of concerns | Each part of the code handles one job. | [Wikipedia](https://en.wikipedia.org/wiki/Separation_of_concerns) |
+
+<details>
+<summary>Show all 10 terms</summary>
+
+| Term | Plain English | Learn more |
+|---|---|---|
 | Coupling & cohesion | Low coupling: parts don't depend on each other's insides. High cohesion: related code lives together. | [Wikipedia](https://en.wikipedia.org/wiki/Coupling_(computer_programming)) |
 | Composition over inheritance | Build behavior by combining small pieces rather than deep class trees. | [Wikipedia](https://en.wikipedia.org/wiki/Composition_over_inheritance) |
 | Technical debt | Shortcuts taken now that make future changes slower, like interest on a loan. | [Martin Fowler](https://martinfowler.com/bliki/TechnicalDebt.html) |
 | Refactoring | Improving code's structure without changing what it does. | [Refactoring.Guru](https://refactoring.guru/refactoring) |
 | Code smell | A sign in the code that something might be wrong underneath. | [Refactoring.Guru](https://refactoring.guru/refactoring/smells) |
 
+</details>
+
 <p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
 
 ## DevOps & cloud
+
+Your code only helps users once it is built, deployed, and running, and these terms describe that path.
 
 > Tools for this: [web-dev-resources → Hosting & deployment](https://github.com/alwintwk/web-dev-resources#hosting--deployment)
 
@@ -551,6 +763,12 @@ flowchart TB
 | CD (Continuous Delivery / Deployment) | Every passing change is ready to ship / is shipped automatically. | [Atlassian](https://www.atlassian.com/continuous-delivery) |
 | Container | An app packed with everything it needs, so it runs the same anywhere. | [Docker](https://www.docker.com/resources/what-container/) |
 | Docker image | The frozen recipe a container is started from. | [Docker docs](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-an-image/) |
+
+<details>
+<summary>Show all 14 terms</summary>
+
+| Term | Plain English | Learn more |
+|---|---|---|
 | Kubernetes | A system that runs and heals many containers across many machines. | [Kubernetes](https://kubernetes.io/docs/concepts/overview/) |
 | Infrastructure as Code (IaC) | Servers, networks, and DBs defined in code files instead of clicked in a console. | [Terraform](https://developer.hashicorp.com/terraform/intro) |
 | IaaS / PaaS / SaaS | Rent raw servers / rent a platform that runs your code / rent finished software. | [Cloudflare](https://www.cloudflare.com/learning/cloud/what-is-the-cloud/) |
@@ -561,9 +779,13 @@ flowchart TB
 | Rollback | Going back to the last working version when a release breaks. | [Wikipedia](https://en.wikipedia.org/wiki/Rollback_(data_management)) |
 | Artifact | The built output of a pipeline (a binary, image, or bundle) that gets deployed. | [Wikipedia](https://en.wikipedia.org/wiki/Artifact_(software_development)) |
 
+</details>
+
 <p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
 
 ## Cloud services
+
+Most companies run on AWS, Google Cloud, or Azure, and each names the same building blocks differently.
 
 > Provider docs go deep fast — these rows map the shape of each building block, not one vendor's exact feature list.
 
@@ -572,8 +794,15 @@ flowchart TB
 | Virtual machines (AWS EC2, Google Compute Engine, Azure VMs) | A rented computer in the cloud you fully control, like leasing a bare desktop instead of buying one. | [AWS docs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html) |
 | Object storage (AWS S3, Google Cloud Storage, Azure Blob) | Store any file as a named object with a URL; no folder tree, and it scales to any size. | [AWS docs](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html) |
 | Managed SQL database (AWS RDS, Google Cloud SQL, Azure SQL Database) | A regular relational database where the provider handles patching, backups, and scaling. | [AWS docs](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html) |
-| Managed NoSQL database (AWS DynamoDB, Google Firestore, Azure Cosmos DB) | A flexible, schema-less database built to spread across many machines automatically. | [AWS docs](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html) |
 | Serverless functions (AWS Lambda, Google Cloud Functions, Azure Functions) | Upload just your function; the provider runs it on demand and bills only for the time it runs. | [AWS docs](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html) |
+| IAM (AWS IAM, Google Cloud IAM, Azure RBAC) | The provider's system for deciding exactly which users and services may touch which resources. | [AWS docs](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html) |
+
+<details>
+<summary>Show all 18 terms</summary>
+
+| Term | Plain English | Learn more |
+|---|---|---|
+| Managed NoSQL database (AWS DynamoDB, Google Firestore, Azure Cosmos DB) | A flexible, schema-less database built to spread across many machines automatically. | [AWS docs](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html) |
 | Containers-as-a-service (AWS Fargate, Google Cloud Run, Azure Container Instances) | Run a container without provisioning or managing the servers underneath it. | [AWS docs](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/what-is-fargate.html) |
 | Managed Kubernetes (AWS EKS, Google Kubernetes Engine, Azure Kubernetes Service) | The provider runs Kubernetes's control plane for you; you only manage what runs on top. | [AWS docs](https://docs.aws.amazon.com/eks/latest/userguide/what-is-eks.html) |
 | CDN (AWS CloudFront, Google Cloud CDN, Azure Front Door) | The provider's own edge-server network that caches your content close to users worldwide. | [AWS docs](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html) |
@@ -581,16 +810,19 @@ flowchart TB
 | Load balancer (AWS Elastic Load Balancing, Google Cloud Load Balancing, Azure Load Balancer) | A managed layer that spreads incoming requests across many servers and stops sending traffic to unhealthy ones. | [AWS docs](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/what-is-load-balancing.html) |
 | Message queue (AWS SQS, Google Cloud Tasks, Azure Queue Storage) | A managed waiting line that holds work until a server is free to pick it up. | [AWS docs](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html) |
 | Pub/sub (AWS SNS, Google Cloud Pub/Sub, Azure Service Bus) | A managed broadcast system: one publisher, many subscribers, nothing to poll. | [AWS docs](https://docs.aws.amazon.com/sns/latest/dg/welcome.html) |
-| IAM (AWS IAM, Google Cloud IAM, Azure RBAC) | The provider's system for deciding exactly which users and services may touch which resources. | [AWS docs](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html) |
 | Secrets manager (AWS Secrets Manager, Google Secret Manager, Azure Key Vault) | A locked vault for passwords and API keys, so they never sit in your code or config files. | [AWS docs](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html) |
 | VPC (AWS VPC, Google VPC, Azure Virtual Network) | Your own private, walled-off slice of the provider's network that you control. | [AWS docs](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html) |
 | Monitoring & logs (AWS CloudWatch, Google Cloud Monitoring, Azure Monitor) | The provider's built-in dashboard for watching metrics and reading logs from everything you run. | [AWS docs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) |
 | Regions & availability zones | A region is a geographic area (like `us-east-1`); zones are separate data centers inside it, so one outage doesn't take everything down. | [AWS docs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html) |
 | Autoscaling (AWS Auto Scaling, Google Cloud autoscaler, Azure Autoscale) | Automatically add or remove servers as traffic rises and falls, so you're not paying for idle capacity. | [AWS docs](https://docs.aws.amazon.com/autoscaling/ec2/userguide/what-is-amazon-ec2-auto-scaling.html) |
 
+</details>
+
 <p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
 
 ## Observability & reliability
+
+When production breaks at night, logs, metrics, and these practices are how you find out what happened.
 
 > Tools for this: [web-dev-resources → Analytics & monitoring](https://github.com/alwintwk/web-dev-resources#analytics--monitoring)
 
@@ -601,6 +833,12 @@ flowchart TB
 | SLI / SLO / SLA | What you measure / the target you aim for / the promise with penalties in a contract. | [Google SRE book](https://sre.google/sre-book/service-level-objectives/) |
 | Error budget | How much failure your SLO allows before you stop shipping and fix reliability. | [Google SRE workbook](https://sre.google/workbook/error-budget-policy/) |
 | Uptime / "nines" | Percent of time a service works; 99.9% ≈ 8.8 hours down per year. | [Wikipedia](https://en.wikipedia.org/wiki/High_availability) |
+
+<details>
+<summary>Show all 11 terms</summary>
+
+| Term | Plain English | Learn more |
+|---|---|---|
 | SRE | Site Reliability Engineering: running operations with software engineering. | [Google SRE](https://sre.google/) |
 | Incident / postmortem | A production outage / the blameless write-up of what happened and how to prevent it. | [Google SRE book](https://sre.google/sre-book/postmortem-culture/) |
 | On-call | Taking turns being the person paged when production breaks. | [PagerDuty](https://www.pagerduty.com/resources/learn/call-rotations-schedules/) |
@@ -608,9 +846,13 @@ flowchart TB
 | Retry with backoff | Try again after a failure, waiting longer each time. | [AWS](https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/) |
 | Single point of failure | One part whose failure takes everything down. | [Wikipedia](https://en.wikipedia.org/wiki/Single_point_of_failure) |
 
+</details>
+
 <p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
 
 ## Testing
+
+Tests let you change code without fear, and most teams will not merge a pull request without them.
 
 > Tools for this: [web-dev-resources → Testing](https://github.com/alwintwk/web-dev-resources#testing)
 
@@ -621,6 +863,12 @@ flowchart TB
 | End-to-end (E2E) test | Drives the real app like a user would, clicking through the browser. | [Playwright](https://playwright.dev/docs/intro) |
 | Test pyramid | Many fast unit tests, fewer integration tests, few slow E2E tests. | [Martin Fowler](https://martinfowler.com/articles/practical-test-pyramid.html) |
 | TDD | Write a failing test first, then the code to pass it, then clean up. | [Martin Fowler](https://martinfowler.com/bliki/TestDrivenDevelopment.html) |
+
+<details>
+<summary>Show all 12 terms</summary>
+
+| Term | Plain English | Learn more |
+|---|---|---|
 | Mock / stub / fake | Stand-ins for real dependencies so tests run fast and predictably. | [Martin Fowler](https://martinfowler.com/articles/mocksArentStubs.html) |
 | Test coverage | Percent of code lines your tests execute. High coverage ≠ good tests. | [Martin Fowler](https://martinfowler.com/bliki/TestCoverage.html) |
 | Regression | Something that used to work breaks after a change. | [Wikipedia](https://en.wikipedia.org/wiki/Regression_testing) |
@@ -629,9 +877,13 @@ flowchart TB
 | Contract test | Checks that a service still matches what its consumers expect. | [Martin Fowler](https://martinfowler.com/bliki/ContractTest.html) |
 | Load test | Simulates many users to see when the system slows or breaks. | [k6 docs](https://grafana.com/docs/k6/latest/testing-guides/test-types/load-testing/) |
 
+</details>
+
 <p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
 
 ## Performance
+
+Slow pages lose users, and these ideas help you measure first instead of guessing what to speed up.
 
 > Tools for this: [web-dev-resources → Performance tools](https://github.com/alwintwk/web-dev-resources#performance--browser-support)
 
@@ -642,15 +894,25 @@ flowchart TB
 | Core Web Vitals | Google's user-experience scores: LCP (load), INP (responsiveness), CLS (layout shift). | [web.dev](https://web.dev/articles/vitals) |
 | TTFB | Time until the first byte of the response arrives. | [web.dev](https://web.dev/articles/ttfb) |
 | Lazy loading | Only load images or code when they're about to be needed. | [MDN](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Lazy_loading) |
+
+<details>
+<summary>Show all 10 terms</summary>
+
+| Term | Plain English | Learn more |
+|---|---|---|
 | Debounce / throttle | Wait until events stop / allow at most one per interval. Tames rapid typing or scrolling. | [CSS-Tricks](https://css-tricks.com/debouncing-throttling-explained-examples/) |
 | Memoization | Remember a function's answer for given inputs so you don't recompute it. | [Wikipedia](https://en.wikipedia.org/wiki/Memoization) |
 | Profiling | Measuring where a program actually spends its time before optimizing. | [Chrome DevTools](https://developer.chrome.com/docs/devtools/performance) |
 | Memory leak | Memory that's never freed, so the app gets slower and eventually crashes. | [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Memory_management) |
 | Event loop | How JavaScript runs one thing at a time yet handles many waiting tasks. | [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Execution_model) |
 
+</details>
+
 <p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
 
 ## Concurrency
+
+Bugs that only appear under load, like double charges or frozen apps, usually come from these ideas.
 
 | Term | Plain English | Learn more |
 |---|---|---|
@@ -659,24 +921,40 @@ flowchart TB
 | Race condition | Two things touch the same data at once and the result depends on who wins. | [Wikipedia](https://en.wikipedia.org/wiki/Race_condition) |
 | Lock / mutex | Only one worker may hold it at a time, so shared data isn't changed simultaneously. | [Wikipedia](https://en.wikipedia.org/wiki/Lock_(computer_science)) |
 | Deadlock | Two workers each wait for the other's lock forever. | [Wikipedia](https://en.wikipedia.org/wiki/Deadlock_(computer_science)) |
+
+<details>
+<summary>Show all 10 terms</summary>
+
+| Term | Plain English | Learn more |
+|---|---|---|
 | Atomic operation | A step that happens completely or not at all, with nothing sneaking in between. | [Wikipedia](https://en.wikipedia.org/wiki/Linearizability) |
 | Optimistic vs pessimistic locking | Assume no conflict and check at save time vs lock the row up front. | [Wikipedia](https://en.wikipedia.org/wiki/Optimistic_concurrency_control) |
 | Non-blocking I/O | Start slow work (disk, network) and do other things instead of waiting. How Node.js scales. | [Node.js docs](https://nodejs.org/en/learn/asynchronous-work/overview-of-blocking-vs-non-blocking) |
 | Web Workers | Run JavaScript on a background thread so the page stays smooth. | [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) |
 | Backpressure | A slow consumer telling a fast producer to slow down. | [Node.js docs](https://nodejs.org/en/learn/modules/backpressuring-in-streams) |
 
+</details>
+
 <p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
 
 ## Git & workflow
+
+You will use Git and pull requests from day one, and team process terms show up in every standup.
 
 | Term | Plain English | Learn more |
 |---|---|---|
 | Git | Tracks every change to your code, so you can go back and work in parallel. | [Pro Git book](https://git-scm.com/book/en/v2) |
 | Commit | A saved snapshot of changes with a message. | [Pro Git](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository) |
 | Branch | A separate line of work that doesn't disturb the main code. | [Pro Git](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell) |
-| Merge vs rebase | Join branches with a merge commit / replay your commits on top of another branch. | [Atlassian](https://www.atlassian.com/git/tutorials/merging-vs-rebasing) |
-| Merge conflict | Two branches changed the same lines; a human must pick. | [GitHub docs](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/addressing-merge-conflicts/about-merge-conflicts) |
 | Pull request (PR) | A request to merge your branch, where teammates review it first. | [GitHub docs](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests) |
+| Merge vs rebase | Join branches with a merge commit / replay your commits on top of another branch. | [Atlassian](https://www.atlassian.com/git/tutorials/merging-vs-rebasing) |
+
+<details>
+<summary>Show all 13 terms</summary>
+
+| Term | Plain English | Learn more |
+|---|---|---|
+| Merge conflict | Two branches changed the same lines; a human must pick. | [GitHub docs](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/addressing-merge-conflicts/about-merge-conflicts) |
 | Code review | Teammates reading your change to catch bugs and share knowledge. | [Google eng practices](https://google.github.io/eng-practices/review/) |
 | Trunk-based development | Everyone merges small changes into main often, instead of long-lived branches. | [trunkbaseddevelopment.com](https://trunkbaseddevelopment.com/) |
 | Monorepo | Many projects living in one repository. | [monorepo.tools](https://monorepo.tools/) |
@@ -685,9 +963,13 @@ flowchart TB
 | Agile / Scrum / Kanban | Work in small increments / in fixed sprints with set roles / as a continuous flow on a board. | [Atlassian](https://www.atlassian.com/agile) |
 | ADR | Architecture Decision Record: a short note on a decision and why it was made. | [adr.github.io](https://adr.github.io/) |
 
+</details>
+
 <p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
 
 ## AI & LLMs
+
+More apps now call language models, and these terms explain their costs, limits, and failure modes.
 
 | Term | Plain English | Learn more |
 |---|---|---|
@@ -696,6 +978,12 @@ flowchart TB
 | Context window | How much text a model can look at in one go. | [Anthropic docs](https://docs.anthropic.com/en/docs/build-with-claude/context-windows) |
 | Prompt engineering | Writing instructions that get reliable output from a model. | [Anthropic docs](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview) |
 | Embeddings | Turning text into lists of numbers where similar meanings sit close together. | [Wikipedia](https://en.wikipedia.org/wiki/Word_embedding) |
+
+<details>
+<summary>Show all 13 terms</summary>
+
+| Term | Plain English | Learn more |
+|---|---|---|
 | RAG | Retrieval-Augmented Generation: look up relevant documents first, then have the model answer using them. | [Wikipedia](https://en.wikipedia.org/wiki/Retrieval-augmented_generation) |
 | Tool use / function calling | Letting a model call your code (search, database, APIs) to get things done. | [Anthropic docs](https://docs.anthropic.com/en/docs/build-with-claude/tool-use/overview) |
 | AI agent | A model working in a loop, choosing tools and steps until a task is done. | [Anthropic](https://www.anthropic.com/engineering/building-effective-agents) |
@@ -705,9 +993,13 @@ flowchart TB
 | Fine-tuning | Further training a model on your own examples to specialize it. | [Wikipedia](https://en.wikipedia.org/wiki/Fine-tuning_(deep_learning)) |
 | Evals | Test suites that score a model or prompt on a set of cases. | [Anthropic docs](https://docs.anthropic.com/en/docs/test-and-evaluate/develop-tests) |
 
+</details>
+
 <p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
 
 ## Privacy & compliance
+
+Handling personal data carries legal duties, and a feature can be blocked until it meets these rules.
 
 | Term | Plain English | Learn more |
 |---|---|---|
@@ -716,12 +1008,20 @@ flowchart TB
 | CCPA / CPRA | California's privacy laws giving people rights over their data. | [California AG](https://oag.ca.gov/privacy/ccpa) |
 | PDPA | Personal Data Protection Act: data privacy law in Singapore, with similar laws in Malaysia and Thailand. | [Wikipedia](https://en.wikipedia.org/wiki/Personal_Data_Protection_Act_2012) |
 | Data minimization | Only collect the personal data you actually need. | [Wikipedia](https://en.wikipedia.org/wiki/Data_minimization) |
+
+<details>
+<summary>Show all 11 terms</summary>
+
+| Term | Plain English | Learn more |
+|---|---|---|
 | Cookie consent | Asking users before setting non-essential tracking cookies. | [gdpr.eu](https://gdpr.eu/cookies/) |
 | SOC 2 | An audit report proving a company handles customer data securely. | [AICPA](https://www.aicpa-cima.com/topic/audit-assurance/audit-and-assurance-greater-than-soc-2) |
 | ISO 27001 | International standard for running an information security program. | [ISO](https://www.iso.org/standard/27001) |
 | HIPAA | US law protecting health information. | [HHS](https://www.hhs.gov/hipaa/index.html) |
 | PCI DSS | Security rules for anyone handling credit card data. | [PCI SSC](https://www.pcisecuritystandards.org/) |
 | Audit log | A tamper-resistant record of who did what, and when. | [Wikipedia](https://en.wikipedia.org/wiki/Audit_trail) |
+
+</details>
 
 <p align="right"><a href="#table-of-contents"><b>↥ Back to top</b></a></p>
 

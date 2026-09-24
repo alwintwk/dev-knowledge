@@ -371,7 +371,7 @@
 (function () {
   "use strict";
 
-  var STATS_KEY = "flashcards-stats-v1";
+  var STATS_KEY = "flashcards-stats-v2"; // v2: ids no longer include row position
   var GITHUB_README = "https://github.com/alwintwk/dev-knowledge/blob/main/README.md";
 
   // ---- tiny localStorage wrapper: storage may be blocked, never let it break the page ----
@@ -453,7 +453,7 @@
       if (cells.length >= 3) {
         var link = parseLink(cells[2]);
         cards.push({
-          id: section + "::" + cells[0] + "::" + counter,
+          id: section + "::" + cells[0], // position-free so reordering rows keeps progress
           section: section,
           front: cells[0],
           back: cells[1],
@@ -462,7 +462,7 @@
         });
       } else if (cells.length === 2) {
         cards.push({
-          id: section + "::" + cells[0] + "::" + counter,
+          id: section + "::" + cells[0], // position-free so reordering rows keeps progress
           section: section,
           front: cells[0],
           back: cells[1],

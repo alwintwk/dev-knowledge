@@ -87,6 +87,7 @@
   th,td{text-align:left; padding:8px 12px; border-bottom:1px solid var(--border); vertical-align:top;}
   thead th{background:var(--code-bg); white-space:nowrap;}
   tbody tr:hover{background:var(--row-hover);}
+  main summary{cursor:pointer; color:var(--accent); font-size:0.92rem; margin:-0.4em 0 0.6em;}
 
   .mermaid{margin:1em 0; text-align:center; overflow-x:auto;}
   .mermaid svg{max-width:100%; height:auto;}
@@ -263,18 +264,31 @@
     clearBtn.hidden = !active;
     var total = 0;
     sections.forEach(function(sec){
-      var wrap = sec.els.filter(function(el){ return el.tagName === 'DIV' && el.classList.contains('table-wrap'); })[0];
-      if (wrap){
-        var rows = wrap.querySelectorAll('tbody tr');
+      var wraps = [];
+      sec.els.forEach(function(el){
+        if (el.matches('div.table-wrap')) wraps.push(el);
+        // folded "Show all N tools" rows live in a <details>; open it while searching
+        else if (el.tagName === 'DETAILS'){
+          el.open = active;
+          wraps.push.apply(wraps, el.querySelectorAll('div.table-wrap'));
+        }
+      });
+      if (wraps.length){
         var visible = 0;
-        rows.forEach(function(row){
-          var match = !active || row.textContent.toLowerCase().indexOf(q) !== -1;
-          row.style.display = match ? '' : 'none';
-          if (match) visible++;
+        wraps.forEach(function(wrap){
+          var n = 0;
+          wrap.querySelectorAll('tbody tr').forEach(function(row){
+            var match = !active || row.textContent.toLowerCase().indexOf(q) !== -1;
+            row.style.display = match ? '' : 'none';
+            if (match) n++;
+          });
+          wrap.style.display = n ? '' : 'none';
+          visible += n;
         });
         total += visible;
         var show = !active || visible > 0;
-        sec.els.forEach(function(el){ el.style.display = show ? '' : 'none'; });
+        // table-wraps already hid themselves above when they have no matching rows
+        sec.els.forEach(function(el){ if (!el.matches('div.table-wrap')) el.style.display = show ? '' : 'none'; });
       } else {
         sec.els.forEach(function(el){ el.style.display = active ? 'none' : ''; });
       }

@@ -477,6 +477,8 @@ Almost every app has a login, and getting it wrong is one of the most common way
 
 > Tools for this: [web-dev-resources → Auth](https://github.com/alwintwk/web-dev-resources#auth)
 
+> Deep dive: [Authentication and authorization](topics/auth.md) — passwords, MFA, passkeys, sessions vs JWT, OAuth, OpenID Connect, SAML, RBAC/ABAC, common attacks.
+
 | Term | Plain English | Learn more |
 |---|---|---|
 | Authentication (AuthN) | Proving who you are (logging in). | [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication) |
@@ -591,6 +593,8 @@ Most junior tickets involve adding or changing an endpoint, and these terms are 
 
 > Tools for this: [web-dev-resources → Backend frameworks](https://github.com/alwintwk/web-dev-resources#backend-frameworks)
 
+> Deep dive: [API styles](topics/api-styles.md) — REST, GraphQL, gRPC, SOAP, tRPC, polling, SSE, WebSocket, webhooks, and how to pick.
+
 | Term | Plain English | Learn more |
 |---|---|---|
 | API | A menu of requests one program offers another. | [MDN](https://developer.mozilla.org/en-US/docs/Glossary/API) |
@@ -625,6 +629,8 @@ Most junior tickets involve adding or changing an endpoint, and these terms are 
 Nearly every app stores data, and slow pages usually come from how it is queried, not from the code around it.
 
 > Tools for this: [web-dev-resources → Databases & ORMs](https://github.com/alwintwk/web-dev-resources#databases-orms--search)
+
+> Deep dive: [Databases](topics/databases.md) — database families, indexes, transactions and isolation, schema design, scaling, and how to pick.
 
 | Term | Plain English | Learn more |
 |---|---|---|

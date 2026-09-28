@@ -154,6 +154,11 @@
 
   // ponytail: two repos only, no config needed for the cross-repo owner name
   var repoInfo = currentRepoInfo();
+
+  // ?doc=topics/<name>.md renders a deep-dive page; anything else falls back to the README
+  var doc = new URLSearchParams(location.search).get('doc') || '';
+  if (!/^topics\/[\w-]+\.md$/.test(doc)) doc = 'README.md';
+
   if (repoInfo){
     ghLink.href = 'https://github.com/' + repoInfo.owner + '/' + repoInfo.repo;
     ghLink.hidden = false;
@@ -190,7 +195,7 @@
       var m = href.match(/^https:\/\/github\.com\/alwintwk\/([^\/#?]+)\/?(#.*)?$/);
       if (m){
         if (repoInfo && m[1] === repoInfo.repo){
-          a.href = m[2] || '#';
+          a.href = doc === 'README.md' ? (m[2] || '#') : ('./' + (m[2] || ''));
         } else {
           a.href = 'https://alwintwk.github.io/' + m[1] + '/' + (m[2] || '');
           a.target = '_blank';
@@ -199,6 +204,15 @@
         return;
       }
       if (href.charAt(0) === '#') return; // same-doc anchor, native scroll handles it
+      // relative links between README and topic pages stay inside the site
+      var rel = href.match(/^(\.\.\/)?(topics\/)?([\w-]+)\.md(#.*)?$/);
+      if (rel){
+        var hash = rel[4] || '';
+        if (rel[3] === 'README') a.href = './' + hash;
+        // README links as topics/x.md; topic pages link siblings as x.md
+        else if (rel[2] || doc !== 'README.md') a.href = '?doc=topics/' + rel[3] + '.md' + hash;
+        return;
+      }
       if (/^https?:\/\//.test(href)){
         a.target = '_blank';
         a.rel = 'noopener';
@@ -326,7 +340,13 @@
     contentEl.innerHTML = '<p class="status">' + msg + '</p>';
   }
 
-  fetch('README.md').then(function(res){
+  function scrollToHash(){
+    if (!location.hash) return;
+    var target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (target) setTimeout(function(){ target.scrollIntoView(); }, 0);
+  }
+
+  fetch(doc).then(function(res){
     if (!res.ok) throw new Error('HTTP ' + res.status);
     return res.text();
   }).then(function(md){
@@ -350,13 +370,11 @@
     if (typeof mermaid !== 'undefined'){
       var dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
       mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'default', securityLevel: 'loose' });
-      mermaid.run({ querySelector: '.mermaid' }).catch(function(){ /* diagram render best-effort */ });
+      mermaid.run({ querySelector: '.mermaid' }).catch(function(){ /* diagram render best-effort */ }).then(scrollToHash);
     }
 
-    if (location.hash){
-      var target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
-      if (target) setTimeout(function(){ target.scrollIntoView(); }, 0);
-    }
+    // run again once diagrams render: they grow the page and push the target down
+    scrollToHash();
   }).catch(function(){
     errorState();
   });

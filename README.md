@@ -431,6 +431,8 @@ When a request is slow or fails to connect, these ideas are what you need to fig
 
 One unchecked input can leak every user's data, so juniors are expected to recognize these attacks and their fixes in code review.
 
+> Deep dive: [Web security attacks and defences](topics/web-security.md) — injection, XSS, CSRF, SSRF, broken access control, security headers, and supply chain.
+
 | Term | Plain English | Learn more |
 |---|---|---|
 | OWASP Top 10 | OWASP's ranked list of the most common, dangerous web app weaknesses. | [OWASP](https://owasp.org/www-project-top-ten/) |
@@ -517,6 +519,8 @@ Almost every app has a login, and getting it wrong is one of the most common way
 These explain what frameworks like React do for you, which makes their errors and docs much easier to follow.
 
 > Tools for this: [web-dev-resources → UI frameworks](https://github.com/alwintwk/web-dev-resources#ui-frameworks)
+
+> Deep dive: [Rendering strategies](topics/rendering.md) — CSR, SSR, SSG, ISR, hydration, streaming, islands, server components, and Core Web Vitals.
 
 | Term | Plain English | Learn more |
 |---|---|---|
@@ -762,6 +766,8 @@ Your code only helps users once it is built, deployed, and running, and these te
 
 > Tools for this: [web-dev-resources → Hosting & deployment](https://github.com/alwintwk/web-dev-resources#hosting--deployment)
 
+> Deep dive: [Deployment strategies](topics/deployment.md) — CI/CD, rolling, blue-green, canary, feature flags, zero-downtime migrations, and rollbacks.
+
 | Term | Plain English | Learn more |
 |---|---|---|
 | DevOps | Developers and operations working as one team to ship and run software. | [Atlassian](https://www.atlassian.com/devops) |
@@ -862,6 +868,8 @@ Tests let you change code without fear, and most teams will not merge a pull req
 
 > Tools for this: [web-dev-resources → Testing](https://github.com/alwintwk/web-dev-resources#testing)
 
+> Deep dive: [Testing](topics/testing.md) — test types, test doubles, TDD, property-based and mutation testing, flaky tests, and coverage.
+
 | Term | Plain English | Learn more |
 |---|---|---|
 | Unit test | Tests one small piece (a function) on its own. | [Martin Fowler](https://martinfowler.com/bliki/UnitTest.html) |
@@ -920,6 +928,8 @@ Slow pages lose users, and these ideas help you measure first instead of guessin
 
 Bugs that only appear under load, like double charges or frozen apps, usually come from these ideas.
 
+> Deep dive: [Concurrency](topics/concurrency.md) — threads, event loops, async/await, actors, race conditions, deadlocks, locks, and distributed locks.
+
 | Term | Plain English | Learn more |
 |---|---|---|
 | Process vs thread | A running program with its own memory vs a worker inside it that shares that memory. | [Wikipedia](https://en.wikipedia.org/wiki/Thread_(computing)) |
@@ -946,6 +956,8 @@ Bugs that only appear under load, like double charges or frozen apps, usually co
 ## Git & workflow
 
 You will use Git and pull requests from day one, and team process terms show up in every standup.
+
+> Deep dive: [Git workflows](topics/git-workflows.md) — how Git stores data, merge vs rebase, branching strategies, and how to undo things.
 
 | Term | Plain English | Learn more |
 |---|---|---|

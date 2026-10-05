@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Passkeys: Register Once, Log In With a Signature",
+    "output": "diagrams/auth-passkeys.html",
+    "quality_profile": "showcase",
+    "column_fit": "spread",
+    "legend": {
+      "entries": {
+        "default": {
+          "label": "Request"
+        },
+        "emphasis": {
+          "label": "Main step"
+        },
+        "security": {
+          "label": "Check"
+        },
+        "dashed": {
+          "label": "Optional"
+        },
+        "return": {
+          "label": "Reply"
+        }
+      }
+    }
+  },
+  "participants": [
+    {
+      "id": "c",
+      "type": "external",
+      "label": "Customer",
+      "sublabel": "person"
+    },
+    {
+      "id": "b",
+      "type": "frontend",
+      "label": "Browser",
+      "sublabel": "holds private key"
+    },
+    {
+      "id": "s",
+      "type": "backend",
+      "label": "Bookshop server",
+      "sublabel": "holds public key"
+    }
+  ],
+  "messages": [
+    {
+      "id": "m1",
+      "from": "c",
+      "to": "s",
+      "y": 180,
+      "label": "1. Sign up with a passkey",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m2",
+      "from": "s",
+      "to": "b",
+      "y": 226,
+      "label": "2. Challenge to sign",
+      "variant": "default"
+    },
+    {
+      "id": "m3",
+      "from": "b",
+      "to": "c",
+      "y": 272,
+      "label": "3. Ask for fingerprint or face",
+      "variant": "security"
+    },
+    {
+      "id": "m4",
+      "from": "c",
+      "to": "b",
+      "y": 318,
+      "label": "4. Approve",
+      "variant": "security"
+    },
+    {
+      "id": "m5",
+      "from": "b",
+      "to": "s",
+      "y": 364,
+      "label": "5. Public key + signed challenge",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m6",
+      "from": "s",
+      "to": "b",
+      "y": 410,
+      "label": "6. Public key stored. Registered",
+      "variant": "return"
+    },
+    {
+      "id": "m7",
+      "from": "s",
+      "to": "b",
+      "y": 456,
+      "label": "7. Login: new challenge to sign",
+      "variant": "default"
+    },
+    {
+      "id": "m8",
+      "from": "b",
+      "to": "c",
+      "y": 502,
+      "label": "8. Ask for fingerprint or face",
+      "variant": "security"
+    },
+    {
+      "id": "m9",
+      "from": "c",
+      "to": "b",
+      "y": 548,
+      "label": "9. Approve",
+      "variant": "security"
+    },
+    {
+      "id": "m10",
+      "from": "b",
+      "to": "s",
+      "y": 594,
+      "label": "10. Send challenge signed with private key",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m11",
+      "from": "s",
+      "to": "c",
+      "y": 640,
+      "label": "11. Verified with public key = logged in",
+      "variant": "return"
+    }
+  ]
+}

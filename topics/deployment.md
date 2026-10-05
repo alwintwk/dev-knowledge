@@ -41,17 +41,14 @@ Every rollout strategy below assumes you already have one trustworthy, versioned
 
 It's a bakery: you bake one batch of bread (build, test, package), and that exact same loaf is what goes to the taste-test kitchen (dev), the demo counter (staging), and the shop shelf (production). You never rebake a different loaf for the shelf than the one that passed the taste test.
 
-```mermaid
-flowchart LR
-  Commit["Commit pushed"] --> Build["Build"]
-  Build --> Test["Test"]
-  Test --> Artifact["Package one versioned artifact<br/>e.g. bookshop-api 1.4.2"]
-  Artifact --> Dev["Deploy to dev"]
-  Dev --> Staging["Promote to staging"]
-  Staging --> Gate{"Checks pass?"}
-  Gate -- "No" --> Fix["Fix and start over"]
-  Gate -- "Yes" --> Prod["Promote to production"]
-```
+<a href="https://alwintwk.github.io/dev-knowledge/diagrams/deployment-cicd-pipeline.html">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="../diagrams/deployment-cicd-pipeline.dark.png">
+    <img alt="CI/CD: Build Once, Promote Up: 1. Commit pushed; 2. Build; 3. Test; 4. Package once; 5. Deploy to dev; 6. Promote to staging; 7. Checks pass?; Fix and start over; 8. Promote to production" src="../diagrams/deployment-cicd-pipeline.light.png">
+  </picture>
+</a>
+
+<sub>Click the diagram for the interactive version (zoom, dark mode, trace a path).</sub>
 
 **Example:**
 
@@ -310,15 +307,12 @@ aws elbv2 modify-listener --listener-arn $LISTENER \
 
 **How it works:** a canary in a coal mine is a small, closely watched exposure that warns you before it affects everyone. A canary release does the same thing with traffic: 5% of requests go to the new version while 95% stay on the old, known-good one. If the new version's error rate and latency stay healthy, the slice grows — 25%, then 50%, then 100%. If it doesn't, the slice drops back to zero and the team investigates, having only ever exposed a small fraction of users to the problem. This differs from a plain rolling update in intent: a rolling update just swaps capacity, while a canary is a deliberate, watched comparison before the rest of production is trusted with the new version.
 
-```mermaid
-flowchart LR
-  LB["Load balancer"]
-  LB -->|"95%"| V1["Version 1, stable"]
-  LB -->|"5%"| V2["Version 2, canary"]
-  V2 --> Watch{"Error rate and latency OK?"}
-  Watch -- "Yes, over time" --> Ramp["Increase to 25%, then 50%, then 100%"]
-  Watch -- "No" --> Rollback["Drop version 2 to 0%, investigate"]
-```
+<a href="https://alwintwk.github.io/dev-knowledge/diagrams/deployment-canary-release.html">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="../diagrams/deployment-canary-release.dark.png">
+    <img alt="Canary Release: Grow Traffic Slowly: 1. Split traffic; 2. 5% to version 2; 3. Healthy?; 4. Grow the slice; 95% stay on version 1; Drop version 2 to 0%" src="../diagrams/deployment-canary-release.light.png">
+  </picture>
+</a>
 
 **Example:**
 

@@ -54,18 +54,14 @@ Injection happens when untrusted input gets interpreted as code or commands inst
 
 **How it works:** a query built by string concatenation is really the database reading two things as one — your intended command and whatever the user typed — with no boundary between them. Feed it `' OR '1'='1` where a value was expected, and the database can't tell that wasn't part of the command; it just sees a `WHERE` clause that's now always true. It's a mad-lib where the blank isn't fenced off from the rest of the sentence: fill it with the wrong words and you rewrite the whole sentence's meaning.
 
-```mermaid
-sequenceDiagram
-  participant A as Attacker
-  participant S as Bookshop server
-  participant DB as Database
+<a href="https://alwintwk.github.io/dev-knowledge/diagrams/web-security-sql-injection.html">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="../diagrams/web-security-sql-injection.dark.png">
+    <img alt="SQL Injection: 1. GET /books/search?q=dune' OR '1'='1; 2. SELECT ... WHERE title = 'dune' OR '1'='1'; 3. Every row in the table; 4. Full catalog, incl. unpublished rows" src="../diagrams/web-security-sql-injection.light.png">
+  </picture>
+</a>
 
-  A->>S: GET /books/search?q=dune' OR '1'='1
-  S->>S: Build query by string concatenation
-  S->>DB: SELECT * FROM books WHERE title = 'dune' OR '1'='1'
-  DB-->>S: Every row in the table
-  S-->>A: Full catalog, including unpublished rows
-```
+<sub>Click the diagram for the interactive version (zoom, dark mode, trace a path).</sub>
 
 **Example:**
 
@@ -91,19 +87,12 @@ const rows = await db.query("SELECT * FROM books WHERE title = $1", [q]);
 
 **How it works:** XSS comes in three flavors, differing in *where* the payload is stored and *when* it runs — the underlying mistake, output that should have been escaped wasn't, is the same in all three. **Stored XSS**: the payload is saved somewhere — a book review, a username — and served to every visitor who views that page. **Reflected XSS**: the payload lives in the request itself, usually a URL query parameter, and only fires for whoever clicks a crafted link, because the server echoes it straight back. **DOM-based XSS**: the payload never touches the server at all — client-side JavaScript reads something attacker-controlled (`location.hash`) and writes it into the page with `innerHTML`, so the bug lives entirely in the browser's own code.
 
-```mermaid
-sequenceDiagram
-  participant A as Attacker
-  participant S as Bookshop server
-  participant V as Victim browser
-
-  A->>S: POST /books/42/reviews, body has a script tag
-  S->>S: Save the review text as-is, no escaping
-  Note over S: Later, any visitor loads the book page
-  V->>S: GET /books/42
-  S-->>V: HTML with the review inserted unescaped
-  V->>V: Browser runs the attacker's script as the site's own
-```
+<a href="https://alwintwk.github.io/dev-knowledge/diagrams/web-security-xss.html">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="../diagrams/web-security-xss.dark.png">
+    <img alt="Stored XSS: 1. POST /books/42/reviews (script tag in body); 2. Later: GET /books/42; 3. HTML with review unescaped: browser runs the script" src="../diagrams/web-security-xss.light.png">
+  </picture>
+</a>
 
 **Example:**
 
@@ -196,18 +185,12 @@ These attacks don't touch your database at all — they exploit what a browser i
 
 **How it works:** browsers attach a site's cookies to every request to that site, no matter which page triggered the request. If bookshop.com trusts a cookie alone to decide who's asking, a hostile page can auto-submit a form to `bookshop.com/account/change-email`, and the victim's browser dutifully attaches their real session cookie. The request looks completely legitimate to the server — the cookie is genuine — even though the click never happened on bookshop.com.
 
-```mermaid
-sequenceDiagram
-  participant V as Victim browser
-  participant E as Evil site
-  participant S as Bookshop server
-
-  V->>E: Visits evil.example while logged into bookshop.com
-  E-->>V: Page auto-submits a hidden form to bookshop.com
-  V->>S: POST /account/change-email, cookie attached automatically
-  S->>S: Cookie is valid, request looks legitimate
-  S-->>V: Email changed, victim never clicked anything on bookshop.com
-```
+<a href="https://alwintwk.github.io/dev-knowledge/diagrams/web-security-csrf.html">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="../diagrams/web-security-csrf.dark.png">
+    <img alt="CSRF: Cookie Sent Without Consent: 1. Visits evil.example (still logged in to bookshop); 2. Page auto-submits hidden form; 3. POST /account/change-email + cookie; 4. Cookie valid: email changed" src="../diagrams/web-security-csrf.light.png">
+  </picture>
+</a>
 
 **Example:**
 

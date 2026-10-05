@@ -156,22 +156,14 @@ For people preparing for coding and system design interviews.
 
 ### What happens when you visit a URL
 
-```mermaid
-sequenceDiagram
-    participant U as You
-    participant B as Browser
-    participant D as DNS
-    participant S as Web server
-    U->>B: Type example.com and press Enter
-    B->>D: What is the IP address of example.com?
-    D-->>B: 93.184.215.14
-    B->>S: Open TCP connection and TLS handshake
-    B->>S: GET / (HTTP request)
-    S-->>B: 200 OK with HTML
-    B->>S: GET styles, scripts, images
-    S-->>B: CSS, JS, images
-    B-->>U: Page painted on screen
-```
+<a href="https://alwintwk.github.io/dev-knowledge/diagrams/readme-visit-url.html">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./diagrams/readme-visit-url.dark.png">
+    <img alt="What Happens When You Visit a URL: 1. Type example.com, Enter; 2. What is the IP of example.com?; 3. 93.184.215.14; 4. Open TCP + TLS handshake; 5. GET / (HTTP request); 6. 200 OK with HTML; 7. GET styles, scripts, images; 8. CSS, JS, images; 9. Page painted on screen" src="./diagrams/readme-visit-url.light.png">
+  </picture>
+</a>
+
+<sub>Click the diagram for the interactive version (zoom, dark mode, trace a path).</sub>
 
 ### OAuth 2.0 login with PKCE
 

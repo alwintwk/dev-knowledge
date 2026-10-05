@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Incremental Static Regeneration (ISR)",
+    "output": "diagrams/rendering-isr.html",
+    "quality_profile": "showcase",
+    "column_fit": "spread",
+    "viewBox": [
+      920,
+      480
+    ],
+    "legend": {
+      "entries": {
+        "default": {
+          "label": "Request"
+        },
+        "emphasis": {
+          "label": "Main step"
+        },
+        "security": {
+          "label": "Check"
+        },
+        "dashed": {
+          "label": "Optional"
+        },
+        "return": {
+          "label": "Reply"
+        }
+      }
+    }
+  },
+  "participants": [
+    {
+      "id": "v",
+      "type": "external",
+      "label": "Visitor 1",
+      "sublabel": "browser"
+    },
+    {
+      "id": "c",
+      "type": "cloud",
+      "label": "CDN cache",
+      "sublabel": "stores pages"
+    },
+    {
+      "id": "s",
+      "type": "backend",
+      "label": "Server",
+      "sublabel": "builds pages"
+    }
+  ],
+  "messages": [
+    {
+      "id": "m1",
+      "from": "v",
+      "to": "c",
+      "y": 180,
+      "label": "1. GET /books/42",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m2",
+      "from": "c",
+      "to": "v",
+      "y": 226,
+      "label": "2. Cached HTML, built 90s ago",
+      "variant": "return"
+    },
+    {
+      "id": "m3",
+      "from": "c",
+      "to": "s",
+      "y": 272,
+      "label": "3. Cache older than revalidate window: rebuild",
+      "variant": "dashed"
+    },
+    {
+      "id": "m4",
+      "from": "s",
+      "to": "c",
+      "y": 318,
+      "label": "4. Fresh HTML stored (next visitor gets it)",
+      "variant": "return"
+    }
+  ]
+}

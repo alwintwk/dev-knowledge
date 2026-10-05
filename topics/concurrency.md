@@ -123,22 +123,14 @@ flowchart TB
 
 **How it works:** imagine one waiter working a restaurant floor. Instead of standing at the kitchen window until an order is ready, the waiter drops the ticket off, immediately goes to take the next table's order, checks on a different table's drinks, and only comes back to the first table once the kitchen actually has the food. `async`/`await` is syntax that lets you write that waiter's code top-to-bottom, as if each step waited in place, while the runtime actually suspends the function at each `await` and resumes it later — no manual callback juggling required. Underneath, the event loop is a simple rule: run code from the call stack until it's empty, then drain everything that's ready in the microtask queue (resolved promises), then take one task from the callback queue (timers, I/O completions), and repeat.
 
-```mermaid
-flowchart LR
-  Stack["Call stack<br/>runs one line at a time"]
-  Node["Node APIs / libuv<br/>timers, file I/O, network"]
-  Micro["Microtask queue<br/>resolved promises"]
-  Macro["Callback queue<br/>setTimeout, I/O callbacks"]
-  Loop{"Event loop:<br/>stack empty?"}
+<a href="https://alwintwk.github.io/dev-knowledge/diagrams/concurrency-event-loop.html">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="../diagrams/concurrency-event-loop.dark.png">
+    <img alt="The Event Loop, Step by Step: 1. Stack runs code; 2. Slow work handed off; 3. Callback waits; 4. Is the stack empty?; 5. Run all microtasks; 6. Run ONE queued task" src="../diagrams/concurrency-event-loop.light.png">
+  </picture>
+</a>
 
-  Stack -->|"hands off slow work"| Node
-  Node -->|"work finishes"| Macro
-  Stack -.->|"await resolves later"| Micro
-  Loop -->|"yes: drain all microtasks first"| Micro
-  Loop -->|"then take one task"| Macro
-  Micro --> Stack
-  Macro --> Stack
-```
+<sub>Click the diagram for the interactive version (zoom, dark mode, trace a path).</sub>
 
 **Example:**
 
@@ -310,18 +302,12 @@ Every mechanism above lets two or more things make progress around the same time
 
 **How it works:** the bookshop's last-copy problem from "Why this matters" is the textbook case. Two customers, Customer A and Customer B, both check the stock count for the same book at nearly the same instant. Both see "1 in stock." Both decide that's enough to place an order. Both write an order row. The book had one copy; two people now believe they bought it. Nothing in the code was wrong on its own — `if stock > 0, then sell` is a perfectly reasonable sentence — the bug is the gap between the read and the write, a gap where another request can sneak in and act on the same stale information.
 
-```mermaid
-sequenceDiagram
-  participant A as Customer A
-  participant DB as Database
-  participant B as Customer B
-
-  A->>DB: read stock for book 482, gets 1
-  B->>DB: read stock for book 482, gets 1
-  A->>DB: stock was 1, so create order
-  B->>DB: stock was 1, so create order
-  Note over DB: both orders succeed —<br/>only one copy ever existed
-```
+<a href="https://alwintwk.github.io/dev-knowledge/diagrams/concurrency-race-condition.html">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="../diagrams/concurrency-race-condition.dark.png">
+    <img alt="Race Condition: Two Orders, One Book: 1. Read stock for book 482: gets 1; 2. Read stock for book 482: gets 1; 3. Stock was 1: create order; 4. Stock was 1: create order" src="../diagrams/concurrency-race-condition.light.png">
+  </picture>
+</a>
 
 **Example, the naive, racy version:**
 
@@ -346,17 +332,12 @@ The "Tools to stay safe" section, below, covers how to close this gap — most d
 
 **How it works:** two cooks, one knife, one cutting board. Cook A grabs the knife and reaches for the board, which Cook B is holding. Cook B grabs the board and reaches for the knife, which Cook A is holding. Neither one will put down what they're holding until they get the other thing — so both stand there, frozen, forever. Computer scientists call the four conditions that must *all* be true for this to happen the Coffman conditions: **mutual exclusion** (a resource can only be held by one thing at a time), **hold and wait** (something holds one resource while waiting for another), **no preemption** (a resource can't be forcibly taken away from whoever holds it), and **circular wait** (a cycle exists — A waits on B, B waits on A). Break any single one of the four and a deadlock becomes impossible; the most common fix in practice is removing circular wait by always acquiring locks in the same, fixed global order.
 
-```mermaid
-sequenceDiagram
-  participant T1 as Thread 1
-  participant T2 as Thread 2
-
-  T1->>T1: lock resource A
-  T2->>T2: lock resource B
-  T1->>T2: now needs resource B
-  T2->>T1: now needs resource A
-  Note over T1,T2: neither can proceed — both wait forever
-```
+<a href="https://alwintwk.github.io/dev-knowledge/diagrams/concurrency-deadlock.html">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="../diagrams/concurrency-deadlock.dark.png">
+    <img alt="Deadlock: Each Waits on the Other: 1. Holds A, now needs B; 2. Holds B, now needs A" src="../diagrams/concurrency-deadlock.light.png">
+  </picture>
+</a>
 
 **Example, the classic lock-ordering bug:**
 

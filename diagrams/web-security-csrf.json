@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "CSRF: Cookie Sent Without Consent",
+    "output": "diagrams/web-security-csrf.html",
+    "quality_profile": "showcase",
+    "column_fit": "spread",
+    "viewBox": [
+      920,
+      480
+    ],
+    "legend": {
+      "entries": {
+        "default": {
+          "label": "Request"
+        },
+        "emphasis": {
+          "label": "Main step"
+        },
+        "security": {
+          "label": "Check"
+        },
+        "dashed": {
+          "label": "Optional"
+        },
+        "return": {
+          "label": "Reply"
+        }
+      }
+    }
+  },
+  "participants": [
+    {
+      "id": "v",
+      "type": "frontend",
+      "label": "Victim browser",
+      "sublabel": "logged in"
+    },
+    {
+      "id": "e",
+      "type": "external",
+      "label": "Evil site",
+      "sublabel": "hostile"
+    },
+    {
+      "id": "s",
+      "type": "backend",
+      "label": "Bookshop server",
+      "sublabel": "trusts cookie"
+    }
+  ],
+  "messages": [
+    {
+      "id": "m1",
+      "from": "v",
+      "to": "e",
+      "y": 180,
+      "label": "1. Visits evil.example (still logged in to bookshop)",
+      "variant": "default"
+    },
+    {
+      "id": "m2",
+      "from": "e",
+      "to": "v",
+      "y": 226,
+      "label": "2. Page auto-submits hidden form",
+      "variant": "security"
+    },
+    {
+      "id": "m3",
+      "from": "v",
+      "to": "s",
+      "y": 272,
+      "label": "3. POST /account/change-email + cookie",
+      "variant": "security"
+    },
+    {
+      "id": "m4",
+      "from": "s",
+      "to": "v",
+      "y": 318,
+      "label": "4. Cookie valid: email changed",
+      "variant": "return"
+    }
+  ]
+}

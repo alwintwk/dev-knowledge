@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "What Happens When You Visit a URL",
+    "output": "diagrams/readme-visit-url.html",
+    "quality_profile": "showcase",
+    "column_fit": "spread",
+    "viewBox": [
+      1021,
+      654
+    ],
+    "legend": {
+      "entries": {
+        "default": {
+          "label": "Request"
+        },
+        "emphasis": {
+          "label": "Main step"
+        },
+        "security": {
+          "label": "Check"
+        },
+        "dashed": {
+          "label": "Optional"
+        },
+        "return": {
+          "label": "Reply"
+        }
+      }
+    }
+  },
+  "participants": [
+    {
+      "id": "u",
+      "type": "external",
+      "label": "You",
+      "sublabel": "person"
+    },
+    {
+      "id": "b",
+      "type": "frontend",
+      "label": "Browser",
+      "sublabel": "your app"
+    },
+    {
+      "id": "d",
+      "type": "cloud",
+      "label": "DNS",
+      "sublabel": "address book"
+    },
+    {
+      "id": "s",
+      "type": "backend",
+      "label": "Web server",
+      "sublabel": "hosts the site"
+    }
+  ],
+  "messages": [
+    {
+      "id": "m1",
+      "from": "u",
+      "to": "b",
+      "y": 180,
+      "label": "1. Type example.com, Enter",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m2",
+      "from": "b",
+      "to": "d",
+      "y": 226,
+      "label": "2. What is the IP of example.com?",
+      "variant": "default"
+    },
+    {
+      "id": "m3",
+      "from": "d",
+      "to": "b",
+      "y": 272,
+      "label": "3. 93.184.215.14",
+      "variant": "return"
+    },
+    {
+      "id": "m4",
+      "from": "b",
+      "to": "s",
+      "y": 318,
+      "label": "4. Open TCP + TLS handshake",
+      "variant": "security"
+    },
+    {
+      "id": "m5",
+      "from": "b",
+      "to": "s",
+      "y": 364,
+      "label": "5. GET / (HTTP request)",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m6",
+      "from": "s",
+      "to": "b",
+      "y": 410,
+      "label": "6. 200 OK with HTML",
+      "variant": "return"
+    },
+    {
+      "id": "m7",
+      "from": "b",
+      "to": "s",
+      "y": 456,
+      "label": "7. GET styles, scripts, images",
+      "variant": "default"
+    },
+    {
+      "id": "m8",
+      "from": "s",
+      "to": "b",
+      "y": 502,
+      "label": "8. CSS, JS, images",
+      "variant": "return"
+    },
+    {
+      "id": "m9",
+      "from": "b",
+      "to": "u",
+      "y": 548,
+      "label": "9. Page painted on screen",
+      "variant": "return"
+    }
+  ]
+}

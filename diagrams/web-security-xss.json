@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Stored XSS",
+    "output": "diagrams/web-security-xss.html",
+    "quality_profile": "showcase",
+    "column_fit": "spread",
+    "viewBox": [
+      920,
+      480
+    ],
+    "legend": {
+      "entries": {
+        "default": {
+          "label": "Request"
+        },
+        "emphasis": {
+          "label": "Main step"
+        },
+        "security": {
+          "label": "Check"
+        },
+        "dashed": {
+          "label": "Optional"
+        },
+        "return": {
+          "label": "Reply"
+        }
+      }
+    }
+  },
+  "participants": [
+    {
+      "id": "a",
+      "type": "external",
+      "label": "Attacker",
+      "sublabel": "hostile"
+    },
+    {
+      "id": "s",
+      "type": "backend",
+      "label": "Bookshop server",
+      "sublabel": "saves + serves"
+    },
+    {
+      "id": "v",
+      "type": "frontend",
+      "label": "Victim browser",
+      "sublabel": "any visitor"
+    }
+  ],
+  "messages": [
+    {
+      "id": "m1",
+      "from": "a",
+      "to": "s",
+      "y": 180,
+      "label": "1. POST /books/42/reviews (script tag in body)",
+      "variant": "security"
+    },
+    {
+      "id": "m2",
+      "from": "v",
+      "to": "s",
+      "y": 226,
+      "label": "2. Later: GET /books/42",
+      "variant": "default"
+    },
+    {
+      "id": "m3",
+      "from": "s",
+      "to": "v",
+      "y": 272,
+      "label": "3. HTML with review unescaped: browser runs the script",
+      "variant": "security"
+    }
+  ]
+}

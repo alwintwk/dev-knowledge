@@ -49,16 +49,14 @@ In every style below, the client sends one request and the server sends back one
 
 Think of it like a restaurant where every dish has its own printed card on the wall, each with a number. "Get card 42" gets you the book's details. "Add a new card to the orders board" places an order. You never need a new kind of instruction for a new kind of dish — you just point at a different card.
 
-```mermaid
-sequenceDiagram
-  participant C as Client app
-  participant S as Bookshop API
+<a href="https://alwintwk.github.io/dev-knowledge/diagrams/api-styles-rest.html">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="../diagrams/api-styles-rest.dark.png">
+    <img alt="REST: Read a Book, Place an Order: 1. GET /books/42; 2. 200 OK, book JSON; 3. POST /orders (book 42, qty 1); 4. 201 Created, order JSON" src="../diagrams/api-styles-rest.light.png">
+  </picture>
+</a>
 
-  C->>S: GET /books/42
-  S-->>C: 200 OK, book JSON
-  C->>S: POST /orders, book id 42, qty 1
-  S-->>C: 201 Created, order JSON
-```
+<sub>Click the diagram for the interactive version (zoom, dark mode, trace a path).</sub>
 
 **Example:**
 
@@ -480,17 +478,12 @@ ws.onmessage = (event) => {
 
 It's giving your phone number to a delivery company instead of calling them every hour to ask "is it here yet?" They call you, once, the moment it actually arrives.
 
-```mermaid
-sequenceDiagram
-  participant Y as Your server
-  participant P as Payment provider
-
-  Y->>P: Register callback URL, once, ahead of time
-  Note right of P: Later, a payment clears
-  P->>Y: POST callback URL, payment succeeded event, signed
-  Y->>Y: Verify signature matches
-  Y-->>P: 200 OK
-```
+<a href="https://alwintwk.github.io/dev-knowledge/diagrams/api-styles-webhooks.html">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="../diagrams/api-styles-webhooks.dark.png">
+    <img alt="Webhooks: The Provider Calls You: 1. Register callback URL (once, ahead of time); 2. POST callback: payment succeeded, signed; 3. Verify signature, reply 200 OK" src="../diagrams/api-styles-webhooks.light.png">
+  </picture>
+</a>
 
 **Example:**
 

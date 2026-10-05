@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "End-to-End Test: Drive the Real App",
+    "output": "diagrams/testing-e2e.html",
+    "quality_profile": "showcase",
+    "column_fit": "spread",
+    "viewBox": [
+      920,
+      480
+    ],
+    "legend": {
+      "entries": {
+        "default": {
+          "label": "Request"
+        },
+        "emphasis": {
+          "label": "Main step"
+        },
+        "security": {
+          "label": "Check"
+        },
+        "dashed": {
+          "label": "Optional"
+        },
+        "return": {
+          "label": "Reply"
+        }
+      }
+    }
+  },
+  "participants": [
+    {
+      "id": "p",
+      "type": "external",
+      "label": "Playwright",
+      "sublabel": "test script"
+    },
+    {
+      "id": "b",
+      "type": "frontend",
+      "label": "Real browser",
+      "sublabel": "clicks like a user"
+    },
+    {
+      "id": "s",
+      "type": "backend",
+      "label": "App + database",
+      "sublabel": "the real stack"
+    }
+  ],
+  "messages": [
+    {
+      "id": "m1",
+      "from": "p",
+      "to": "b",
+      "y": 180,
+      "label": "1. Launch browser, open bookshop.com",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m2",
+      "from": "b",
+      "to": "s",
+      "y": 226,
+      "label": "2. Add to cart, checkout, pay (real POST /orders)",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m3",
+      "from": "s",
+      "to": "b",
+      "y": 272,
+      "label": "3. Order confirmed",
+      "variant": "return"
+    },
+    {
+      "id": "m4",
+      "from": "b",
+      "to": "p",
+      "y": 318,
+      "label": "4. Assert 'Order confirmed' is visible",
+      "variant": "security"
+    }
+  ]
+}

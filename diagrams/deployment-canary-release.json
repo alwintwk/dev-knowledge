@@ -1,0 +1,139 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Canary Release: Grow Traffic Slowly",
+    "quality_profile": "showcase",
+    "output": "diagrams/deployment-canary-release.html",
+    "legend": {
+      "entries": {
+        "messagebus": {
+          "label": "Traffic split"
+        },
+        "backend": {
+          "label": "Running version"
+        },
+        "security": {
+          "label": "Health check"
+        },
+        "cloud": {
+          "label": "Rollout"
+        },
+        "external": {
+          "label": "Rollback"
+        }
+      }
+    }
+  },
+  "lanes": [
+    {
+      "id": "traffic",
+      "label": "New version path"
+    },
+    {
+      "id": "old",
+      "label": "Old version / fallback"
+    }
+  ],
+  "mainPath": [
+    "lb",
+    "v2",
+    "watch",
+    "ramp"
+  ],
+  "nodes": [
+    {
+      "id": "lb",
+      "lane": "traffic",
+      "col": 0,
+      "type": "messagebus",
+      "label": "1. Split traffic",
+      "sublabel": "load balancer",
+      "width": 170
+    },
+    {
+      "id": "v2",
+      "lane": "traffic",
+      "col": 1,
+      "type": "backend",
+      "label": "2. 5% to version 2",
+      "sublabel": "the canary",
+      "width": 170
+    },
+    {
+      "id": "watch",
+      "lane": "traffic",
+      "col": 2,
+      "type": "security",
+      "label": "3. Healthy?",
+      "sublabel": "error rate + latency",
+      "width": 170
+    },
+    {
+      "id": "ramp",
+      "lane": "traffic",
+      "col": 3,
+      "type": "cloud",
+      "label": "4. Grow the slice",
+      "sublabel": "25%, 50%, then 100%",
+      "width": 170,
+      "icon": "success"
+    },
+    {
+      "id": "v1",
+      "lane": "old",
+      "col": 1,
+      "type": "backend",
+      "label": "95% stay on version 1",
+      "sublabel": "stable, known-good",
+      "width": 170
+    },
+    {
+      "id": "back",
+      "lane": "old",
+      "col": 3,
+      "type": "external",
+      "label": "Drop version 2 to 0%",
+      "sublabel": "investigate",
+      "width": 170,
+      "icon": "failure"
+    }
+  ],
+  "edges": [
+    {
+      "id": "lb-v2",
+      "from": "lb",
+      "to": "v2",
+      "variant": "emphasis",
+      "label": "5%"
+    },
+    {
+      "id": "lb-v1",
+      "from": "lb",
+      "to": "v1",
+      "label": "95%",
+      "role": "branch"
+    },
+    {
+      "id": "v2-watch",
+      "from": "v2",
+      "to": "watch",
+      "variant": "emphasis"
+    },
+    {
+      "id": "watch-ramp",
+      "from": "watch",
+      "to": "ramp",
+      "variant": "emphasis",
+      "label": "yes, over time"
+    },
+    {
+      "id": "watch-back",
+      "from": "watch",
+      "to": "back",
+      "variant": "security",
+      "role": "error",
+      "label": "no"
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Git's Three Areas",
+    "quality_profile": "showcase",
+    "output": "diagrams/git-workflows-three-areas.html",
+    "legend": {
+      "entries": {
+        "frontend": {
+          "label": "Your files"
+        },
+        "messagebus": {
+          "label": "Staging area"
+        },
+        "database": {
+          "label": "History"
+        }
+      }
+    }
+  },
+  "lanes": [
+    {
+      "id": "m",
+      "label": "On your machine"
+    }
+  ],
+  "mainPath": [
+    "wd",
+    "sa",
+    "repo"
+  ],
+  "nodes": [
+    {
+      "id": "wd",
+      "lane": "m",
+      "col": 0,
+      "type": "frontend",
+      "label": "1. Edit files",
+      "sublabel": "working directory",
+      "width": 170
+    },
+    {
+      "id": "sa",
+      "lane": "m",
+      "col": 1,
+      "type": "messagebus",
+      "label": "2. Stage changes",
+      "sublabel": "staging area (index)",
+      "width": 170
+    },
+    {
+      "id": "repo",
+      "lane": "m",
+      "col": 2,
+      "type": "database",
+      "label": "3. Commit",
+      "sublabel": "repository history",
+      "width": 170
+    }
+  ],
+  "edges": [
+    {
+      "id": "wd-sa",
+      "from": "wd",
+      "to": "sa",
+      "variant": "emphasis",
+      "label": "git add"
+    },
+    {
+      "id": "sa-repo",
+      "from": "sa",
+      "to": "repo",
+      "variant": "emphasis",
+      "label": "git commit"
+    },
+    {
+      "id": "sa-wd",
+      "from": "sa",
+      "to": "wd",
+      "variant": "dashed",
+      "role": "return",
+      "label": "git restore --staged",
+      "fromSide": "top",
+      "toSide": "top",
+      "route": "up-channel"
+    },
+    {
+      "id": "repo-wd",
+      "from": "repo",
+      "to": "wd",
+      "variant": "dashed",
+      "role": "return",
+      "label": "git restore .",
+      "fromSide": "bottom",
+      "toSide": "bottom",
+      "route": "bottom-channel"
+    }
+  ]
+}

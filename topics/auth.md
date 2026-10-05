@@ -133,30 +133,14 @@ otpauth://totp/Bookshop:alwin@example.com?secret=JBSWY3DPEHPK3PXP&issuer=Booksho
 
 **How it works:** it's like a lock that only your uniquely shaped key can open, and that key physically never leaves your pocket. When you register, your device creates a matching pair of keys — a private key that stays on the device (protected by your fingerprint or PIN) and a public key that gets sent to the server. Logging in means the server sends a random challenge, your device signs it with the private key after you unlock it biometrically, and the server checks the signature against the public key it stored. The private key is never transmitted, so there's nothing for a phishing site to steal — and critically, the signature is also bound to the real site's domain, so even a pixel-perfect fake login page can't get a valid signature out of your device. **WebAuthn** is the browser standard that makes this possible; a **passkey** is the credential itself, and modern passkeys sync across your devices through iCloud Keychain or Google Password Manager, so losing your phone doesn't lock you out.
 
-```mermaid
-sequenceDiagram
-    participant C as Customer
-    participant B as Browser
-    participant S as Bookshop server
+<a href="https://alwintwk.github.io/dev-knowledge/diagrams/auth-passkeys.html">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="../diagrams/auth-passkeys.dark.png">
+    <img alt="Passkeys: Register Once, Log In With a Signature: 1. Sign up with a passkey; 2. Challenge to sign; 3. Ask for fingerprint or face; 4. Approve; 5. Public key + signed challenge; 6. Public key stored. Registered; 7. Login: new challenge to sign; 8. Ask for fingerprint or face; 9. Approve; 10. Send challenge signed with private key; 11. Verified with public key = logged in" src="../diagrams/auth-passkeys.light.png">
+  </picture>
+</a>
 
-    Note over C,S: Registration, once
-    C->>S: Sign up with a passkey
-    S-->>B: Challenge to sign
-    B->>C: Ask for fingerprint or face
-    C->>B: Approve
-    B->>B: Create a key pair, keep the private key on this device
-    B->>S: Send the public key + signed challenge
-    S->>S: Store the public key against this account
-
-    Note over C,S: Login, every time after
-    S-->>B: New challenge to sign
-    B->>C: Ask for fingerprint or face
-    C->>B: Approve
-    B->>B: Sign the challenge with the private key
-    B->>S: Send the signed challenge
-    S->>S: Verify it with the stored public key
-    S-->>C: Verified = logged in
-```
+<sub>Click the diagram for the interactive version (zoom, dark mode, trace a path).</sub>
 
 **Example:** the server asks the browser to create a credential with options roughly like:
 
@@ -316,23 +300,12 @@ Anyone can decode and read a JWT's payload (it's just base64, not encrypted) —
 
 **How it works:** the wristband (access token) is only good for an hour, but you also got a claim ticket kept in your hotel room safe (the refresh token) that you can exchange at the desk for a fresh wristband without showing ID all over again. **Rotation** means every time a refresh token is used, the server retires it and issues a brand-new one — so a refresh token is single-use, chained to the next one. This lets the server detect theft: if a retired (already-used) refresh token is ever presented again, that's a signal that two different parties have a copy of it — the legitimate one who used it already, and an attacker who's now trying to catch up — and the server can revoke the entire chain immediately.
 
-```mermaid
-sequenceDiagram
-    participant C as Customer app
-    participant S as Auth server
-
-    C->>S: Log in
-    S-->>C: access_token (1 hour), refresh_token (30 days)
-    Note over C,S: 1 hour later, access_token has expired
-    C->>S: POST /oauth/token, grant_type=refresh_token
-    S->>S: Check the refresh_token is valid and unused
-    S->>S: Retire the old refresh_token, issue a new one
-    S-->>C: New access_token + new refresh_token
-    Note over C,S: If the OLD (retired) refresh_token is reused
-    C->>S: POST /oauth/token with the retired token
-    S->>S: Reuse detected: this token was already retired
-    S-->>C: Reject, revoke the entire token family
-```
+<a href="https://alwintwk.github.io/dev-knowledge/diagrams/auth-refresh-rotation.html">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="../diagrams/auth-refresh-rotation.dark.png">
+    <img alt="Refresh Tokens and Rotation: 1. Log in; 2. access_token (1h) + refresh_token (30d); 3. 1h later: POST /oauth/token, refresh_token; 4. New access_token + new refresh_token (old one retired); 5. Retired refresh_token used again; 6. Reuse detected: reject, revoke whole family" src="../diagrams/auth-refresh-rotation.light.png">
+  </picture>
+</a>
 
 **Example:**
 
@@ -375,20 +348,12 @@ Neither is strictly "more secure" — they move the same trust to different plac
 
 There are a few different **grant types** for different situations. **Authorization code + PKCE** is the standard flow today for anything with a user present — web apps, mobile apps, and single-page apps alike — where PKCE (a locally generated secret checked at the end of the flow) stops a stolen authorization code from being redeemed by anyone else. **Client credentials** is for machine-to-machine calls with no user involved at all — one backend service authenticating directly to another. **Device code** is for devices with no good way to type, like a smart TV: you get a short code on the TV screen and enter it on your phone or laptop instead. Two older grant types — **implicit** (tokens returned directly in the URL, no code exchange) and **password/ROPC** (the app collects your password directly and trades it for a token) — are both explicitly deprecated by the current OAuth 2.0 Security Best Current Practice (RFC 9700) and shouldn't be used in new code.
 
-```mermaid
-sequenceDiagram
-    participant W as Warehouse system (client)
-    participant Auth as Bookshop authorization server
-    participant API as Bookshop inventory API
-
-    Note over W,API: No human involved — service to service
-    W->>Auth: POST /token, client_id + client_secret, grant_type=client_credentials
-    Auth->>Auth: Verify the client_id and client_secret
-    Auth-->>W: access_token, scope=update_inventory
-    W->>API: PATCH /inventory/42, Authorization: Bearer <token>
-    API->>API: Check the token, check scope includes update_inventory
-    API-->>W: Stock updated
-```
+<a href="https://alwintwk.github.io/dev-knowledge/diagrams/auth-oauth-client-credentials.html">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="../diagrams/auth-oauth-client-credentials.dark.png">
+    <img alt="OAuth 2.0 Client Credentials (No Human): 1. POST /token (client_id + secret); 2. access_token, scope=update_inventory; 3. PATCH /inventory/42 with Bearer token; 4. Token and scope OK: stock updated" src="../diagrams/auth-oauth-client-credentials.light.png">
+  </picture>
+</a>
 
 **Example:** an authorization code + PKCE redirect, sending the customer to log in and approve access:
 

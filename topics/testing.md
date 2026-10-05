@@ -157,17 +157,14 @@ it("expects reserveStock to return a boolean reserved field", async () => {
 
 **How it works:** an end-to-end (E2E) test starts a real browser, points it at the real (or a close staging copy of the) frontend, which talks to the real backend, which talks to a real database. Nothing is faked. It's a mystery shopper walking through the whole store from the front door to the till, rather than a quality check on one shelf — which is exactly why it catches things nothing smaller can, like a broken deploy config or a CSS change that hides the "Place order" button, but also exactly why it's the slowest and most expensive test on this page: a real browser has to launch and render for every click.
 
-```mermaid
-sequenceDiagram
-  participant P as Playwright
-  participant B as Real browser
-  participant S as Bookshop app + database
+<a href="https://alwintwk.github.io/dev-knowledge/diagrams/testing-e2e.html">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="../diagrams/testing-e2e.dark.png">
+    <img alt="End-to-End Test: Drive the Real App: 1. Launch browser, open bookshop.com; 2. Add to cart, checkout, pay (real POST /orders); 3. Order confirmed; 4. Assert 'Order confirmed' is visible" src="../diagrams/testing-e2e.light.png">
+  </picture>
+</a>
 
-  P->>B: Launch browser, go to bookshop.com
-  B->>S: Add to cart, checkout, pay - real POST /orders, real DB write
-  S-->>B: Order confirmed
-  B-->>P: Assert "Order confirmed" is visible
-```
+<sub>Click the diagram for the interactive version (zoom, dark mode, trace a path).</sub>
 
 **Example:**
 
@@ -503,16 +500,12 @@ it("marks an order as paid when the gateway succeeds", async () => {
 
 **How it works:** **Red** — write a test for behavior that doesn't exist yet, and watch it fail, ideally for exactly the reason you expect (not a typo). **Green** — write the smallest amount of code that makes it pass, resisting the urge to build more than the test currently demands. **Refactor** — clean up the implementation, or the test, or both, while the test suite keeps passing the whole way through, so you know you haven't changed behavior. Then you pick the next small behavior and go around again. It's less "testing" in the traditional sense and more using a test as a sketch: you define the shape you want before you carve it, the same way a sculptor roughs out a form before polishing any single detail.
 
-```mermaid
-stateDiagram-v2
-  [*] --> Red
-  Red: Red - write a failing test for the next small behavior
-  Green: Green - write the minimum code to make it pass
-  Refactor: Refactor - clean up, tests stay green throughout
-  Red --> Green: implement just enough
-  Green --> Refactor: test passes
-  Refactor --> Red: pick the next behavior
-```
+<a href="https://alwintwk.github.io/dev-knowledge/diagrams/testing-tdd-cycle.html">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="../diagrams/testing-tdd-cycle.dark.png">
+    <img alt="Test-Driven Development: Red, Green, Refactor: 1. Red; 2. Green; 3. Refactor" src="../diagrams/testing-tdd-cycle.light.png">
+  </picture>
+</a>
 
 **Example:**
 

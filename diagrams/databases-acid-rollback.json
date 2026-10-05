@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "ACID: A Failed Payment Undoes Everything",
+    "output": "diagrams/databases-acid-rollback.html",
+    "quality_profile": "showcase",
+    "column_fit": "spread",
+    "viewBox": [
+      920,
+      516
+    ],
+    "legend": {
+      "entries": {
+        "default": {
+          "label": "Request"
+        },
+        "emphasis": {
+          "label": "Main step"
+        },
+        "security": {
+          "label": "Check"
+        },
+        "dashed": {
+          "label": "Optional"
+        },
+        "return": {
+          "label": "Reply"
+        }
+      }
+    }
+  },
+  "participants": [
+    {
+      "id": "a",
+      "type": "backend",
+      "label": "App",
+      "sublabel": "your code"
+    },
+    {
+      "id": "d",
+      "type": "database",
+      "label": "Database",
+      "sublabel": "transaction"
+    }
+  ],
+  "messages": [
+    {
+      "id": "m1",
+      "from": "a",
+      "to": "d",
+      "y": 180,
+      "label": "1. BEGIN",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m2",
+      "from": "a",
+      "to": "d",
+      "y": 226,
+      "label": "2. UPDATE books SET stock = stock - 1",
+      "variant": "default"
+    },
+    {
+      "id": "m3",
+      "from": "a",
+      "to": "d",
+      "y": 272,
+      "label": "3. INSERT INTO orders",
+      "variant": "default"
+    },
+    {
+      "id": "m4",
+      "from": "a",
+      "to": "d",
+      "y": 318,
+      "label": "4. INSERT INTO order_items",
+      "variant": "default"
+    },
+    {
+      "id": "m5",
+      "from": "a",
+      "to": "d",
+      "y": 364,
+      "label": "5. Payment fails: ROLLBACK",
+      "variant": "security"
+    },
+    {
+      "id": "m6",
+      "from": "d",
+      "to": "a",
+      "y": 410,
+      "label": "6. Stock change + order undone together",
+      "variant": "return"
+    }
+  ]
+}

@@ -1,0 +1,191 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "CI/CD: Build Once, Promote Up",
+    "quality_profile": "showcase",
+    "output": "diagrams/deployment-cicd-pipeline.html",
+    "legend": {
+      "entries": {
+        "external": {
+          "label": "Start / end"
+        },
+        "backend": {
+          "label": "Build"
+        },
+        "security": {
+          "label": "Check"
+        },
+        "database": {
+          "label": "Package"
+        },
+        "cloud": {
+          "label": "Deploy"
+        }
+      }
+    }
+  },
+  "lanes": [
+    {
+      "id": "build",
+      "label": "Build"
+    },
+    {
+      "id": "deploy",
+      "label": "Deploy"
+    },
+    {
+      "id": "end",
+      "label": "Outcome"
+    }
+  ],
+  "mainPath": [
+    "commit",
+    "build",
+    "test",
+    "pkg",
+    "dev",
+    "stg",
+    "gate",
+    "prod"
+  ],
+  "nodes": [
+    {
+      "id": "commit",
+      "lane": "build",
+      "col": 0,
+      "type": "external",
+      "label": "1. Commit pushed",
+      "sublabel": "starts the pipeline",
+      "width": 158,
+      "icon": "person"
+    },
+    {
+      "id": "build",
+      "lane": "build",
+      "col": 1,
+      "type": "backend",
+      "label": "2. Build",
+      "sublabel": "compile the code",
+      "width": 158
+    },
+    {
+      "id": "test",
+      "lane": "build",
+      "col": 2,
+      "type": "security",
+      "label": "3. Test",
+      "sublabel": "automated checks",
+      "width": 158
+    },
+    {
+      "id": "pkg",
+      "lane": "build",
+      "col": 3,
+      "type": "database",
+      "label": "4. Package once",
+      "sublabel": "one versioned artifact",
+      "width": 158
+    },
+    {
+      "id": "dev",
+      "lane": "deploy",
+      "col": 3,
+      "type": "cloud",
+      "label": "5. Deploy to dev",
+      "sublabel": "same artifact",
+      "width": 158
+    },
+    {
+      "id": "stg",
+      "lane": "deploy",
+      "col": 4,
+      "type": "cloud",
+      "label": "6. Promote to staging",
+      "sublabel": "same artifact",
+      "width": 158
+    },
+    {
+      "id": "gate",
+      "lane": "deploy",
+      "col": 5,
+      "type": "security",
+      "label": "7. Checks pass?",
+      "sublabel": "gate before production",
+      "width": 158
+    },
+    {
+      "id": "fix",
+      "lane": "end",
+      "col": 4,
+      "type": "external",
+      "label": "Fix and start over",
+      "sublabel": "checks failed",
+      "width": 158,
+      "icon": "failure"
+    },
+    {
+      "id": "prod",
+      "lane": "end",
+      "col": 5,
+      "type": "cloud",
+      "label": "8. Promote to production",
+      "sublabel": "same artifact",
+      "width": 158,
+      "icon": "success"
+    }
+  ],
+  "edges": [
+    {
+      "id": "commit-build",
+      "from": "commit",
+      "to": "build",
+      "variant": "emphasis"
+    },
+    {
+      "id": "build-test",
+      "from": "build",
+      "to": "test",
+      "variant": "emphasis"
+    },
+    {
+      "id": "test-pkg",
+      "from": "test",
+      "to": "pkg",
+      "variant": "emphasis"
+    },
+    {
+      "id": "pkg-dev",
+      "from": "pkg",
+      "to": "dev",
+      "variant": "emphasis"
+    },
+    {
+      "id": "dev-stg",
+      "from": "dev",
+      "to": "stg",
+      "variant": "emphasis"
+    },
+    {
+      "id": "stg-gate",
+      "from": "stg",
+      "to": "gate",
+      "variant": "emphasis"
+    },
+    {
+      "id": "gate-prod",
+      "from": "gate",
+      "to": "prod",
+      "variant": "emphasis",
+      "label": "yes"
+    },
+    {
+      "id": "gate-fix",
+      "from": "gate",
+      "to": "fix",
+      "variant": "security",
+      "role": "error",
+      "label": "no"
+    }
+  ]
+}

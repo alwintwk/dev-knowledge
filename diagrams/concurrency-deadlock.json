@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Deadlock: Each Waits on the Other",
+    "output": "diagrams/concurrency-deadlock.html",
+    "quality_profile": "showcase",
+    "column_fit": "spread",
+    "viewBox": [
+      920,
+      480
+    ],
+    "legend": {
+      "entries": {
+        "default": {
+          "label": "Request"
+        },
+        "emphasis": {
+          "label": "Main step"
+        },
+        "security": {
+          "label": "Check"
+        },
+        "dashed": {
+          "label": "Optional"
+        },
+        "return": {
+          "label": "Reply"
+        }
+      }
+    }
+  },
+  "participants": [
+    {
+      "id": "t1",
+      "type": "backend",
+      "label": "Thread 1",
+      "sublabel": "holds A"
+    },
+    {
+      "id": "t2",
+      "type": "backend",
+      "label": "Thread 2",
+      "sublabel": "holds B"
+    }
+  ],
+  "messages": [
+    {
+      "id": "m1",
+      "from": "t1",
+      "to": "t2",
+      "y": 180,
+      "label": "1. Holds A, now needs B",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m2",
+      "from": "t2",
+      "to": "t1",
+      "y": 226,
+      "label": "2. Holds B, now needs A",
+      "variant": "emphasis"
+    }
+  ]
+}

@@ -117,13 +117,14 @@ c3f1a9d Add checkout button to cart page
 
 It's a delivery pipeline: the working directory is your workbench, the staging area is the loading dock where you've packed the boxes you're ready to ship, and the repository is the truck that's already left with a signed manifest.
 
-```mermaid
-flowchart LR
-  WD["Working directory<br/>edited files"] -->|"git add"| SA["Staging area<br/>index"]
-  SA -->|"git commit"| Repo["Repository<br/>committed history"]
-  SA -->|"git restore --staged"| WD
-  Repo -->|"git restore ."| WD
-```
+<a href="https://alwintwk.github.io/dev-knowledge/diagrams/git-workflows-three-areas.html">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="../diagrams/git-workflows-three-areas.dark.png">
+    <img alt="Git's Three Areas: 1. Edit files; 2. Stage changes; 3. Commit" src="../diagrams/git-workflows-three-areas.light.png">
+  </picture>
+</a>
+
+<sub>Click the diagram for the interactive version (zoom, dark mode, trace a path).</sub>
 
 **Example:**
 
@@ -556,19 +557,12 @@ Branching strategy decides the shape of history. These habits decide whether tha
 
 **How it works:** you push your branch, open a PR against main (or develop), and reviewers see every changed line, can comment on specific lines, request changes, or approve. Most teams block merging until at least one approval and passing CI checks are in place (more on that below, under protecting main). The PR is also a record — anyone can later read *why* a change was made, not just *what* changed, from the description and discussion attached to it.
 
-```mermaid
-sequenceDiagram
-  participant Dev as You
-  participant GH as GitHub
-  participant Rev as Reviewer
-
-  Dev->>GH: Push branch, open PR
-  GH->>Rev: Notify, request review
-  Rev->>GH: Comment, request changes
-  Dev->>GH: Push more commits addressing comments
-  Rev->>GH: Approve
-  Dev->>GH: Merge PR into main
-```
+<a href="https://alwintwk.github.io/dev-knowledge/diagrams/git-pr-review.html">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="../diagrams/git-pr-review.dark.png">
+    <img alt="Pull Request Review: 1. Push branch, open PR; 2. Notify, request review; 3. Comment, request changes; 4. Push more commits; 5. Approve; 6. Merge PR into main" src="../diagrams/git-pr-review.light.png">
+  </picture>
+</a>
 
 **Example:**
 

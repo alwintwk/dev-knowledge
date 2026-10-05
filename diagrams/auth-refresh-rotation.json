@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Refresh Tokens and Rotation",
+    "output": "diagrams/auth-refresh-rotation.html",
+    "quality_profile": "showcase",
+    "column_fit": "spread",
+    "viewBox": [
+      920,
+      516
+    ],
+    "legend": {
+      "entries": {
+        "default": {
+          "label": "Request"
+        },
+        "emphasis": {
+          "label": "Main step"
+        },
+        "security": {
+          "label": "Check"
+        },
+        "dashed": {
+          "label": "Optional"
+        },
+        "return": {
+          "label": "Reply"
+        }
+      }
+    }
+  },
+  "participants": [
+    {
+      "id": "c",
+      "type": "frontend",
+      "label": "Customer app",
+      "sublabel": "client"
+    },
+    {
+      "id": "s",
+      "type": "security",
+      "label": "Auth server",
+      "sublabel": "issues tokens"
+    }
+  ],
+  "messages": [
+    {
+      "id": "m1",
+      "from": "c",
+      "to": "s",
+      "y": 180,
+      "label": "1. Log in",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m2",
+      "from": "s",
+      "to": "c",
+      "y": 226,
+      "label": "2. access_token (1h) + refresh_token (30d)",
+      "variant": "return"
+    },
+    {
+      "id": "m3",
+      "from": "c",
+      "to": "s",
+      "y": 272,
+      "label": "3. 1h later: POST /oauth/token, refresh_token",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m4",
+      "from": "s",
+      "to": "c",
+      "y": 318,
+      "label": "4. New access_token + new refresh_token (old one retired)",
+      "variant": "return"
+    },
+    {
+      "id": "m5",
+      "from": "c",
+      "to": "s",
+      "y": 364,
+      "label": "5. Retired refresh_token used again",
+      "variant": "security"
+    },
+    {
+      "id": "m6",
+      "from": "s",
+      "to": "c",
+      "y": 410,
+      "label": "6. Reuse detected: reject, revoke whole family",
+      "variant": "security"
+    }
+  ]
+}

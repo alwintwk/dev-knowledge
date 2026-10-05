@@ -1,0 +1,89 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Test-Driven Development: Red, Green, Refactor",
+    "quality_profile": "showcase",
+    "output": "diagrams/testing-tdd-cycle.html",
+    "legend": {
+      "entries": {
+        "security": {
+          "label": "Failing test"
+        },
+        "backend": {
+          "label": "Passing code"
+        },
+        "database": {
+          "label": "Cleanup"
+        }
+      }
+    }
+  },
+  "lanes": [
+    {
+      "id": "m",
+      "label": "One small behavior at a time"
+    }
+  ],
+  "mainPath": [
+    "red",
+    "green",
+    "ref"
+  ],
+  "nodes": [
+    {
+      "id": "red",
+      "lane": "m",
+      "col": 0,
+      "type": "security",
+      "label": "1. Red",
+      "sublabel": "write a failing test",
+      "width": 170
+    },
+    {
+      "id": "green",
+      "lane": "m",
+      "col": 1,
+      "type": "backend",
+      "label": "2. Green",
+      "sublabel": "minimum code to pass",
+      "width": 170
+    },
+    {
+      "id": "ref",
+      "lane": "m",
+      "col": 2,
+      "type": "database",
+      "label": "3. Refactor",
+      "sublabel": "clean up, tests stay green",
+      "width": 170
+    }
+  ],
+  "edges": [
+    {
+      "id": "red-green",
+      "from": "red",
+      "to": "green",
+      "variant": "emphasis",
+      "label": "implement just enough"
+    },
+    {
+      "id": "green-ref",
+      "from": "green",
+      "to": "ref",
+      "variant": "emphasis",
+      "label": "test passes"
+    },
+    {
+      "id": "ref-red",
+      "from": "ref",
+      "to": "red",
+      "variant": "dashed",
+      "role": "return",
+      "label": "pick the next behavior",
+      "fromSide": "top",
+      "toSide": "top",
+      "route": "up-channel"
+    }
+  ]
+}

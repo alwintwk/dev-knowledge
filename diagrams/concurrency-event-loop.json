@@ -1,0 +1,151 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "The Event Loop, Step by Step",
+    "quality_profile": "showcase",
+    "output": "diagrams/concurrency-event-loop.html",
+    "legend": {
+      "entries": {
+        "backend": {
+          "label": "Runs your code"
+        },
+        "cloud": {
+          "label": "Handled in background"
+        },
+        "messagebus": {
+          "label": "Waiting line"
+        },
+        "security": {
+          "label": "Check"
+        },
+        "database": {
+          "label": "Microtasks"
+        }
+      }
+    }
+  },
+  "lanes": [
+    {
+      "id": "code",
+      "label": "Your code (one thread)"
+    },
+    {
+      "id": "bg",
+      "label": "Background work"
+    },
+    {
+      "id": "q",
+      "label": "Waiting lines"
+    }
+  ],
+  "mainPath": [
+    "stack",
+    "nodeapi",
+    "cbq",
+    "chk",
+    "micro",
+    "task"
+  ],
+  "nodes": [
+    {
+      "id": "stack",
+      "lane": "code",
+      "col": 0,
+      "type": "backend",
+      "label": "1. Stack runs code",
+      "sublabel": "one line at a time",
+      "width": 170
+    },
+    {
+      "id": "nodeapi",
+      "lane": "bg",
+      "col": 1,
+      "type": "cloud",
+      "label": "2. Slow work handed off",
+      "sublabel": "timers, file I/O, network",
+      "width": 170
+    },
+    {
+      "id": "cbq",
+      "lane": "q",
+      "col": 2,
+      "type": "messagebus",
+      "label": "3. Callback waits",
+      "sublabel": "callback queue",
+      "width": 170
+    },
+    {
+      "id": "chk",
+      "lane": "code",
+      "col": 3,
+      "type": "security",
+      "label": "4. Is the stack empty?",
+      "sublabel": "event loop checks",
+      "width": 170
+    },
+    {
+      "id": "micro",
+      "lane": "code",
+      "col": 4,
+      "type": "database",
+      "label": "5. Run all microtasks",
+      "sublabel": "resolved promises first",
+      "width": 170
+    },
+    {
+      "id": "task",
+      "lane": "code",
+      "col": 5,
+      "type": "backend",
+      "label": "6. Run ONE queued task",
+      "sublabel": "then back to step 4",
+      "width": 170
+    }
+  ],
+  "edges": [
+    {
+      "id": "stack-nodeapi",
+      "from": "stack",
+      "to": "nodeapi",
+      "variant": "emphasis"
+    },
+    {
+      "id": "nodeapi-cbq",
+      "from": "nodeapi",
+      "to": "cbq",
+      "variant": "emphasis",
+      "label": "work finishes"
+    },
+    {
+      "id": "cbq-chk",
+      "from": "cbq",
+      "to": "chk",
+      "variant": "emphasis"
+    },
+    {
+      "id": "chk-micro",
+      "from": "chk",
+      "to": "micro",
+      "variant": "emphasis",
+      "label": "yes"
+    },
+    {
+      "id": "micro-task",
+      "from": "micro",
+      "to": "task",
+      "variant": "emphasis"
+    },
+    {
+      "id": "task-chk",
+      "from": "task",
+      "to": "chk",
+      "variant": "dashed",
+      "role": "return",
+      "label": "repeat",
+      "fromSide": "top",
+      "toSide": "top",
+      "route": "up-channel"
+    }
+  ]
+}

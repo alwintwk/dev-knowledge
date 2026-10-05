@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "SQL Injection",
+    "output": "diagrams/web-security-sql-injection.html",
+    "quality_profile": "showcase",
+    "column_fit": "spread",
+    "viewBox": [
+      920,
+      480
+    ],
+    "legend": {
+      "entries": {
+        "default": {
+          "label": "Request"
+        },
+        "emphasis": {
+          "label": "Main step"
+        },
+        "security": {
+          "label": "Check"
+        },
+        "dashed": {
+          "label": "Optional"
+        },
+        "return": {
+          "label": "Reply"
+        }
+      }
+    }
+  },
+  "participants": [
+    {
+      "id": "a",
+      "type": "external",
+      "label": "Attacker",
+      "sublabel": "hostile"
+    },
+    {
+      "id": "s",
+      "type": "backend",
+      "label": "Bookshop server",
+      "sublabel": "builds query"
+    },
+    {
+      "id": "d",
+      "type": "database",
+      "label": "Database",
+      "sublabel": "all books"
+    }
+  ],
+  "messages": [
+    {
+      "id": "m1",
+      "from": "a",
+      "to": "s",
+      "y": 180,
+      "label": "1. GET /books/search?q=dune' OR '1'='1",
+      "variant": "security"
+    },
+    {
+      "id": "m2",
+      "from": "s",
+      "to": "d",
+      "y": 226,
+      "label": "2. SELECT ... WHERE title = 'dune' OR '1'='1'",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m3",
+      "from": "d",
+      "to": "s",
+      "y": 272,
+      "label": "3. Every row in the table",
+      "variant": "return"
+    },
+    {
+      "id": "m4",
+      "from": "s",
+      "to": "a",
+      "y": 318,
+      "label": "4. Full catalog, incl. unpublished rows",
+      "variant": "return"
+    }
+  ]
+}

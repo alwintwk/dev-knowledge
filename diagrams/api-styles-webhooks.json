@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Webhooks: The Provider Calls You",
+    "output": "diagrams/api-styles-webhooks.html",
+    "quality_profile": "showcase",
+    "column_fit": "spread",
+    "viewBox": [
+      920,
+      480
+    ],
+    "legend": {
+      "entries": {
+        "default": {
+          "label": "Request"
+        },
+        "emphasis": {
+          "label": "Main step"
+        },
+        "security": {
+          "label": "Check"
+        },
+        "dashed": {
+          "label": "Optional"
+        },
+        "return": {
+          "label": "Reply"
+        }
+      }
+    }
+  },
+  "participants": [
+    {
+      "id": "y",
+      "type": "backend",
+      "label": "Your server",
+      "sublabel": "receiver"
+    },
+    {
+      "id": "p",
+      "type": "cloud",
+      "label": "Payment provider",
+      "sublabel": "sender"
+    }
+  ],
+  "messages": [
+    {
+      "id": "m1",
+      "from": "y",
+      "to": "p",
+      "y": 180,
+      "label": "1. Register callback URL (once, ahead of time)",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m2",
+      "from": "p",
+      "to": "y",
+      "y": 226,
+      "label": "2. POST callback: payment succeeded, signed",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m3",
+      "from": "y",
+      "to": "p",
+      "y": 272,
+      "label": "3. Verify signature, reply 200 OK",
+      "variant": "security"
+    }
+  ]
+}

@@ -94,19 +94,14 @@ renderBooks();
 
 It's like ordering from a restaurant where the kitchen cooks your exact dish the moment you ask for it, instead of handing you a box of raw ingredients to cook yourself.
 
-```mermaid
-sequenceDiagram
-  participant B as Browser
-  participant S as Server
+<a href="https://alwintwk.github.io/dev-knowledge/diagrams/rendering-ssr.html">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="../diagrams/rendering-ssr.dark.png">
+    <img alt="Server-Side Rendering (SSR): 1. GET /books; 2. Full HTML, books already visible; 3. GET bundle.js; 4. JavaScript bundle (hydrates the page)" src="../diagrams/rendering-ssr.light.png">
+  </picture>
+</a>
 
-  B->>S: GET /books
-  Note right of S: Server fetches book data and renders HTML
-  S-->>B: Full HTML, books already visible
-  Note right of B: Page paints immediately
-  B->>S: GET bundle.js
-  S-->>B: JavaScript bundle
-  Note right of B: JS hydrates, page becomes interactive
-```
+<sub>Click the diagram for the interactive version (zoom, dark mode, trace a path).</sub>
 
 **Example:**
 
@@ -189,19 +184,12 @@ const book = await db.books.findOne(id);
 
 It's a printed menu that a restaurant reprints every hour if a price changed, rather than reprinting it on every single customer's request — you might read a menu that's a few minutes stale, but you're never stuck watching it get typeset.
 
-```mermaid
-sequenceDiagram
-  participant B1 as Visitor 1
-  participant CDN as CDN cache
-  participant S as Server
-
-  B1->>CDN: GET /books/42
-  CDN-->>B1: Cached HTML, built 90 seconds ago
-  Note over CDN: Cache is older than the revalidate window
-  CDN->>S: Rebuild the page in the background
-  S-->>CDN: Fresh HTML stored
-  Note over CDN: The next visitor gets the fresh copy
-```
+<a href="https://alwintwk.github.io/dev-knowledge/diagrams/rendering-isr.html">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="../diagrams/rendering-isr.dark.png">
+    <img alt="Incremental Static Regeneration (ISR): 1. GET /books/42; 2. Cached HTML, built 90s ago; 3. Cache older than revalidate window: rebuild; 4. Fresh HTML stored (next visitor gets it)" src="../diagrams/rendering-isr.light.png">
+  </picture>
+</a>
 
 **Example:**
 

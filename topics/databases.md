@@ -521,19 +521,14 @@ flowchart LR
 
 **How it works:** take placing a bookshop order — it has to deduct stock, create an order row, and create order-item rows, all together. **Atomicity** means all three happen or none do — if payment fails halfway through, the stock deduction is undone too, not left half-applied. **Consistency** means the database's own rules are never broken, even mid-crash — an order can never end up pointing at a book ID that doesn't exist, because the database enforces that constraint. **Isolation** means two customers buying the last copy of a book at the same instant can't both succeed and walk away thinking they got it — covered in more depth just below. **Durability** means once the order confirmation is shown, that order survives even if the server crashes a millisecond later — it's already safely written to disk, not just sitting in memory.
 
-```mermaid
-sequenceDiagram
-  participant App
-  participant DB as Database
+<a href="https://alwintwk.github.io/dev-knowledge/diagrams/databases-acid-rollback.html">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="../diagrams/databases-acid-rollback.dark.png">
+    <img alt="ACID: A Failed Payment Undoes Everything: 1. BEGIN; 2. UPDATE books SET stock = stock - 1; 3. INSERT INTO orders; 4. INSERT INTO order_items; 5. Payment fails: ROLLBACK; 6. Stock change + order undone together" src="../diagrams/databases-acid-rollback.light.png">
+  </picture>
+</a>
 
-  App->>DB: BEGIN
-  App->>DB: UPDATE books SET stock = stock - 1 WHERE id = 482
-  App->>DB: INSERT INTO orders (...)
-  App->>DB: INSERT INTO order_items (...)
-  Note over App,DB: Payment step fails
-  App->>DB: ROLLBACK
-  Note over DB: Stock change and order are undone together — nothing half-happened
-```
+<sub>Click the diagram for the interactive version (zoom, dark mode, trace a path).</sub>
 
 **Example:**
 
@@ -566,18 +561,12 @@ COMMIT;
 
 *In PostgreSQL, Repeatable Read is snapshot isolation: it also blocks phantoms, and a lost update makes the second transaction fail with a serialization error so you can retry. MySQL's InnoDB at Repeatable Read does *not* stop lost updates for plain read-then-write code; you need `SELECT ... FOR UPDATE` or a version column. That's a reminder that the same isolation-level name doesn't always mean the exact same behavior across different databases.
 
-```mermaid
-sequenceDiagram
-  participant A as Staff A
-  participant DB as Database
-  participant B as Staff B
-
-  A->>DB: SELECT stock FROM books WHERE id = 482 (reads 1)
-  B->>DB: SELECT stock FROM books WHERE id = 482 (reads 1)
-  A->>DB: UPDATE stock = 0 (last copy sold)
-  B->>DB: UPDATE stock = 0 (last copy sold, again)
-  Note over DB: Two sales went through for one copy —<br/>Staff B's update overwrote Staff A's without knowing about it
-```
+<a href="https://alwintwk.github.io/dev-knowledge/diagrams/databases-lost-update.html">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="../diagrams/databases-lost-update.dark.png">
+    <img alt="Lost Update: Last Copy Sold Twice: 1. SELECT stock (reads 1); 2. SELECT stock (reads 1); 3. UPDATE stock = 0; 4. UPDATE stock = 0 (overwrites A)" src="../diagrams/databases-lost-update.light.png">
+  </picture>
+</a>
 
 **Example:**
 

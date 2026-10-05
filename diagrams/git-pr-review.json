@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Pull Request Review",
+    "output": "diagrams/git-pr-review.html",
+    "quality_profile": "showcase",
+    "column_fit": "spread",
+    "viewBox": [
+      920,
+      516
+    ],
+    "legend": {
+      "entries": {
+        "default": {
+          "label": "Request"
+        },
+        "emphasis": {
+          "label": "Main step"
+        },
+        "security": {
+          "label": "Check"
+        },
+        "dashed": {
+          "label": "Optional"
+        },
+        "return": {
+          "label": "Reply"
+        }
+      }
+    }
+  },
+  "participants": [
+    {
+      "id": "d",
+      "type": "external",
+      "label": "You",
+      "sublabel": "author"
+    },
+    {
+      "id": "g",
+      "type": "cloud",
+      "label": "GitHub",
+      "sublabel": "hosts the PR"
+    },
+    {
+      "id": "r",
+      "type": "external",
+      "label": "Reviewer",
+      "sublabel": "teammate"
+    }
+  ],
+  "messages": [
+    {
+      "id": "m1",
+      "from": "d",
+      "to": "g",
+      "y": 180,
+      "label": "1. Push branch, open PR",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m2",
+      "from": "g",
+      "to": "r",
+      "y": 226,
+      "label": "2. Notify, request review",
+      "variant": "default"
+    },
+    {
+      "id": "m3",
+      "from": "r",
+      "to": "g",
+      "y": 272,
+      "label": "3. Comment, request changes",
+      "variant": "security"
+    },
+    {
+      "id": "m4",
+      "from": "d",
+      "to": "g",
+      "y": 318,
+      "label": "4. Push more commits",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m5",
+      "from": "r",
+      "to": "g",
+      "y": 364,
+      "label": "5. Approve",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m6",
+      "from": "d",
+      "to": "g",
+      "y": 410,
+      "label": "6. Merge PR into main",
+      "variant": "emphasis"
+    }
+  ]
+}
